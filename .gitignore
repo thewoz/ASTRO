@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Osx files
+.DS_Store
+
+# Linux files
+*~
+
+#Xcode 
+Astro.xcodeproj/xcuserdata
+Vallado/C++/Vallado.xcodeproj/xcuserdata
