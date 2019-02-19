@@ -155,8 +155,6 @@ namespace astro {
         abort();
       }
       
-      double dummy[3];
-      
       astro::eopc::init();
       
       // tempo di propagazione (in minuti)
@@ -194,29 +192,22 @@ namespace astro {
 
         astro::sgp4(tle.satrec, sinceTimeMin, &states[step].position[0], &states[step].velocity[0]);
         
-        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+        if(crs != CRS::TEME) {
+        
+          double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
 
-        if(crs == CRS::ECI) {
-          
           astro::eopc::getParameters(states[step].jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
 
-          astro::teme2eci(&states[step].position[0], &states[step].velocity[0], dummy, &states[step].position[0], &states[step].velocity[0], dummy, ttt, ddpsi, ddeps);
-        }
+          if(crs == CRS::ECI)
+            astro::teme2eci(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, ddpsi, ddeps);
         
-        if(crs == CRS::ECEF) {
-          
-          astro::eopc::getParameters(states[step].jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-
-          //printf("%f %f %f %f %f %f %f %f\n", xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-          
-          astro::teme2ecef(&states[step].position[0], &states[step].velocity[0], dummy, &states[step].position[0], &states[step].velocity[0], dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-          
-        }
+          if(crs == CRS::ECEF)
+            astro::teme2ecef(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
         
-      }
+        } // crs != CRS::TEME
       
+      } // for(step)
 
-      
     }
     
     /*****************************************************************************/
@@ -236,13 +227,19 @@ namespace astro {
       
       astro::sgp4(tle.satrec, sinceTimeMin, &state.position[0], &state.velocity[0]);
       
-      if(crs == CRS::ECI){
+      if(crs != CRS::TEME) {
         
-      }
-      
-      if(crs == CRS::ECEF){
+        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
         
-      }
+        astro::eopc::getParameters(state.jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
+        
+        if(crs == CRS::ECI)
+          astro::teme2eci(&state.position[0], &state.velocity[0], &state.position[0], &state.velocity[0], ttt, ddpsi, ddeps);
+        
+        if(crs == CRS::ECEF)
+          astro::teme2ecef(&state.position[0], &state.velocity[0], &state.position[0], &state.velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
+        
+      } // crs != CRS::TEME
       
     }
     

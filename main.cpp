@@ -23,12 +23,12 @@
  * SOFTWARE.
  */
 
-#define TESTEOPC
-#define TESTDATE
-#define TESTSATELLITE
+//#define TESTEOPC
+//#define TESTDATE
+//#define TESTSATELLITE
 #define TESTSUN
-#define TESTSTATION
-#define TESTATTITUDE
+//#define TESTSTATION
+//#define TESTATTITUDE
 
 
 #include <cstdio>
@@ -194,9 +194,12 @@ int main(int argc, char *argv[]) {
     
     std::vector<astro::SatelliteState> states;
 
-    astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(17,2,2019,11,00,00), astro::Date(17,2,2019,12,00,00), 60, states, CRS::TEME);
+    astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(17,2,2019,11,00,00), astro::Date(17,2,2019,12,00,00), 60, states, CRS::ECI);
 
-    for(std::size_t i=0; i<states.size(); ++i) states[i].println(stdout);
+    for(std::size_t i=0; i<states.size(); ++i){
+      states[i].println(outputSatellite);
+      states[i].println(stdout);
+    }
     
     fclose(outputSatellite);
   
@@ -215,7 +218,7 @@ int main(int argc, char *argv[]) {
     
     fprintf(stderr, "Test Sun:\n\n");
     
-    std::string outStrSun = "/Users/thewoz/Desktop/sun_ecef_3days_v1.dat";
+    std::string outStrSun = "/Users/thewoz/Desktop/sun.dat";
     
     FILE * outputSun = fopen(outStrSun.c_str(), "w");
     
@@ -226,11 +229,13 @@ int main(int argc, char *argv[]) {
     
     std::vector<astro::SunState> states;
     
-    astro::Sun::orbit(astro::Date(20,4,2018,16,55,00).getJDay(), astro::Date(20,4,2018,17,55,00).getJDay(), 60, states, CRS::ECI);
+    astro::Sun::orbit(astro::Date(20,4,2017,17,55,00).getJDay(), astro::Date(20,4,2018,17,55,00).getJDay(), 60, states, CRS::ECI);
 
     for(std::size_t i=0; i<states.size(); ++i){
       fprintf(outputSun, "%s ", astro::Date(states[i].jDay).toGregorianString());
       states[i].println(outputSun);
+      fprintf(stdout, "%s ", astro::Date(states[i].jDay).toGregorianString());
+      states[i].println(stdout);
     }
     
     fclose(outputSun);
@@ -269,11 +274,13 @@ int main(int argc, char *argv[]) {
     
     std::vector<astro::ObservatoryState> states;
     
-    collepardo.positions(astro::Date(12,2,2018,4,19,59).getJDay(), astro::Date(12,2,2018,4,20,59).getJDay(), dt, states, CRS::TEME);
+    collepardo.positions(astro::Date(12,2,2018,4,19,59).getJDay(), astro::Date(12,2,2018,5,20,59).getJDay(), dt, states, CRS::TEME);
     
     for(std::size_t i=0; i<states.size(); ++i){
       fprintf(stdout, "%s ", astro::Date(states[i].jDay).toGregorianString());
       states[i].println(stdout);
+      fprintf(outputStation, "%s ", astro::Date(states[i].jDay).toGregorianString());
+      states[i].println(outputStation);
     }
     
     fclose(outputStation);

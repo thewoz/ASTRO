@@ -13,6 +13,8 @@ Modifiche dei sorgenti che non alterano il funzionamento del codice originale:
 9) Sono stati tolti la maggior parte dei warning in compilazione
 10) È stata aggiunta una versione con meno argomenti di convtime( ) in astTime
 11) Sono stati eliminati i file non utili
+12) Modificati i prototipidi due funzioni in astMath.h
+13) Modificati i prototipi di due funzioni in EopSwp.h
 
 Modifiche che posso alterare il funzionamento del codice rispetto all'originale:
 

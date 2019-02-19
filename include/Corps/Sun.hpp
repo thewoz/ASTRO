@@ -174,9 +174,6 @@ namespace astro {
       state.position[1] *= 149597870.7;
       state.position[2] *= 149597870.7;
       
-//      if(crs == CRS::TEME) ;
-//      if(crs == CRS::ECEF) ;
-      
     }
     
   }; /* class sun */

@@ -71,7 +71,7 @@ namespace astro {
     
     std::vector< std::vector<double> > eqe = std::vector< std::vector<double> >(3, std::vector<double>(3));
 
-    astro::iau80::init();
+    //astro::iau80::init();
     
     // mi serve: prec
     coordFK5::precess(ttt, e80, psia, wa, epsa, chia, prec);

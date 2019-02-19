@@ -107,6 +107,7 @@ namespace astro {
       longitude = _longitude;
       height    = _height;
       
+      //_convert(states[i].jDay, states[i].position);
       astro::lla2ecef(latitude, longitude, height, coord);
 
     }
@@ -128,49 +129,37 @@ namespace astro {
         
         states[i].position[0] = coord[0]; states[i].position[1] = coord[1]; states[i].position[2] = coord[2];
         
-        _convert(states[i].jDay, states[i].position);
+        //_convert(states[i].jDay, states[i].position);
+        astro::lla2ecef(latitude, longitude, height, coord);
 
       }
       
-      astro::eopc::init();
-      
-      double dummy[3];
-      double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
-
-      if(crs == CRS::TEME) {
+      if(crs != CRS::ECEF) {
         
+        double dummy[3];
+        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+
         for(std::size_t i=0; i<samples; ++i) {
+
           astro::eopc::getParameters(states[i].jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-          astro::ecef2teme(states[i].position, dummy, dummy, states[i].position, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-        }
-       
-      }
-        
-      if(crs == CRS::ECI) {
-        
-        for(std::size_t i=0; i<samples; ++i){
-          astro::eopc::getParameters(states[i].jDay, 's', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-          astro::ecef2eci(states[i].position, dummy, dummy, states[i].position, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
+          
+          if(crs == CRS::TEME)
+            astro::ecef2teme(states[i].position, dummy, dummy, states[i].position, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
+          
+          if(crs == CRS::ECI)
+            astro::ecef2eci(states[i].position, dummy, dummy, states[i].position, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
+          
         }
         
       }
-        
+      
     }
 
     
   private:
-    
+
     /*****************************************************************************/
-    // _position
-    /*****************************************************************************/
-//    void _position(double jDayStart, double integrationTimeJD, std::size_t samples, int crs = CRS::ECEF) {
-//
-//
-//
-//    }
-    
-    /*****************************************************************************/
-    // _position
+    // _convert
     /*****************************************************************************/
     void _convert(double jDay, double r[3]) {
 

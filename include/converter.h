@@ -28,14 +28,9 @@
 
 #include "./Converter/eopc.hpp"
 
-#include "./Converter/ecef2eci.hpp"
-#include "./Converter/ecef2teme.hpp"
-
-#include "./Converter/teme2ecef.hpp"
-#include "./Converter/teme2eci.hpp"
-
-#include "./Converter/eci2teme.hpp"
-#include "./Converter/eci2ecef.hpp"
+#include "./Converter/ecef.hpp"
+#include "./Converter/teme.hpp"
+#include "./Converter/eci.hpp"
 
 #include "./Converter/lla2ecef.hpp"
 

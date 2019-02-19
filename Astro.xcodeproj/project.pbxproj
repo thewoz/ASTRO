@@ -26,15 +26,12 @@
 		3A19AB042218648900A2FB55 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3A19AB08221864D600A2FB55 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
 		3A19AB09221864D600A2FB55 /* propagator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = propagator.h; sourceTree = "<group>"; };
-		3A19AB0B221864D600A2FB55 /* teme2ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = teme2ecef.hpp; sourceTree = "<group>"; };
-		3A19AB0C221864D600A2FB55 /* ecef2teme.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ecef2teme.hpp; sourceTree = "<group>"; };
+		3A19AB0B221864D600A2FB55 /* teme.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = teme.hpp; sourceTree = "<group>"; };
+		3A19AB0C221864D600A2FB55 /* ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ecef.hpp; sourceTree = "<group>"; };
 		3A19AB0D221864D600A2FB55 /* lla2ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lla2ecef.hpp; sourceTree = "<group>"; };
 		3A19AB0E221864D600A2FB55 /* eopc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eopc.hpp; sourceTree = "<group>"; };
-		3A19AB10221864D600A2FB55 /* ecef2eci.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ecef2eci.hpp; sourceTree = "<group>"; };
-		3A19AB11221864D600A2FB55 /* eci2ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci2ecef.hpp; sourceTree = "<group>"; };
 		3A19AB12221864D600A2FB55 /* iau80.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iau80.hpp; sourceTree = "<group>"; };
-		3A19AB13221864D600A2FB55 /* eci2teme.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci2teme.hpp; sourceTree = "<group>"; };
-		3A19AB14221864D600A2FB55 /* teme2eci.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = teme2eci.hpp; sourceTree = "<group>"; };
+		3A19AB13221864D600A2FB55 /* eci.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci.hpp; sourceTree = "<group>"; };
 		3A19AB16221864D600A2FB55 /* SGP4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SGP4.hpp; sourceTree = "<group>"; };
 		3A19AB17221864D600A2FB55 /* converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = converter.h; sourceTree = "<group>"; };
 		3A19AB19221864D600A2FB55 /* Attitude.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Attitude.hpp; sourceTree = "<group>"; };
@@ -86,15 +83,12 @@
 		3A19AB0A221864D600A2FB55 /* Converter */ = {
 			isa = PBXGroup;
 			children = (
-				3A19AB0C221864D600A2FB55 /* ecef2teme.hpp */,
-				3A19AB10221864D600A2FB55 /* ecef2eci.hpp */,
-				3A19AB11221864D600A2FB55 /* eci2ecef.hpp */,
-				3A19AB13221864D600A2FB55 /* eci2teme.hpp */,
-				3A19AB14221864D600A2FB55 /* teme2eci.hpp */,
-				3A19AB0B221864D600A2FB55 /* teme2ecef.hpp */,
+				3A19AB0C221864D600A2FB55 /* ecef.hpp */,
+				3A19AB13221864D600A2FB55 /* eci.hpp */,
+				3A19AB0B221864D600A2FB55 /* teme.hpp */,
 				3A19AB0D221864D600A2FB55 /* lla2ecef.hpp */,
-				3A19AB0E221864D600A2FB55 /* eopc.hpp */,
 				3A19AB12221864D600A2FB55 /* iau80.hpp */,
+				3A19AB0E221864D600A2FB55 /* eopc.hpp */,
 			);
 			path = Converter;
 			sourceTree = "<group>";

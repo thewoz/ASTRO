@@ -185,8 +185,8 @@ namespace astMath
 
 	void  matmult
 		(
-		std::vector< std::vector<double> > mat1,
-		std::vector< std::vector<double> > mat2,
+		const std::vector< std::vector<double> > & mat1,
+		const std::vector< std::vector<double> > & mat2,
 		std::vector< std::vector<double> > &mat3,
 		int mat1r, int mat1c, int mat2c
 		);

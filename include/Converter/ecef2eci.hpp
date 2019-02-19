@@ -72,7 +72,7 @@ namespace astro {
   void ecef2eci(double recef[3], double vecef[3], double aecef[3], double reci[3], double veci[3], double aeci[3],
                 double ttt,      double jdut1,    double lod,      double xp,      double yp,      int eqeterms = 2){
     
-    astro::iau80::init();
+    //astro::iau80::init();
     
     std::vector< std::vector<double> > trans;
 
