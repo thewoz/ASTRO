@@ -26,7 +26,7 @@
 //#define TESTEOPC
 //#define TESTDATE
 //#define TESTSATELLITE
-#define TESTSUN
+//#define TESTSUN
 //#define TESTSTATION
 //#define TESTATTITUDE
 
@@ -40,7 +40,7 @@
 #include <string>
 
 #ifdef TESTDATE
-#include "Date.hpp"
+#include <astro/Date.hpp>
 #endif
 
 #ifdef TESTEOPC
@@ -229,7 +229,7 @@ int main(int argc, char *argv[]) {
     
     std::vector<astro::SunState> states;
     
-    astro::Sun::orbit(astro::Date(20,4,2017,17,55,00).getJDay(), astro::Date(20,4,2018,17,55,00).getJDay(), 60, states, CRS::ECI);
+    astro::Sun::orbit(astro::Date(20,4,2017,17,55,00).getJDay(), astro::Date(20,5,2017,17,55,00).getJDay(), 60, states, CRS::ECI);
 
     for(std::size_t i=0; i<states.size(); ++i){
       fprintf(outputSun, "%s ", astro::Date(states[i].jDay).toGregorianString());
