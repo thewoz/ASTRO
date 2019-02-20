@@ -53,3 +53,8 @@ TODO:
 REMEMBER:
 1) La funzione invjday() di SPG4 è stata modifica in Vallado
 2) La funzione convtime in Vallado è stata modificata
+
+
+# Install
+
+make install

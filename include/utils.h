@@ -37,6 +37,7 @@
 #include "./Utils/lagrange.hpp"
 #include "./Utils/RK4.hpp"
 #include "./Utils/quaternion.hpp"
+#include "./Utils/Attitude.hpp"
 #include "./Utils/curl.hpp"
 
 #endif /* _H_ASTRO_UTILS_H */

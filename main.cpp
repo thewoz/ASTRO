@@ -25,11 +25,10 @@
 
 //#define TESTEOPC
 //#define TESTDATE
-#define TESTSATELLITE
+//#define TESTSATELLITE
 //#define TESTSUN
 //#define TESTSTATION
 //#define TESTATTITUDE
-
 
 #include <cstdio>
 #include <cstdlib>
@@ -39,39 +38,7 @@
 
 #include <string>
 
-#ifdef TESTDATE
-#include "Date.hpp"
-#endif
-
-#ifdef TESTEOPC
-#include "eopc.hpp"
-#endif
-
-#ifdef TESTSUN
-#include "Sun.hpp"
-#endif
-
-#ifdef TESTSTATION
-#include "Observatory.hpp"
-#endif
-
-#ifdef TESTSATELLITE
-#include "Satellite.hpp"
-#endif
-
-#ifdef TESTATTITUDE
-#include "Attitude.hpp"
-#endif
-
-
-// Vallado
-//
-// iau-76/fk5 transformations
-//
-// itrf (earth fixed frame)
-// gcrf (mean equator mean equinox)
-// j2k  (mean equator mean equinox)
-// teme (true equator mean equinox)
+#include "astro.hpp"
 
 
 /*****************************************************************************/
@@ -83,7 +50,6 @@ int main(int argc, char *argv[]) {
   /*****************************************************************************/
   // Test Attitude
   /*****************************************************************************/
-  
   
   //astro::attitude::test(); exit(0);
   

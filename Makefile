@@ -28,12 +28,14 @@ clean:
 	@rm -rf ./bin
 
 
-#test:
-#	@mkdir -p ./bin
-#	g++ -march=native -Os -std=c++11 -I./include -DTESTEOPC     ./main.cpp -L/usr/local/lib/vallado/                      -lastTime                   -lcurl -o ./bin/testEopc
-#	g++ -march=native -Os -std=c++11 -I./include -TESTSATELLITE ./main.cpp -L/usr/local/lib/vallado/ -last2Body -lastMath -lastTime -lcoordFK5 -lSGP4 -lcurl -o ./bin/testSatellite
-#	g++ -march=native -Os -std=c++11 -I./include -DTESTSUN      ./main.cpp -L/usr/local/lib/vallado/ -last2Body -lastMath -lastTime -lcoordFK5 -lSGP4 -lcurl -o ./bin/testSun
-#	g++ -march=native -Os -std=c++11 -I./include -DTESTSTATION  ./main.cpp -L/usr/local/lib/vallado/ -last2Body -lastMath -lastTime -lcoordFK5 -lSGP4 -lcurl -o ./bin/testStation
+test:
+	@mkdir -p ./bin
+	g++ -march=native -Os -std=c++17 -I./include -DTESTEOPC     ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testEopc
+	g++ -march=native -Os -std=c++17 -I./include -DTESTDATE     ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testDate
+	g++ -march=native -Os -std=c++17 -I./include -DTESTSATELLITE ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testSatellite
+	g++ -march=native -Os -std=c++17 -I./include -DTESTSUN      ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testSun
+	g++ -march=native -Os -std=c++17 -I./include -DTESTSTATION  ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testStation
+	g++ -march=native -Os -std=c++17 -I./include -DTESTATTITUDE ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testAttitude
 
 
 

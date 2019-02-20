@@ -37,6 +37,10 @@
 # Linux files
 *~
 
-#Xcode 
+# Xcode 
 */xcuserdata/*
 Vallado/C++/Vallado.xcodeproj/xcuserdata/*
+
+
+# Output
+/bin/*
