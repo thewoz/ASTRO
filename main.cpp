@@ -25,7 +25,7 @@
 
 //#define TESTEOPC
 //#define TESTDATE
-//#define TESTSATELLITE
+#define TESTSATELLITE
 //#define TESTSUN
 //#define TESTSTATION
 //#define TESTATTITUDE
@@ -40,7 +40,7 @@
 #include <string>
 
 #ifdef TESTDATE
-#include <astro/Date.hpp>
+#include "Date.hpp"
 #endif
 
 #ifdef TESTEOPC
