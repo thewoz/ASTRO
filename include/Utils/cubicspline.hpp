@@ -63,7 +63,6 @@ namespace cspline {
       
     }
 
-    
     const cv::Mat At = A.t();
     
     const cv::Mat invAtA = (At * A).inv();

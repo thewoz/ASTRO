@@ -57,4 +57,10 @@ REMEMBER:
 
 # Install
 
+Fare prima il make install della libreria di Vallado che si trova in
+
+./Vallado/C++
+
+poi fare il make install dell a libreria Astro
+
 make install

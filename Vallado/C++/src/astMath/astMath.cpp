@@ -416,7 +416,7 @@ namespace astMath
 	void    rot1mat
 		(
 		double xval,
-		std::vector< std::vector<double> > &outmat
+		std::vector< std::vector<double> > & outmat
 		//  double& outmat[3][3]
 		)
 	{

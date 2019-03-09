@@ -243,6 +243,12 @@ namespace astMath
 		);
 
 	int factorial(int n);
+  
+  
+  // NOTE: added to me
+  void eclequ(double t, double * r1, double * r2);
+  
+  double eps(double t);
 
 };  // namespace
 

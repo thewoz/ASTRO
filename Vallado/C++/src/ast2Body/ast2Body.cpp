@@ -2255,7 +2255,6 @@ namespace ast2Body
 	{
 		double deg2rad;
 		double tut1, meanlong, ttdb, meananomaly, eclplong, obliquity, magr;
-
     
     double twopi = M_PI * 2;
 		deg2rad = M_PI / 180.0;
@@ -2289,9 +2288,9 @@ namespace ast2Body
 		magr = 1.000140612 - 0.016708617 * cos(meananomaly)
 			- 0.000139589 * cos(2.0 *meananomaly);    // in au's
 
-		rsun[0] = magr * cos(eclplong);
-		rsun[1] = magr * cos(obliquity) * sin(eclplong);
-		rsun[2] = magr * sin(obliquity) * sin(eclplong);
+    rsun[0] = magr * cos(eclplong);
+    rsun[1] = magr * cos(obliquity) * sin(eclplong);
+    rsun[2] = magr * sin(obliquity) * sin(eclplong);
 
 		rtasc = atan(cos(obliquity) * tan(eclplong));
 
@@ -2300,10 +2299,12 @@ namespace ast2Body
 		{
 			eclplong = eclplong + twopi;    // make sure it's in 0 to 2pi range
 		}
+    
 		if (fabs(eclplong - rtasc) > M_PI * 0.5)
 		{
 			rtasc = rtasc + 0.5 * M_PI * astMath::round((eclplong - rtasc) / (0.5 * M_PI));
 		}
+    
 		decl = asin(sin(obliquity) * sin(eclplong));
 
 	}  // sun
