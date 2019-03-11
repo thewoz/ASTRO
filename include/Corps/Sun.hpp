@@ -38,9 +38,9 @@
 #include "../utils.h"
 #include "../converter.h"
 
-#define SUN_VALLADO
+//#define SUN_VALLADO
 //#define SUN_KDE_QUICK
-//#define SUN_KDE_PRECISE
+#define SUN_KDE_PRECISE
 
 /*****************************************************************************/
 // namespace astro
@@ -90,10 +90,11 @@ namespace astro {
     
     Sun() { }
     
+#ifdef SUN_KDE_PRECISE
     // Used in _position taken from the KDE AstroLib
     static double t, a, d, uu, dl, dr, db, m2, m3, m4, m5, m6;
     static double c[9], c3[9], s[9], s3[9];
-    
+#endif
     
   public:
     
@@ -225,9 +226,9 @@ namespace astro {
       
       astUtils::eclequ(t, rEcli, state.position);
       
-      state.position[0] *= 149597870.7;
-      state.position[1] *= 149597870.7;
-      state.position[2] *= 149597870.7;
+      //state.position[0] *= 149597870.7;
+      //state.position[1] *= 149597870.7;
+      //state.position[2] *= 149597870.7;
       
       //FIXME: not used crs
       
@@ -431,6 +432,28 @@ namespace astro {
     }
 
   }; /* class sun */
+  
+#ifdef SUN_KDE_PRECISE
+  // Used in _position taken from the KDE AstroLib
+  double Sun::t  = 0.0;
+  double Sun::a  = 0.0;
+  double Sun::d  = 0.0;
+  double Sun::uu = 0.0;
+  double Sun::dl = 0.0;
+  double Sun::dr = 0.0;
+  double Sun::db = 0.0;
+  double Sun::m2 = 0.0;
+  double Sun::m3 = 0.0;
+  double Sun::m4 = 0.0;
+  double Sun::m5 = 0.0;
+  double Sun::m6 = 0.0;
+  double Sun::c[9]  = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  double Sun::c3[9] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  double Sun::s[9]  = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  double Sun::s3[9] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+#endif
+  
+  
   
 } /* namespace astro */
 

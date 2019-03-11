@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
   /*****************************************************************************/
   {
     
-    std::string outStrSun = "/Users/thewoz/Desktop/sun.dat";
+    std::string outStrSun = "/Users/thewoz/Desktop/sun_kde_precise.dat";
     
     FILE * outputSun = fopen(outStrSun.c_str(), "w");
     
@@ -198,8 +198,8 @@ int main(int argc, char *argv[]) {
     for(std::size_t i=0; i<states.size(); ++i){
       fprintf(outputSun, "%s ", astro::Date(states[i].jDay).toGregorianString());
       states[i].println(outputSun);
-      fprintf(stdout, "%s ", astro::Date(states[i].jDay).toGregorianString());
-      states[i].println(stdout);
+      //fprintf(stdout, "%s ", astro::Date(states[i].jDay).toGregorianString());
+      //states[i].println(stdout);
     }
     
     fclose(outputSun);
