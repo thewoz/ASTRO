@@ -38,10 +38,9 @@ Sun.hpp -- Classe che gestisce il sole
 
 
 TO FIX:
-1) Controllare le funzioni che riguardano la posizione del sole
-2) Controllare le funzioni che rigurdano la conversione da Longitudine e Latidutine in ECEF:
+1) Controllare le funzioni che rigurdano la conversione da Longitudine e Latidutine in ECEF:
     Ce ne sta una in lla2Ecef.h (quella che uso) una in vallado lla2ecef() e una in Observatory.hpp (_convert())
-3) Controllare che gli step di integrazione del orbita del satellite del sole e della stazione a terra siano corretti
+2) Controllare che gli step di integrazione del orbita del satellite del sole e della stazione a terra siano corretti
 
 
 TODO:

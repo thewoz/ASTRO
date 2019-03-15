@@ -15,6 +15,8 @@ Modifiche dei sorgenti che non alterano il funzionamento del codice originale:
 11) Sono stati eliminati i file non utili
 12) Modificati i prototipidi due funzioni in astMath.h
 13) Modificati i prototipi di due funzioni in EopSwp.h
+14) Modificata days2mdhms() per evitare situazioni tipo 9h60m00s
+15) Modificata hms_rad() e dms_rad() per gestire gli angoli negativi
 
 Modifiche che posso alterare il funzionamento del codice rispetto all'originale:
 

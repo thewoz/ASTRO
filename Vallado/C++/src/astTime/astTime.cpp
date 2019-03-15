@@ -323,6 +323,17 @@ namespace astTime
 		temp = (temp - hr) * 60.0;
 		minute = floor(temp);
 		sec = (temp - minute) * 60.0;
+    
+    if(fabs(sec-60)<1.e-8){
+      sec = 0.0;
+      minute++;
+    }
+    
+    if(fabs(minute-60)<1.e-8){
+      minute = 0;
+      hr++;
+    }
+    
 	}
 
 	/* -----------------------------------------------------------------------------
@@ -679,19 +690,21 @@ namespace astTime
 		int& hr, int& min, double& sec, edirection direct, double& hms
 		)
 	{
-		const double rad2deg = 57.29577951308230;
-		double temp;
-
+		const double rad2hrs = 12 / M_PI;
+    double temp, tmp;
+    
 		// ------------------------  implementation   ------------------
-		temp = 15.0 / rad2deg;
 		if (direct == eTo)
 			hms = hr + min / 60.0 + sec / 3600.0;
 		else
 		{
-			temp = hms / temp;
-			hr = int(temp);
-			min = int((temp - hr)* 60.0);
-			sec = (temp - hr - min / 60.0) * 3600.0;
+      temp = hms;
+      if (temp<0) temp = temp + 2.0*M_PI;
+      temp = temp * rad2hrs;
+      hr  = (int) floor(temp);
+      tmp  = (temp-floor(temp))*60.0;
+      min  = (int)floor(tmp);
+      sec  = (tmp - min)*60.0;
 		}
 	}
 
@@ -727,18 +740,21 @@ namespace astTime
 		int& deg, int& min, double& sec, edirection direct, double& dms
 		)
 	{
-		const double rad2deg = 57.29577951308230;
-		double temp;
-
+		const double rad2deg = 180 / M_PI;
+    double temp, tmp, mod, sign;
+    
 		// ------------------------  implementation   ------------------
 		if (direct == eTo)
 			dms = (deg + min / 60.0 + sec / 3600.0) / rad2deg;
 		else
 		{
-			temp = dms * rad2deg;
-			deg = (int)floor(temp);
-			min = (int)floor((temp - deg)* 60.0);
-			sec = (temp - deg - min / 60.0) * 3600.0;
+      temp = dms * rad2deg;
+      mod  = fabs(temp);
+      sign = temp/mod;
+      deg  = (int) (sign*floor(mod));
+      tmp  = (mod-floor(mod))*60.0;
+      min  = (int)floor(tmp);
+      sec  = (tmp - min)*60.0;
 		}
 	}
 

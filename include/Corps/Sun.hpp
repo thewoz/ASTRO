@@ -38,9 +38,9 @@
 #include "../utils.h"
 #include "../converter.h"
 
-//#define SUN_VALLADO
+#define SUN_VALLADO
 //#define SUN_KDE_QUICK
-#define SUN_KDE_PRECISE
+//define SUN_KDE_PRECISE
 
 /*****************************************************************************/
 // namespace astro
@@ -300,7 +300,6 @@ namespace astro {
       //FIXME: not used crs
       
     }
-#endif
 
   private:
     
@@ -430,6 +429,8 @@ namespace astro {
       db = db + 0.576 * sin(uu);
       
     }
+    
+#endif
 
   }; /* class sun */
   

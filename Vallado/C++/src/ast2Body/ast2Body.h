@@ -131,7 +131,7 @@ namespace ast2Body
 
 	void ijk2ll
 		(
-		double recef[3], double jdut1,
+		double recef[3],
 		double& latgc, double& latgd, double& lon, double& hellp
 		);
 
