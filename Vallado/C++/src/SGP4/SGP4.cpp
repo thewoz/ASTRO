@@ -2228,6 +2228,45 @@ namespace SGP4Funcs
 			longstr1[62] = '0';
 		if (longstr1[68] == ' ')
 			longstr1[68] = '0';
+
+
+		// This is added to allow setting start, stop and deltamin from the TLE with specification of
+		// year mon day hr min sec 'f' stands as "from file" 
+		if (typerun == 'f'){
+
+		  // in the following we do not replicate the commands for windows system because we have no means to test them		  
+		  
+		  /* ********************* READ FIRST TLE LINE ************************************************** */
+		  //at the end of longstr1 we append the start ymd hms of the propagation	  
+		  sscanf(longstr1, "%2d %5ld %1c %10s %2d %12lf %11lf %7lf %2d %7lf %2d %2d %6ld %i %i %i %i %i %lf",
+			 &cardnumb, &satrec.satnum, &satrec.classification, &satrec.intldesg[0], &satrec.epochyr,
+			 &satrec.epochdays, &satrec.ndot, &satrec.nddot, &nexp, &satrec.bstar,
+			 &ibexp, &satrec.ephtype, &satrec.elnum,&startyear, &startmon, &startday, &starthr, &startmin, &startsec);
+
+		  jday(startyear, startmon, startday, starthr, startmin, startsec, jdstart, jdstartF);
+
+		  
+		  if (longstr2[52] == ' ')
+		    {
+		      sscanf(longstr2, "%2d %5ld %9lf %9lf %8lf %9lf %9lf %10lf %6ld %i %i %i %i %i %lf %lf\n",
+			     &cardnumb, &satrec.satnum, &satrec.inclo,
+			     &satrec.nodeo, &satrec.ecco, &satrec.argpo, &satrec.mo, &satrec.no_kozai,
+			     &satrec.revnum, &stopyear, &stopmon, &stopday, &stophr, &stopmin, &stopsec,&deltamin);
+		    }
+		  else
+		    {
+		      sscanf(longstr2, "%2d %5ld %9lf %9lf %8lf %9lf %9lf %11lf %6ld %i %i %i %i %i %lf %lf\n",
+			     &cardnumb, &satrec.satnum, &satrec.inclo,
+			     &satrec.nodeo, &satrec.ecco, &satrec.argpo, &satrec.mo, &satrec.no_kozai,
+			     &satrec.revnum, &stopyear, &stopmon, &stopday, &stophr, &stopmin, &stopsec,&deltamin);
+		    }
+
+		 		  
+
+		  jday(stopyear, stopmon, stopday, stophr, stopmin, stopsec, jdstop, jdstopF);
+		  
+		}else{  //not typerun 'f'		
+
 #ifdef _MSC_VER // chk if compiling in MSVS c++
 		sscanf_s(longstr1, "%2d %5ld %1c %10s %2d %12lf %11lf %7lf %2d %7lf %2d %2d %6ld ",
 			&cardnumb, &satrec.satnum, &satrec.classification, sizeof(char), &satrec.intldesg, 11 * sizeof(char), &satrec.epochyr,
@@ -2239,7 +2278,7 @@ namespace SGP4Funcs
 			&ibexp, &satrec.ephtype, &satrec.elnum);
 #endif
 		if (typerun == 'v')  // run for specified times from the file
-		{
+		  {
 			if (longstr2[52] == ' ')
 			{
 #ifdef _MSC_VER
@@ -2301,6 +2340,8 @@ namespace SGP4Funcs
 			}
 		}
 
+		}//if not typerun 'f'
+		
 		// ---- find no, ndot, nddot ----
 		satrec.no_kozai = satrec.no_kozai / xpdotp; //* rad/min
 		satrec.nddot = satrec.nddot * pow(10.0, nexp);
@@ -2337,8 +2378,15 @@ namespace SGP4Funcs
 		days2mdhms(year, satrec.epochdays, mon, day, hr, minute, sec);
 		jday(year, mon, day, hr, minute, sec, satrec.jdsatepoch, satrec.jdsatepochF);
 
+		// -- if input start stop from file as typerun='f'
+		if(typerun == 'f'){		  		  
+		  startmfe = (jdstart - satrec.jdsatepoch) * 1440.0 + (jdstartF - satrec.jdsatepochF) * 1440.0;
+		  stopmfe = (jdstop - satrec.jdsatepoch) * 1440.0 + (jdstopF - satrec.jdsatepochF) * 1440.0;
+		}
+
+		
 		// ---- input start stop times manually
-		if ((typerun != 'v') && (typerun != 'c'))
+		if ((typerun != 'v') && (typerun != 'c') &&  (typerun != 'f'))
 		{
 			// ------------- enter start/stop ymd hms values --------------------
 			if (typeinput == 'e')

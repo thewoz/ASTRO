@@ -30,12 +30,12 @@ clean:
 
 test:
 	@mkdir -p ./bin
-	g++ -march=native -Os -std=c++17 -I./include -DTESTEOPC     ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testEopc
-	g++ -march=native -Os -std=c++17 -I./include -DTESTDATE     ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testDate
-	g++ -march=native -Os -std=c++17 -I./include -DTESTSATELLITE ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testSatellite
-	g++ -march=native -Os -std=c++17 -I./include -DTESTSUN      ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testSun
-	g++ -march=native -Os -std=c++17 -I./include -DTESTSTATION  ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testStation
-	g++ -march=native -Os -std=c++17 -I./include -DTESTATTITUDE ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testAttitude
+	g++ -march=native -Os -std=c++17 -I./include -I/opt//local/include/ -DTESTEOPC     ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testEopc
+	g++ -march=native -Os -std=c++17 -I./include -I/opt//local/include/  -DTESTDATE     ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testDate
+	g++ -march=native -Os -std=c++17 -I./include -I/opt//local/include/  -DTESTSATELLITE ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testSatellite
+	g++ -march=native -Os -std=c++17 -I./include -I/opt//local/include/  -DTESTSUN      ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testSun
+	g++ -march=native -Os -std=c++17 -I./include -I/opt//local/include/  -DTESTSTATION  ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testStation
+	g++ -march=native -Os -std=c++17 -I./include -I/opt//local/include/  -DTESTATTITUDE ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testAttitude
 
 
 
