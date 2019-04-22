@@ -26,6 +26,6 @@
 #ifndef _H_ASTRO_PROPAGATOR_H
 #define _H_ASTRO_PROPAGATOR_H
 
-#include "./Propagator/SGP4.hpp"
+#include "./propagator/sgp4.hpp"
 
 #endif /* _H_ASTRO_PROPAGATOR_H */

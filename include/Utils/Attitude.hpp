@@ -35,7 +35,7 @@
 //#include <glm/gtc/quaternion.hpp>
 
 #include "quaternion.hpp"
-#include "RK4.hpp"
+#include "rk4.hpp"
 
 /*****************************************************************************/
 // namespace astro

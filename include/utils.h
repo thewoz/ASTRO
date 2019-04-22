@@ -26,18 +26,18 @@
 #ifndef _H_ASTRO_UTILS_H
 #define _H_ASTRO_UTILS_H
 
-#include "./Utils/define.h"
+#include "./utils/define.h"
 
-#include "./Utils/Utils.hpp"
-#include "./Utils/Date.hpp"
-#include "./Utils/TLE.hpp"
+#include "./utils/utils.hpp"
+#include "./utils/date.hpp"
+#include "./utils/tle.hpp"
 
-#include "./Utils/angle.hpp"
-#include "./Utils/cubicspline.hpp"
-#include "./Utils/lagrange.hpp"
-#include "./Utils/RK4.hpp"
-#include "./Utils/quaternion.hpp"
-#include "./Utils/Attitude.hpp"
-#include "./Utils/curl.hpp"
+#include "./utils/angle.hpp"
+#include "./utils/cubicspline.hpp"
+#include "./utils/lagrange.hpp"
+#include "./utils/rk4.hpp"
+#include "./utils/quaternion.hpp"
+#include "./utils/attitude.hpp"
+#include "./utils/curl.hpp"
 
 #endif /* _H_ASTRO_UTILS_H */

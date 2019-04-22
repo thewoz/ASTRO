@@ -33,7 +33,7 @@
 
 #include <vallado/SGP4.h>
 
-#include "Date.hpp"
+#include "date.hpp"
 
 /*****************************************************************************/
 // namespace astro

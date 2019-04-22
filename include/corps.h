@@ -26,8 +26,8 @@
 #ifndef _H_ASTRO_CORPS_H
 #define _H_ASTRO_CORPS_H
 
-#include "./Corps/Observatory.hpp"
-#include "./Corps/Satellite.hpp"
-#include "./Corps/Sun.hpp"
+#include "./corps/observatory.hpp"
+#include "./corps/satellite.hpp"
+#include "./corps/sun.hpp"
 
 #endif /* _H_ASTRO_CORPS_H */

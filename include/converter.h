@@ -26,13 +26,13 @@
 #ifndef _H_ASTRO_CONVERTER_H
 #define _H_ASTRO_CONVERTER_H
 
-#include "./Converter/eopc.hpp"
+#include "./converter/eopc.hpp"
 
-#include "./Converter/ecef.hpp"
-#include "./Converter/teme.hpp"
-#include "./Converter/eci.hpp"
+#include "./converter/ecef.hpp"
+#include "./converter/teme.hpp"
+#include "./converter/eci.hpp"
 
-#include "./Converter/lla2ecef.hpp"
+#include "./converter/lla2ecef.hpp"
 
 
 /*****************************************************************************
