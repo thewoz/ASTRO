@@ -1083,12 +1083,12 @@ namespace astMath
 
 		sum = 0.0;
 		// ----------- Switch a non zero row to the first row---------- 
-		if (abs(mat1[1][1]) < small)
+		if (fabs(mat1[1][1]) < small)
 		{
 			j = 1;
 			while (j <= order)
 			{
-				if (abs(mat1[j][1]) > small)
+				if (fabs(mat1[j][1]) > small)
 				{
 					for (k = 1; k <= order; k++)
 					{

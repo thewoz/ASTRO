@@ -714,7 +714,7 @@ d4 = dmat4.determinant();
 *         writeln( fileout,'rho guesses ',i:2,'rho ',rho:14:7,' r2[4] ',r2[4]:14:7,oldr:14:7 );
 *  // seems to converge, but wrong numbers
 *         inc(i);
-*     until ( abs( oldr-r2[4] ) < small ) or ( i >= 30 );
+*     until ( fabs( oldr-r2[4] ) < small ) or ( i >= 30 );
 
 
 if (fabs(d) > 0.000001)
@@ -2111,7 +2111,7 @@ double v1t[3], double v2t[3], int& error, FILE *outfile
 
 	cosdeltanu = astMath::dot(r1, r2) / (magr1 * magr2);
 	// make sure it's not more than 1.0
-	if (abs(cosdeltanu) > 1.0)
+	if (fabs(cosdeltanu) > 1.0)
 		cosdeltanu = 1.0 * astMath::sgn(cosdeltanu);
 
 	astMath::cross(r1, r2, rcrossr);
@@ -2150,7 +2150,7 @@ double v1t[3], double v2t[3], int& error, FILE *outfile
 		xn = 1e-20;  // be sure to reset this here!!
 		x = 10.0;  // starting value
 		loops = 1;
-		while ((abs(xn - x) >= small) && (loops <= 20))
+		while ((fabs(xn - x) >= small) && (loops <= 20))
 		{
 			x = xn;
 			temp = 1.0 / (2.0*(L - x*x));
@@ -2187,7 +2187,7 @@ double v1t[3], double v2t[3], int& error, FILE *outfile
 		loops = 1;
 		y1 = 0.0;
 		x = 10.0;  // starting value
-		while ((abs(xn - x) >= small) && (loops <= 30))
+		while ((fabs(xn - x) >= small) && (loops <= 30))
 		{
 			if (nrev > 0)
 			{
@@ -2453,7 +2453,7 @@ double v1[3], double v2[3], int& error, FILE *outfile
 				psinew = psiold - (dtnew - dtsec) / dtdpsi;
 
 				// check if newton guess for psi is outside bounds(too steep a slope)
-				if (abs(psinew) > upper || psinew < lower)
+				if (fabs(psinew) > upper || psinew < lower)
 				{
 					// --------readjust upper and lower bounds------ -
 					if (dtnew < dtsec)

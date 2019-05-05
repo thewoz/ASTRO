@@ -461,7 +461,7 @@ namespace ast2Body
 		if (ecc < small)
 		{
 			// ----------------circular equatorial------------------
-			if ((incl < small) || (abs(incl - M_PI) < small))
+			if ((incl < small) || (fabs(incl - M_PI) < small))
 			{
 				argp = 0.0;
 				raan = 0.0;
@@ -477,7 +477,7 @@ namespace ast2Body
 		else
 		{
 			// -------------- - elliptical equatorial---------------- -
-			if ((incl < small) || (abs(incl - M_PI) < small))
+			if ((incl < small) || (fabs(incl - M_PI) < small))
 			{
 				argp = lonper;
 				raan = 0.0;
@@ -583,7 +583,7 @@ namespace ast2Body
 		if (ecc < small)
 		{
 			// ----------------circular equatorial------------------
-			if ((incl < small) || (abs(incl - M_PI) < small))
+			if ((incl < small) || (fabs(incl - M_PI) < small))
 			{
 				argp = 0.0;
 				raan = 0.0;
@@ -599,7 +599,7 @@ namespace ast2Body
 		else
 		{
 			// -------------- - elliptical equatorial---------------- 
-			if ((incl < small) || (abs(incl - M_PI) < small))
+			if ((incl < small) || (fabs(incl - M_PI) < small))
 			{
 				// argp = lonper;
 				raan = 0.0;
@@ -615,7 +615,7 @@ namespace ast2Body
 		if (ecc < small)
 		{
 			// ----------------circular equatorial------------------
-			if ((incl < small) || (abs(incl - M_PI) < small))
+			if ((incl < small) || (fabs(incl - M_PI) < small))
 			{
 				argp = undefined;
 				raan = undefined;
@@ -632,7 +632,7 @@ namespace ast2Body
 		else
 		{
 			// -------------- - elliptical equatorial---------------- -
-			if ((incl < small) || (abs(incl - M_PI) < small))
+			if ((incl < small) || (fabs(incl - M_PI) < small))
 			{
 				lonper = argp;
 				argp = undefined;
