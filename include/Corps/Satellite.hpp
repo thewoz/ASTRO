@@ -102,6 +102,17 @@ namespace astro {
     
     Satellite() { isInit = false; }
     Satellite(FILE * input) { tle.init(input); name = tle.name; isInit = true; }
+    Satellite(const char * input) {
+      
+      FILE * tleFile = fopen(input, "r");
+      if(tleFile == NULL) {
+        fprintf(stderr, "error in opening file \"%s\" \n", input);
+        abort();
+      }
+      tle.init(tleFile); name = tle.name; isInit = true;
+      fclose(tleFile);
+    }
+
     Satellite(const char * TLE_line1, const char * TLE_line2) { tle.init(TLE_line1, TLE_line2); name = tle.name; isInit = true; }
     Satellite(const char * TLE_line1, const char * TLE_line2, const char * TLE_line3) { tle.init(TLE_line1, TLE_line2, TLE_line3); name = tle.name; isInit = true; }
     
@@ -128,9 +139,41 @@ namespace astro {
       
     }
     
+    
+    
     /*****************************************************************************/
     // position
     /*****************************************************************************/
+    void position(double jDay, double coord[3], int crs = CRS::TEME) {
+      
+      if(!isInit){
+        fprintf(stderr, "satellite must init before\n");
+        abort();
+      }
+      
+      astro::eopc::init();
+
+      double startTimeMin = Date::difference(jDay, tle.releaseDate, Date::MINUTES);
+      
+      double dummy[3];
+      
+      astro::sgp4(tle.satrec, startTimeMin, coord, dummy);
+
+      if(crs != CRS::TEME) {
+        
+        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+        
+        astro::eopc::getParameters(jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
+        
+        if(crs == CRS::ECI)
+          astro::teme2eci(coord, dummy, coord, dummy, ttt, ddpsi, ddeps);
+        
+        if(crs == CRS::ECEF)
+          astro::teme2ecef(coord, dummy, coord, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
+        
+      } // crs != CRS::TEME
+      
+    }
     //inline void position(double jDay, astro::SatelliteState & state, int crs = CRS::TEME) { _position(jDay, state, crs); }
     //inline astro::SatelliteState position(double jDay, int crs = CRS::TEME) { astro::SatelliteState state; _position(jDay, state, crs); return state; }
 

@@ -73,6 +73,10 @@ namespace astro {
     double e  = sqrt(f*(2-f));         // Eccentricity
     double esq = e*e;                  // Powed Eccentricity
     
+    // Covert deg to radius
+    lat = Radians(lat);
+    lon = Radians(lon);
+
     // intermediate calculation
     // (prime vertical radius of curvature)
     double N = a / sqrt(1 - esq * pow(sin(lat),2));
@@ -81,6 +85,29 @@ namespace astro {
     recef[0] = ((N+alt)  * cos(lat) * cos(lon)) / 1000.0;
     recef[1] = ((N+alt)  * cos(lat) * sin(lon)) / 1000.0;
     recef[2] = (((1-esq) * N + alt) * sin(lat)) / 1000.0;
+    
+  }
+  
+  /*****************************************************************************/
+  // lla2ecef
+  /*****************************************************************************/
+  template <class T>
+  void lla2ecef(double lat, double lon, double alt, T & recef) {
+    
+    // WGS84 Model constants:
+    double a  = 6378137;               // Mean Equatorial radius [m]
+    double f  = 1.0 / 298.257223563;   // Flattering factor
+    double e  = sqrt(f*(2-f));         // Eccentricity
+    double esq = e*e;                  // Powed Eccentricity
+    
+    // intermediate calculation
+    // (prime vertical radius of curvature)
+    double N = a / sqrt(1 - esq * pow(sin(lat),2));
+    
+    // results:
+    recef.x = ((N+alt)  * cos(lat) * cos(lon)) / 1000.0;
+    recef.y = ((N+alt)  * cos(lat) * sin(lon)) / 1000.0;
+    recef.z = (((1-esq) * N + alt) * sin(lat)) / 1000.0;
     
   }
   
