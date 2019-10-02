@@ -24,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		3A19AB042218648900A2FB55 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3A76576D2335240C0059C1B6 /* eci2jnow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci2jnow.hpp; sourceTree = "<group>"; };
 		3AAB7CF9223D347300CC1BA3 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
 		3AAB7CFA223D347300CC1BA3 /* propagator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = propagator.h; sourceTree = "<group>"; };
 		3AAB7CFC223D347300CC1BA3 /* lla2ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lla2ecef.hpp; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 				3AAB7D03223D347300CC1BA3 /* teme.hpp */,
 				3AAB7D04223D347300CC1BA3 /* iau80.hpp */,
 				3AAB7D05223D347300CC1BA3 /* teme2eci.hpp */,
+				3A76576D2335240C0059C1B6 /* eci2jnow.hpp */,
 			);
 			path = converter;
 			sourceTree = "<group>";
@@ -360,7 +362,10 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = "/usr/local/include/ ";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/include/opencv4/,
+				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
@@ -374,7 +379,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "/usr/local/include/ ";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/include/opencv4/,
+				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;

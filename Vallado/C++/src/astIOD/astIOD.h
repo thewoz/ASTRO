@@ -42,6 +42,7 @@
 #include "astMath.h"  // pi, infinite, undefined
 #include "astTime.h"  // pi, twopi, edirection
 #include "ast2Body.h"
+#include "astUtils.h" //rebox
 
 
 namespace astIOD 

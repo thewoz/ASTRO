@@ -58,7 +58,35 @@ namespace astro {
     TLE(const char * TLE_line1, const char * TLE_line2) { init(TLE_line1, TLE_line2); }
     TLE(const char * TLE_line1, const char * TLE_line2, const char * TLE_line3) { init(TLE_line1, TLE_line2, TLE_line3); }
     
-    void init(FILE * input) {  }
+    void init(FILE * input) {
+      
+      if(input == NULL) {
+        fprintf(stderr, "the file is not good\n");
+        abort();
+      }
+      
+      char * TLE_line1 = NULL;
+      char * TLE_line2 = NULL;
+      size_t len = 0;
+      if(getline(&TLE_line1, &len, input)==-1){
+        fprintf(stderr, "error in read the file\n");
+        //free(TLE_line1);
+        abort();
+      }
+      
+      if(getline(&TLE_line2, &len, input)==-1){
+        fprintf(stderr, "error in read the file\n");
+        free(TLE_line1);
+        free(TLE_line2);
+        abort();
+      }
+
+      init(TLE_line1, TLE_line2);
+      
+      free(TLE_line1);
+      free(TLE_line2);
+      
+    }
     
     void init(const char * TLE_line1, const char * TLE_line2) { _init("none", TLE_line1, TLE_line2); }
     

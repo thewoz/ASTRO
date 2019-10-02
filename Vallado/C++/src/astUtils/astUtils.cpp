@@ -240,11 +240,11 @@ void refraction(double el, double *appel) {
  * this function take an angle and makes it in [0:2*pi]       *
  *                                                            *
  \* ********************************************************** */
-void rebox(double * angle) {
+void rebox(double & angle) {
   
-  while(*angle > 2.0*M_PI)
-    *angle-=2.*M_PI;
+  while(angle > 2.0*M_PI)
+   angle-=2.*M_PI;
   
-  while(*angle < 0)
-    *angle+=2.*M_PI;
+  while(angle < 0)
+    angle+=2.*M_PI;
 }

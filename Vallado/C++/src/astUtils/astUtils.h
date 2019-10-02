@@ -135,7 +135,7 @@ namespace astUtils {
    * this function take an angle and makes it in [0:2*pi]       *
    *                                                            *
    \* ********************************************************** */
-  void rebox(double *angle);
+  void rebox(double & angle);
 
   
 };  // namespace

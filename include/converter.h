@@ -34,7 +34,10 @@
 
 #include "./converter/lla2ecef.hpp"
 
+#include "./converter/eci2jnow.hpp"
 
+namespace astro {
+  
 /*****************************************************************************
  %  this function converts the position of on object in right ascension and declination values.
  % uses velocity vector to find the solution of singular cases.
@@ -48,24 +51,27 @@
  %    dec        - declination                   rad
  %
  *****************************************************************************/
-void rv2radec(const double r[3], const double v[3], double & ra, double & dec) {
-  
-  const double small = 0.00000001;
-  
-  double temp = sqrt(r[0]*r[0] + r[1]*r[1]);
-  
-  if(temp < small) {
+  void rv2radec(const double r[3], const double v[3], double & ra, double & dec) {
     
-    double temp1 = sqrt(v[0]*v[0] + v[1]*v[1]);
+    const double small = 0.00000001;
     
-    ra = 0.0;
+    double temp = sqrt(r[0]*r[0] + r[1]*r[1]);
     
-    if(fabs(temp1) > small) ra = atan2(v[1]/temp1, v[0]/temp1);
+    if(temp < small) {
+      
+      double temp1 = sqrt(v[0]*v[0] + v[1]*v[1]);
+      
+      ra = 0.0;
+      
+      if(fabs(temp1) > small) ra = atan2(v[1]/temp1, v[0]/temp1);
+      
+    } else { ra = atan2(r[1]/temp, r[0]/temp); }
     
-  } else { ra = atan2(r[1]/temp, r[0]/temp); }
-  
-  dec = asin(r[2] / astMath::mag(r));
+    dec = asin(r[2] / astMath::mag(r));
+    
+  }
   
 }
+
 
 #endif /* _H_ASTRO_CONVERTER_H */

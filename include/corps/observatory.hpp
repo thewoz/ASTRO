@@ -129,6 +129,8 @@ namespace astro {
         
         states[i].position[0] = coord[0]; states[i].position[1] = coord[1]; states[i].position[2] = coord[2];
         
+        //TOGLIERE SOLO SE NON HO FATTO INIT
+        // METTERE INIT
         //_convert(states[i].jDay, states[i].position);
         astro::lla2ecef(latitude, longitude, height, coord);
 
@@ -150,6 +152,30 @@ namespace astro {
             astro::ecef2eci(states[i].position, dummy, dummy, states[i].position, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
           
         }
+        
+      }
+      
+    }
+
+    // position
+    /*****************************************************************************/
+    void position(double jDay, double _coord[3], int crs = CRS::ECEF) {
+      
+      //VEDI SOPRA
+      astro::lla2ecef(latitude, longitude, height, _coord);
+      
+      if(crs != CRS::ECEF) {
+        
+        double dummy[3];
+        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+      
+        astro::eopc::getParameters(jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
+        
+        if(crs == CRS::TEME)
+          astro::ecef2teme(_coord, dummy, dummy, _coord, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
+        
+        if(crs == CRS::ECI)
+          astro::ecef2eci(_coord, dummy, dummy, _coord, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
         
       }
       

@@ -71,6 +71,7 @@ namespace astro {
     Date(int _day, int _month, int _year, int _hour, int _minute, double _second){ init(_day, _month, _year, _hour, _minute, _second); }
     Date(double _jDay, double _jDayFrac) { init(_jDay, _jDayFrac); }
     Date(double _jDay) { init(_jDay); }
+    Date(const std::string & strDate, const std::string & strTime) { init(strDate, strTime); }
 
     /*****************************************************************************/
     // init
@@ -82,6 +83,42 @@ namespace astro {
     
       astTime::jday(year, month, day, hour, minute, second, jDay, jDayFrac);
       
+    }
+    
+    /*****************************************************************************/
+    // init
+    /*****************************************************************************/
+    void init(const std::string & strDate, const std::string & strTime) {
+
+      //TODO: non controllo che l'input e' corretto
+      std::string delims = "/";
+      std::vector<std::string> tokens;
+      size_t beg, pos = 0;
+      
+      while((beg = strDate.find_first_not_of(delims, pos)) != std::string::npos) {
+        pos = strDate.find_first_of(delims, beg + 1);
+        tokens.push_back(strDate.substr(beg, pos - beg));
+      }
+
+      day = atoi(tokens[0].c_str());
+      month = atoi(tokens[1].c_str());
+      year = atoi(tokens[2].c_str());
+      
+      delims = ":";
+      tokens.clear();
+      pos = 0;
+      
+      while((beg = strTime.find_first_not_of(delims, pos)) != std::string::npos) {
+        pos = strTime.find_first_of(delims, beg + 1);
+        tokens.push_back(strTime.substr(beg, pos - beg));
+      }
+      
+      hour = atoi(tokens[0].c_str());
+      minute = atoi(tokens[1].c_str());
+      second = atof(tokens[2].c_str());
+      
+      astTime::jday(year, month, day, hour, minute, second, jDay, jDayFrac);
+            
     }
     
     void init(double _jDay, double _jDayFrac = 0.0) {
@@ -111,6 +148,7 @@ namespace astro {
       
       if(type == MINUTES) {
         
+        printf("%f %f\n", jDay, jDayFrac);
         // converto in secondi e divido per i secondi
         return (jDay+jDayFrac)*(86400/60.0);//((jDay-0.5) * 1440) + ((hour+12) * 60) + minute + (second / 60.0);
         
