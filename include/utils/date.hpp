@@ -31,6 +31,9 @@
 
 #include <cmath>
 
+#include <string>
+#include <vector>
+
 #include <vallado/astTime.h>
 
 /*****************************************************************************/
