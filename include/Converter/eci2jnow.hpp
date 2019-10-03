@@ -41,6 +41,18 @@
 /*****************************************************************************/
 namespace astro {
   
+  /* ******************* Function J2K_JNOW ***************************** * \
+   *                                                                     *
+   * Transform radec in J2000 to radec in JNOW.                          *
+   *                                                                     *
+   * Input:                                                              *
+   * jd (taking into account also jdfrac)                                *
+   * ra,dec in J2000                                     [deg]           *
+   *                                                                     *
+   * Ouput:                                                              *
+   * ranow,decnow in JNOW                                [deg]           *
+   *                                                                     *
+   * ******************************************************************* */
   void radecEci2jnow(double raEci, double decEci, double & raJnow, double & decJnow, double jDay) {
     
     // astronomical algorithms meeus

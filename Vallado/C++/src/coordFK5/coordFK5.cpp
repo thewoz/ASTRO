@@ -2057,42 +2057,6 @@ namespace coordFK5
 
 	}  //  teme_eci
 
-  
-  /* ******************* Function J2K_JNOW ***************************** * \
-   *                                                                     *
-   * Transform radec in J2000 to radec in JNOW.                          *
-   *                                                                     *
-   * Input:                                                              *
-   * jd (taking into account also jdfrac)                                *
-   * ra,dec in J2000                                     [rad]           *
-   *                                                                     *
-   * Ouput:                                                              *
-   * ranow,decnow in JNOW                                [rad]           *
-   *                                                                     *
-   * ******************************************************************* */
-  void radec_j2k_to_jnow(double jd , double ra, double dec, double & ranow, double & decnow)
-  {
-    
-    double t,zita,zeta,theta;
-    double A,B,C;
-    //const double pi = 2.0*asin(1.0);
-    const double rad2deg = M_PI/180.0;
-    
-    t=(jd - 2451545.)/36525.;
-    
-    zita =  ( 2306.2181*t + 0.30188*t*t + 0.017998*t*t*t ) / (rad2deg*3600.);
-    zeta =  ( 2306.2181*t + 1.09468*t*t + 0.018203*t*t*t ) / (rad2deg*3600.);
-    theta = ( 2004.3109*t - 0.42665*t*t - 0.041833*t*t*t ) / (rad2deg*3600.);
-    
-    A = cos(dec)*sin(ra+zita);
-    B = cos(theta)*cos(dec)*cos(ra+zita)-sin(theta)*sin(dec);
-    C = sin(theta)*cos(dec)*cos(ra+zita)+cos(theta)*sin(dec);
-    
-    ranow  = atan2(A,B)+zeta;
-    decnow = asin(C);
-    
-  }
-  
 
 }  // namespace
 
