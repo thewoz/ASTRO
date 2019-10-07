@@ -31,7 +31,7 @@
 
 #include <glm/glm.hpp>
 
-#include "angle.hppp"
+#include "angle.hpp"
 
 /*****************************************************************************/
 // namespace astro::utils
