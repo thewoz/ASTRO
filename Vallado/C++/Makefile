@@ -80,8 +80,8 @@ coordFK5: setup astTime astMath ast2Body
 
 
 # process astIOD
-astIOD: setup astTime astMath ast2Body
-	g++ -march=native -Os -c -I./src/astMath -I./src/astTime -I./src/ast2Body  ./src/astIOD/astIOD.cpp -o ./build/astIOD.o
+astIOD: setup astTime astMath ast2Body astUtils
+	g++ -march=native -Os -c -I./src/astMath -I./src/astTime -I./src/ast2Body -I./src/astUtils ./src/astIOD/astIOD.cpp -o ./build/astIOD.o
 	@ar rcs ./build/lib/libastIOD.a ./build/astIOD.o
 	@rm ./build/astIOD.o
 	@cp ./src/astIOD/astIOD.h ./build/include
