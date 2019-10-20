@@ -138,6 +138,6 @@ namespace astUtils {
   void rebox(double & angle);
 
   
-};  // namespace
+}  // namespace
 
 #endif

@@ -206,7 +206,7 @@
 		3A4BB58F20A1A61D0078BDC5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "Leonardo Parisi";
 				TargetAttributes = {
 					3A4BB59620A1A61D0078BDC5 = {
@@ -220,6 +220,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 3A4BB58E20A1A61D0078BDC5;
 			productRefGroup = 3A4BB59820A1A61D0078BDC5 /* Products */;
@@ -236,15 +237,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A19AB512218844200A2FB55 /* ast2Body.cpp in Sources */,
-				3A19AB4B2218844200A2FB55 /* astTime.cpp in Sources */,
-				3A19AB53221885F200A2FB55 /* main.cpp in Sources */,
-				3A19AB4E2218844200A2FB55 /* EopSpw.cpp in Sources */,
-				3A19AB4D2218844200A2FB55 /* astUtils.cpp in Sources */,
-				3A19AB4C2218844200A2FB55 /* coordFK5.cpp in Sources */,
-				3A19AB4F2218844200A2FB55 /* SGP4.cpp in Sources */,
 				3A19AB502218844200A2FB55 /* astMath.cpp in Sources */,
+				3A19AB4D2218844200A2FB55 /* astUtils.cpp in Sources */,
+				3A19AB4B2218844200A2FB55 /* astTime.cpp in Sources */,
+				3A19AB4F2218844200A2FB55 /* SGP4.cpp in Sources */,
+				3A19AB512218844200A2FB55 /* ast2Body.cpp in Sources */,
+				3A19AB4E2218844200A2FB55 /* EopSpw.cpp in Sources */,
+				3A19AB4C2218844200A2FB55 /* coordFK5.cpp in Sources */,
 				3A19AB4A2218844200A2FB55 /* astIOD.cpp in Sources */,
+				3A19AB53221885F200A2FB55 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +364,7 @@
 		3A4BB59F20A1A61D0078BDC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -372,6 +374,7 @@
 		3A4BB5A020A1A61D0078BDC5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";

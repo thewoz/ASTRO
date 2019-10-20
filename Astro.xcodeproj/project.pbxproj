@@ -184,7 +184,7 @@
 		3ABF73D01FE55D390052CFAC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "Leonardo Parisi";
 				TargetAttributes = {
 					3ABF73D71FE55D390052CFAC = {
@@ -199,6 +199,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 3ABF73CF1FE55D390052CFAC;
 			productRefGroup = 3ABF73D91FE55D390052CFAC /* Products */;
@@ -361,6 +362,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include/,
@@ -377,6 +379,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (

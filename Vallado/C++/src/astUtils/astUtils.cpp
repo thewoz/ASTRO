@@ -194,57 +194,56 @@ namespace astUtils {
       astMath::matvecmult(m, rIn, rOut); // r2 = mxvct(m, r1);
       
     }
-  
-  
-  }   // namespace
+
+    /* ****************** Function refraction ******************* *\
+     *                                                            *
+     * this function compute the correction to true elevation     *
+     * due to light refraction                                    *
+     * it should be used only for positive elevation              *
+     * input:                                                     *
+     *       el rad                                               *
+     * output:                                                    *
+     *     appel rad                                              *
+     * we use formula 16.4 of Astronomical Algorithms p.106       *
+     * we do not add the correction to recover no refraction for  *
+     * elevation=90deg to be consistent with previsat             *
+     *                                                            *
+     \* ********************************************************** */
+    void refraction(double el, double * appel) {
       
+      const double rad2deg = 180.0 / M_PI;       //rad2deg
+      double eltmp;
 
-/* ****************** Function refraction ******************* *\
- *                                                            *
- * this function compute the correction to true elevation     *
- * due to light refraction                                    *
- * it should be used only for positive elevation              *
- * input:                                                     *
- *       el rad                                               *
- * output:                                                    *
- *     appel rad                                              *
- * we use formula 16.4 of Astronomical Algorithms p.106       *
- * we do not add the correction to recover no refraction for  *
- * elevation=90deg to be consistent with previsat             *
- *                                                            *
- \* ********************************************************** */
-void refraction(double el, double *appel) {
-  
-  const double rad2deg = 180.0 / M_PI;       //rad2deg
-  double eltmp;
+      (*appel) = el;
+      
+      if(el<0) {
+      
+        eltmp = el*rad2deg;
+        
+        eltmp = (eltmp+10.3/(eltmp+5.11));
+        
+        (*appel) = el+ 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
+        
+        if((*appel)<0.0) (*appel) = el;
+        
+      }
+      
+    }
 
-  (*appel) = el;
-  
-  if(el<0) {
-  
-    eltmp = el*rad2deg;
-    
-    eltmp = (eltmp+10.3/(eltmp+5.11));
-    
-    (*appel) = el+ 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
-    
-    if((*appel)<0.0) (*appel) = el;
-    
-  }
+    /* ******************** Function Rebox ********************** *\
+     *                                                            *
+     * this function take an angle and makes it in [0:2*pi]       *
+     *                                                            *
+     \* ********************************************************** */
+    void rebox(double & angle) {
+      
+      while(angle > 2.0*M_PI)
+       angle-=2.*M_PI;
+      
+      while(angle < 0)
+        angle+=2.*M_PI;
+      
+    }
 
-}
+}   // namespace
 
-
-/* ******************** Function Rebox ********************** *\
- *                                                            *
- * this function take an angle and makes it in [0:2*pi]       *
- *                                                            *
- \* ********************************************************** */
-void rebox(double & angle) {
-  
-  while(angle > 2.0*M_PI)
-   angle-=2.*M_PI;
-  
-  while(angle < 0)
-    angle+=2.*M_PI;
-}
