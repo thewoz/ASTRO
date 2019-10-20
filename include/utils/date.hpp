@@ -151,7 +151,6 @@ namespace astro {
       
       if(type == MINUTES) {
         
-        printf("%f %f\n", jDay, jDayFrac);
         // converto in secondi e divido per i secondi
         return (jDay+jDayFrac)*(86400/60.0);//((jDay-0.5) * 1440) + ((hour+12) * 60) + minute + (second / 60.0);
         
