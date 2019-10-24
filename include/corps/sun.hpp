@@ -60,13 +60,13 @@ namespace astro {
     
     double position[3];
     
-    double azimuth  = 0.0;
-    double altitude = 0.0;
+    //double azimuth  = 0.0;
+    //double altitude = 0.0;
     
-    double rightAscension = 0.0;
-    double declination    = 0.0;
+    //double rightAscension = 0.0;
+    //double declination    = 0.0;
     
-    inline void finalize(const astro::observatory & station) { computeRaDec(station); }
+    //inline void finalize(const astro::observatory & station) { computeRaDec(station); }
     
     inline void computeRaDec(const astro::observatory & station) { }
     

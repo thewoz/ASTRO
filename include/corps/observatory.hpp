@@ -60,14 +60,9 @@ namespace astro {
     
     double position[3];
     
-    bool isInShadow = true;
+    //bool isInShadow = true;
     
-    void finalize() { computeInShadow(); }
-    
-    void computeInShadow() {
-      
-      
-    }
+    //void finalize() { computeInShadow(); }
     
     inline void print(FILE * output = stdout)   { fprintf(output, "%f %f %f %f",   jDay, position[0], position[1], position[2]); }
     inline void println(FILE * output = stdout) { fprintf(output, "%f %f %f %f\n", jDay, position[0], position[1], position[2]); }
@@ -129,7 +124,7 @@ namespace astro {
         
         states[i].position[0] = coord[0]; states[i].position[1] = coord[1]; states[i].position[2] = coord[2];
         
-        //TOGLIERE SOLO SE NON HO FATTO INIT
+        //FIXME:TOGLIERE SOLO SE NON HO FATTO INIT
         // METTERE INIT
         //_convert(states[i].jDay, states[i].position);
         astro::lla2ecef(latitude, longitude, height, coord);

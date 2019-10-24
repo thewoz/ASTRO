@@ -56,26 +56,13 @@ namespace astro {
     double position[3];
     double velocity[3];
     
-    double azimuth  = 0.0;
-    double altitude = 0.0;
+    //double azimuth  = 0.0;
+    //double altitude = 0.0;
     
-    double rightAscension = 0.0;
-    double declination    = 0.0;
+    //double rightAscension = 0.0;
+    //double declination    = 0.0;
     
-    bool isInShadow = true;
-    
-    void finalize(const astro::observatory & station) { computeRaDec(station); }
-    
-    void computeRaDec(const astro::observatory & station) {
-      
-      
-    }
-    
-    void computeInShadow() {
-      
-      
-      
-    }
+    //bool isInShadow = true;
     
     inline void print(FILE * output = stdout)   { fprintf(output, "%f %f %f %f",   jDay, position[0], position[1], position[2]); }
     inline void println(FILE * output = stdout) { fprintf(output, "%f %f %f %f\n", jDay, position[0], position[1], position[2]); }
@@ -91,33 +78,27 @@ namespace astro {
   /*****************************************************************************/
   class Satellite {
     
-    // NOTE:
-    //
-    // the position is in TEME
-
   public:
     
     // satellite name
     std::string name;
     
-    Satellite() { isInit = false; }
-    Satellite(FILE * input) { tle.init(input); name = tle.name; isInit = true; }
-    Satellite(const char * input) {
-      
+    Satellite() : isInit(false) { }
+    Satellite(FILE * input) : isInit(true) { tle.init(input); name = tle.name; }
+    Satellite(const char * input) : isInit(true) {
       FILE * tleFile = fopen(input, "r");
       if(tleFile == NULL) {
         fprintf(stderr, "error in opening file \"%s\" \n", input);
         abort();
       }
-      tle.init(tleFile); name = tle.name; isInit = true;
+      tle.init(tleFile); name = tle.name;
       fclose(tleFile);
     }
 
-    Satellite(const char * TLE_line1, const char * TLE_line2) { tle.init(TLE_line1, TLE_line2); name = tle.name; isInit = true; }
-    Satellite(const char * TLE_line1, const char * TLE_line2, const char * TLE_line3) { tle.init(TLE_line1, TLE_line2, TLE_line3); name = tle.name; isInit = true; }
-    
-    //TODO:
-    // mancano le funzioni di init
+    Satellite(const char * TLE_line1, const char * TLE_line2) : isInit(true) {
+      tle.init(TLE_line1, TLE_line2);
+      name = tle.name;
+    }
 
     /*****************************************************************************/
     // orbit
@@ -138,8 +119,6 @@ namespace astro {
       return states;
       
     }
-    
-    
     
     /*****************************************************************************/
     // position
@@ -174,14 +153,9 @@ namespace astro {
       } // crs != CRS::TEME
       
     }
-    //inline void position(double jDay, astro::SatelliteState & state, int crs = CRS::TEME) { _position(jDay, state, crs); }
-    //inline astro::SatelliteState position(double jDay, int crs = CRS::TEME) { astro::SatelliteState state; _position(jDay, state, crs); return state; }
-
     
   private:
     
-    //std::vector<astro::attitude_t> attitude;
-
     // satellite tle
     astro::TLE tle;
     
@@ -210,14 +184,9 @@ namespace astro {
       double startTimeMin = Date::difference(startDate, tle.releaseDate, Date::MINUTES);
       
       // numero di campionamenti da fare
+      // FIXME: sto piu uno non mi torna
       int samples = (propagationTimeMin / integrationTimeMin) + 1;
            
-//      // converto il tempo di integrazione da secondi in jDay
-//      double integrationTimeJD = astro::Date::convert(integrationTime, astro::Date::FROM_SECOND_TO_JD);
-//
-//      // mi calcolo il numero di samples che dovro' fare
-//      std::size_t samples = ((jDayStop - jDayStart) / integrationTimeJD) + 1;
-      
       // alloco lo spazio
       states.resize(samples);
       
@@ -285,26 +254,6 @@ namespace astro {
       } // crs != CRS::TEME
       
     }
-    
-//    /*****************************************************************************/
-//    // _finalizeState
-//    /*****************************************************************************/
-//    void _finalizeState(astro::SatelliteState & state, const astro::observatory & station) {
-//
-//    }
-//
-//    /*****************************************************************************/
-//    // _finalizeStates
-//    /*****************************************************************************/
-//    void _finalizeStates(const astro::observatory & station) {
-//
-//      for(std::size_t i=0; i<states.size(); ++i) {
-//
-//        _finalizeState(states[i], station);
-//
-//      }
-//
-//    }
     
   }; /* class satellite */
   
