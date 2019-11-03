@@ -1,7 +1,9 @@
 # ASTRO
 
 
-Nel folder Converter:
+## File list
+
+###### Nel folder Converter:
 
 ecef.hpp      -- Funzioni di converzione da ECEF a TEME e J2000
 eci.hpp        -- Funzioni di conversione da J2000 a TEME e ECEF
@@ -11,12 +13,12 @@ iau80.hpp    -- Funzioni per la gestione dei parametri iau80 che servono nelle f
 eopc.hpp     -- Funzioni per la gestione dei parametri eopc che servono nelle funzioni di converzione
 
 
-Nel folder Propagator:
+###### Nel folder Propagator:
 
 SGP4.hpp  -- Funzioni per la propagazione con SGP4
 
 
-Nel folder Utils:
+###### Nel folder Utils:
 
 Attitude.hpp -- Funzioni per propagare l'assetto
 RK4.hpp  -- Funzione per itegrare tramite Runge-Kutta
@@ -30,36 +32,34 @@ Lagrange.hpp -- Funzione per fittare tramite Lagrange
 Utils,hpp -- Funzioni per calcolarsi l'elevazione del satellite , l'angolo theta con il sole e il fattore di attenuazione atmosferico
 
 
-Nel folder Corps:
+###### Nel folder Corps:
 
 Satellite.hpp -- Classe che gestisce il satellite
 Observatory.hpp -- Classe che gestisce l'osservatorio
 Sun.hpp -- Classe che gestisce il sole
 
 
-TO FIX:
-1) Controllare le funzioni che rigurdano la conversione da Longitudine e Latidutine in ECEF:
+## TO FIX
+
+* Controllare le funzioni che rigurdano la conversione da Longitudine e Latidutine in ECEF:
     Ce ne sta una in lla2Ecef.h (quella che uso) una in vallado lla2ecef() e una in Observatory.hpp (_convert())
-2) Controllare che gli step di integrazione del orbita del satellite del sole e della stazione a terra siano corretti
+* Controllare che gli step di integrazione del orbita del satellite del sole e della stazione a terra siano corretti
 
 
-TODO:
-1) Finire di implementare le funzioni di calcolo di RA DEC del satellite e del sole
-2) Finire di implementare le funzioni di calcolo di illuminazione
-3) Implementare le funzioni di scarico del TLE
+## TODO
+
+* Finire di implementare le funzioni di calcolo di RA DEC del satellite e del sole
+* Finire di implementare le funzioni di calcolo di illuminazione
+* Implementare le funzioni di scarico del TLE
 
 
-REMEMBER:
-1) La funzione invjday() di SPG4 è stata modifica in Vallado
-2) La funzione convtime in Vallado è stata modificata
+## NOTE
+
+* La funzione invjday() di SPG4 è stata modifica in Vallado
+* La funzione convtime in Vallado è stata modificata
 
 
-# Install
+## Install
 
-Fare prima il make install della libreria di Vallado che si trova in
-
-./Vallado/C++
-
-poi fare il make install dell a libreria Astro
-
-make install
+- Prima va installata la libreria di Vallado 
+- Poi fare il make install della libreria Astro
