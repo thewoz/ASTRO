@@ -73,5 +73,33 @@ namespace astro {
   
 }
 
+/*****************************************************************************/
+ // converte da ra e dec geocentrice a ra e dec topocentriche
+ // le ra e dec devono essere in gradi
+ // site invece le cordinate del sito in TEME
+ // sat invece le cordinate del satellite in TEME
+ /*****************************************************************************/
+ void ra2tradec(double sat[3],  double tra, double tdec, double site[3]) {
+   
+   double rho[3];
+   
+   rho[0] = sat[0] - site[0];
+   rho[1] = sat[1] - site[1];
+   rho[2] = sat[2] - site[2];
+   
+   double normRho = astMath::mag(rho);
+   
+   double coord[2];
+   
+   coord[0] = atan2(rho[1],rho[1]);
+   coord[1] = asin(rho[2] / normRho);
+
+   if(coord[0] < 0.1) coord[0] += 2 * M_PI;
+   
+   tra  = Degrees(coord[0]);
+   tdec = Degrees(coord[1]);
+
+ }
+
 
 #endif /* _H_ASTRO_CONVERTER_H */
