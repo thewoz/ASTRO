@@ -15,7 +15,7 @@
 
 ###### Nel folder Propagator:
 
-SGP4.hpp  -- Funzioni per la propagazione con SGP4
+* SGP4.hpp  -- Funzioni per la propagazione con SGP4
 
 
 ###### Nel folder Utils:
