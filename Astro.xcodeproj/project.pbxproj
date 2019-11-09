@@ -23,6 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A0282782376F68100DC9767 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A19AB042218648900A2FB55 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3A76576D2335240C0059C1B6 /* eci2jnow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci2jnow.hpp; sourceTree = "<group>"; };
 		3AAB7CF9223D347300CC1BA3 /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
@@ -147,6 +148,7 @@
 				3AAB7CF8223D347300CC1BA3 /* include */,
 				3A19AB042218648900A2FB55 /* main.cpp */,
 				3ABF73D91FE55D390052CFAC /* Products */,
+				3A0282782376F68100DC9767 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};

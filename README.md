@@ -45,7 +45,7 @@
   Ce ne sta una in lla2Ecef.h (quella che uso) una in vallado lla2ecef() e una in Observatory.hpp (_convert())
 * Controllare che gli step di integrazione del orbita del satellite del sole e della stazione a terra siano corretti
 * Controllare la posizione del sole in che sistema di riferimento si trova
-
+* Controllare perche nell'ossservatorio non chiamo site di vallado
 
 ## TODO
 

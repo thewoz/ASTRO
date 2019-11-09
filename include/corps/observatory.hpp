@@ -184,6 +184,8 @@ namespace astro {
     /*****************************************************************************/
     void _convert(double jDay, double r[3]) {
 
+      //FIME: PERCHE NON CHIAMO VALLADO
+      
       double gst = astTime::gstime(jDay);
 
       double a = 6378.137;
