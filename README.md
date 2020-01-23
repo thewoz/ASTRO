@@ -64,3 +64,5 @@
 
 - Prima va installata la libreria di Vallado 
 - Poi fare il make install della libreria Astro
+
+
