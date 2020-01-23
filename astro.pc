@@ -1,5 +1,7 @@
+libraryVallado=${-L/usr/local/lib -lastTime -lastUtils -lastIOD -lcoordFK5 -last2Body -lSGP4 -lEopSpw -lcurl -lastMath}
+
 Name: astro
 Description:
-Version: 1.0 beta
+Version: 1.0
 Cflags: -I/usr/local/include
-Libs: -L/usr/local/lib -lcoordFK5 -last2Body -lastTime -lastMath -lSGP4 -lcurl -lEopSpw -lastIOD
+Libs: ${libraryVallado}
