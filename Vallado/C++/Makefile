@@ -19,17 +19,18 @@ install: setup SGP4 astTime astMath ast2Body astUtils coordFK5 astIOD EopSpw
 	@cp ./build/lib/*     $(LIBRARY_INSTALL_PATH)/
 	@cp -r ./data         $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)/
 	@rm -r ./build
-  @cp vallado.pc /usr/share/pkgconfig/
+	@cp vallado.pc /usr/share/pkgconfig/
+	@cp vallado.pc /usr/local/lib/pkgconfig/
 
 uninstall:
 	@rm -rf $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)/
 	@rm -rf $(LIBRARY_INSTALL_PATH)/$(LIBRARY_NAME)/
-  @rm -f /usr/share/pkgconfig/vallado.pc
+	@rm -f /usr/share/pkgconfig/vallado.pc
 
 clear:
 	@rm -rf $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)
 	@rm -rf $(LIBRARY_INSTALL_PATH)/$(LIBRARY_NAME)
-  @rm -f /usr/share/pkgconfig/vallado.pc
+	@rm -f /usr/share/pkgconfig/vallado.pc
 
 # process SGP4
 SGP4: setup
