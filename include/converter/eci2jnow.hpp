@@ -23,8 +23,8 @@
  * SOFTWARE.
  */
 
-#ifndef _H_ASTRO_TEME2ECI_H
-#define _H_ASTRO_TEME2ECI_H
+#ifndef _H_ASTRO_J2KTOJNOW_H
+#define _H_ASTRO_J2KTOJNOW_H
 
 #include <cstdio>
 #include <cstdlib>
@@ -77,4 +77,5 @@ namespace astro {
 
 } /* namespace astro */
 
-#endif /* _H_ASTRO_TEME2ECI_H */
+#endif /* _H_ASTRO_J2KTOJNOW_H
+*/
