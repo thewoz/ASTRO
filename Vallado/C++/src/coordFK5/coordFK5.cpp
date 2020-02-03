@@ -2021,38 +2021,38 @@ namespace coordFK5
 		eqeg = deltapsi* cos(meaneps);
 		eqeg = fmod(eqeg, (M_PI*2));
 
-		eqe[0][0] = cos(eqeg);
-		eqe[0][1] = sin(eqeg);
-		eqe[0][2] = 0.0;
-		eqe[1][0] = -sin(eqeg);
-		eqe[1][1] = cos(eqeg);
-		eqe[1][2] = 0.0;
-		eqe[2][0] = 0.0;
-		eqe[2][1] = 0.0;
-		eqe[2][2] = 1.0;
+    eqe[0][0] = cos(eqeg);
+    eqe[0][1] = sin(eqeg);
+    eqe[0][2] = 0.0;
+    eqe[1][0] = -sin(eqeg);
+    eqe[1][1] = cos(eqeg);
+    eqe[1][2] = 0.0;
+    eqe[2][0] = 0.0;
+    eqe[2][1] = 0.0;
+    eqe[2][2] = 1.0;
 
 		if (direct == eTo)
 		{
-			astMath::mattrans(eqe, eqep, 3, 3);
-
-			astMath::matmult(nut, eqep, temp, 3, 3, 3);
-			astMath::matmult(prec, temp, tempmat, 3, 3, 3);
-
-			astMath::matvecmult(tempmat, rteme, rgcrf);
-			astMath::matvecmult(tempmat, vteme, vgcrf);
-			astMath::matvecmult(tempmat, ateme, agcrf);
+      astMath::mattrans(eqe, eqep, 3, 3);
+      
+      astMath::matmult(nut, eqep, temp, 3, 3, 3);
+      astMath::matmult(prec, temp, tempmat, 3, 3, 3);
+      
+      astMath::matvecmult(tempmat, rteme, rgcrf);
+      astMath::matvecmult(tempmat, vteme, vgcrf);
+      astMath::matvecmult(tempmat, ateme, agcrf);
 		}
 		else
 		{
-			astMath::mattrans(nut, nutp, 3, 3);
-			astMath::mattrans(prec, precp, 3, 3);
-
-			astMath::matmult(nutp, precp, temp, 3, 3, 3);
-			astMath::matmult(eqe, temp, tempmat, 3, 3, 3);
-
-			astMath::matvecmult(tempmat, rgcrf, rteme);
-			astMath::matvecmult(tempmat, vgcrf, vteme);
-			astMath::matvecmult(tempmat, agcrf, ateme);
+      astMath::mattrans(nut, nutp, 3, 3);
+      astMath::mattrans(prec, precp, 3, 3);
+      
+      astMath::matmult(nutp, precp, temp, 3, 3, 3);
+      astMath::matmult(eqe, temp, tempmat, 3, 3, 3);
+      
+      astMath::matvecmult(tempmat, rgcrf, rteme);
+      astMath::matvecmult(tempmat, vgcrf, vteme);
+      astMath::matvecmult(tempmat, agcrf, ateme);
 		}
 
 	}  //  teme_eci

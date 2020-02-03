@@ -144,8 +144,11 @@ namespace astro {
         
         astro::eopc::getParameters(jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
         
-        if(crs == CRS::ECI)
-          astro::teme2eci(coord, dummy, coord, dummy, ttt, ddpsi, ddeps);
+        if(crs == CRS::ECI){
+          astro::teme2ecef(coord, dummy, coord, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
+          astro::ecef2eci(coord, dummy, coord, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
+          //astro::teme2eci(coord, dummy, coord, dummy, ttt, ddpsi, ddeps);
+        }
         
         if(crs == CRS::ECEF)
           astro::teme2ecef(coord, dummy, coord, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
@@ -210,9 +213,12 @@ namespace astro {
 
           astro::eopc::getParameters(states[step].jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
 
-          if(crs == CRS::ECI)
-            astro::teme2eci(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, ddpsi, ddeps);
-        
+          if(crs == CRS::ECI){
+            astro::teme2ecef(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
+            astro::ecef2eci(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
+            //astro::teme2eci(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, ddpsi, ddeps);
+          }
+          
           if(crs == CRS::ECEF)
             astro::teme2ecef(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
         
@@ -222,6 +228,7 @@ namespace astro {
 
     }
     
+#if(0)
     /*****************************************************************************/
     // _position
     /*****************************************************************************/
@@ -254,6 +261,8 @@ namespace astro {
       } // crs != CRS::TEME
       
     }
+    
+#endif
     
   }; /* class satellite */
   

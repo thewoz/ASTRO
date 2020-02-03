@@ -86,6 +86,8 @@ namespace astro {
     // in radianti
     double latitude  = 0.0;
     double longitude = 0.0;
+    
+    // in km
     double height    = 0.0;
 
     
@@ -98,13 +100,17 @@ namespace astro {
     /*****************************************************************************/
     Observatory(double _latitude, double _longitude, double _height = 0.0, int crs = CRS::ECEF) {
       
-      latitude  = _latitude;
-      longitude = _longitude;
-      height    = _height;
+      latitude  = Radians(_latitude);
+      longitude = Radians(_longitude);
+      
+      height    = _height / 1000;
+      
+      double vsecef[3];
       
       //_convert(states[i].jDay, states[i].position);
-      astro::lla2ecef(latitude, longitude, height, coord);
-
+      //astro::lla2ecef(latitude, longitude, height, coord);
+      astIOD::site(latitude, longitude, height, coord, vsecef);
+      
     }
 
     /*****************************************************************************/
@@ -127,7 +133,9 @@ namespace astro {
         //FIXME:TOGLIERE SOLO SE NON HO FATTO INIT
         // METTERE INIT
         //_convert(states[i].jDay, states[i].position);
-        astro::lla2ecef(latitude, longitude, height, coord);
+        //astro::lla2ecef(latitude, longitude, height, coord);
+        double vsecef[3];
+        astIOD::site(latitude, longitude, height, coord, vsecef);
 
       }
       
@@ -157,7 +165,9 @@ namespace astro {
     void position(double jDay, double _coord[3], int crs = CRS::ECEF) {
       
       //VEDI SOPRA
-      astro::lla2ecef(latitude, longitude, height, _coord);
+      //astro::lla2ecef(latitude, longitude, height, _coord);
+      double vsecef[3];
+      astIOD::site(latitude, longitude, height, _coord, vsecef);
       
       if(crs != CRS::ECEF) {
         
@@ -176,35 +186,6 @@ namespace astro {
       
     }
 
-    
-  private:
-
-    /*****************************************************************************/
-    // _convert
-    /*****************************************************************************/
-    void _convert(double jDay, double r[3]) {
-
-      //FIME: PERCHE NON CHIAMO VALLADO
-      
-      double gst = astTime::gstime(jDay);
-
-      double a = 6378.137;
-      double b = 6356.7523142;
-
-      double f = (a-b)/a;
-      double equad = 2.0*f-f*f;
-
-      double teta = gst + longitude*M_PI/180.0;
-      double L = latitude * M_PI/180.0;
-
-      double N = a / sqrt(1-equad*pow(sin(L),2));
-
-      r[0] = N*cos(L)*cos(teta);
-      r[1] = N*cos(L)*sin(teta);
-      r[2] = (height/1000+(1-equad)*N)*sin(L);
-
-    }
-    
   }; /* class Observatory */
   
 } /* namespace astro */

@@ -23,6 +23,8 @@
  * SOFTWARE.
  */
 
+#if(0)
+
 #ifndef _H_ASTRO_TEME2ECI_H
 #define _H_ASTRO_TEME2ECI_H
 
@@ -128,3 +130,5 @@ namespace astro {
 } /* namespace astro */
 
 #endif /* _H_ASTRO_TEME2ECI_H */
+
+#endif
