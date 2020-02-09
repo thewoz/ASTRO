@@ -138,9 +138,7 @@ namespace coordFK5
 		double rj2k[3], double vj2k[3], double aj2k[3],
 		const iau80data &iau80rec,
 		double ttt, double jdut1, double lod,
-		double xp, double yp, int eqeterms,
-		std::vector< std::vector<double> > &trans
-		);
+		double xp, double yp, int eqeterms = 2);
 
 	void itrf_mod
 		(
@@ -214,7 +212,7 @@ namespace coordFK5
     double rteme[3], double vteme[3], double ateme[3],
 		edirection direct,
 		double recef[3], double vecef[3], double aecef[3],
-		double ttt, double jdut1, double lod, double xp, double yp, int eqeterms
+		double ttt, double jdut1, double lod, double xp, double yp, int eqeterms = 2
 		);
 
   

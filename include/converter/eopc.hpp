@@ -73,35 +73,20 @@ namespace astro {
     
     static double jdeopstart;
     
+    static bool isInited;
+    
     // Hide default constructor
     eopc() {}
     
   public:
     
     /*****************************************************************************/
-    // init
-    /*****************************************************************************/
-    static void init(int days = 1, bool verbose = false) {
-      
-      // aggiorno i file
-      update(days, verbose);
-      
-      data = std::vector<eopdata>();
-        
-      // carico i dati (l'ordine e' importante)
-      load();
-      
-      // mi segno che mi sono aggiornato i file
-      toUpdate = false;
-        
-    }
-    
-    
-    /*****************************************************************************/
     // getParameters
     /*****************************************************************************/
-    static void getParameters(const std::vector<double> & jday, char interp, std::vector<double> & xp, std::vector<double> & yp, std::vector<double> & lod, std::vector<double> & ddpsi, std::vector<double> & ddeps, std::vector<double> & jdut1, std::vector<double> & jdut1Frac, std::vector<double> & ttt) {
+    static void getParameters(const std::vector<double> & jday, char interp, char whichm, std::vector<double> & xp, std::vector<double> & yp, std::vector<double> & lod, std::vector<double> & ddpsi, std::vector<double> & ddeps, std::vector<double> & jdut1, std::vector<double> & jdut1Frac, std::vector<double> & ttt) {
      
+      if(!isInited) init();
+
       xp.resize(jday.size());
       yp.resize(jday.size());
       lod.resize(jday.size());
@@ -111,20 +96,22 @@ namespace astro {
       jdut1Frac.resize(jday.size());
       ttt.resize(jday.size());
       
-      for(int i=0; i<jday.size(); ++i) getParameters(jday[i], interp, xp[i], yp[i], lod[i], ddpsi[i], ddeps[i], jdut1[i], jdut1Frac[i], ttt[i]);
+      for(int i=0; i<jday.size(); ++i) getParameters(jday[i], interp, whichm, xp[i], yp[i], lod[i], ddpsi[i], ddeps[i], jdut1[i], jdut1Frac[i], ttt[i]);
       
     }
     
     /*****************************************************************************/
     // getParameters
     /*****************************************************************************/
-    static void getParameters(double jDay, char interp, double & xp, double & yp, double & lod, double & ddpsi, double & ddeps, double & jdut1, double & jdut1Frac, double & ttt) {
+    static void getParameters(double jDay, char interp, char whichm, double & xp, double & yp, double & lod, double & ddpsi, double & ddeps, double & jdut1, double & jdut1Frac, double & ttt) {
+      
+      if(!isInited) init();
       
       int dat;
       
       double x, y, dx, dy, s, deltapsi, deltaeps, dut1;
       
-      EopSpw::findeopparam(jDay, 0, interp, 'l', data, jdeopstart, dut1, dat, lod, xp, yp, ddpsi, ddeps, dx, dy, x, y, s, deltapsi, deltaeps);
+      EopSpw::findeopparam(jDay, 0, interp, whichm, data, jdeopstart, dut1, dat, lod, xp, yp, ddpsi, ddeps, dx, dy, x, y, s, deltapsi, deltaeps);
 
       int year; int mon; int day; int hr; int min; double sec;
       
@@ -136,7 +123,26 @@ namespace astro {
     
     
   private:
-    
+        
+    /*****************************************************************************/
+    // init
+    /*****************************************************************************/
+    static void init(int days = 1, bool verbose = false) {
+      
+      // aggiorno i file
+      update(days, verbose);
+      
+      data = std::vector<eopdata>();
+      
+      // carico i dati (l'ordine e' importante)
+      load();
+      
+      // mi segno che mi sono aggiornato i file
+      toUpdate = false;
+      
+      isInited = true;
+      
+    }
     
     /*****************************************************************************/
     // update() - Scarico se serve il file nuovo
@@ -168,11 +174,11 @@ namespace astro {
     // load() - leggo il file dei parametri
     /*****************************************************************************/
     static void load() {
-      
+
       double jdeopstartFrac;
-      
+
       EopSpw::initeop(data, fileEopc, jdeopstart, jdeopstartFrac);
-      
+
     }
 
   };
@@ -191,6 +197,8 @@ namespace astro {
 
   // variablie che mi dice se devo fare l'update dei file
   bool eopc::toUpdate = true;
+  
+  bool eopc::isInited = false;
   
 } /* namespace astro */
 

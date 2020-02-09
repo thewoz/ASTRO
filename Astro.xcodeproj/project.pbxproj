@@ -37,14 +37,12 @@
 		3AAB7D08223D347300CC1BA3 /* converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = converter.h; sourceTree = "<group>"; };
 		3AAB7D0B223D347300CC1BA3 /* attitude.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = attitude.hpp; sourceTree = "<group>"; };
 		3AAB7D0C223D347300CC1BA3 /* rk4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rk4.hpp; sourceTree = "<group>"; };
-		3AAB7D0D223D347300CC1BA3 /* cubicspline.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cubicspline.hpp; sourceTree = "<group>"; };
 		3AAB7D0E223D347300CC1BA3 /* angle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = angle.hpp; sourceTree = "<group>"; };
 		3AAB7D0F223D347300CC1BA3 /* define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = define.h; sourceTree = "<group>"; };
 		3AAB7D10223D347300CC1BA3 /* curl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = curl.hpp; sourceTree = "<group>"; };
 		3AAB7D11223D347300CC1BA3 /* quaternion.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quaternion.hpp; sourceTree = "<group>"; };
 		3AAB7D12223D347300CC1BA3 /* tle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tle.hpp; sourceTree = "<group>"; };
 		3AAB7D13223D347300CC1BA3 /* date.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = date.hpp; sourceTree = "<group>"; };
-		3AAB7D14223D347300CC1BA3 /* lagrange.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lagrange.hpp; sourceTree = "<group>"; };
 		3AAB7D15223D347300CC1BA3 /* utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utils.hpp; sourceTree = "<group>"; };
 		3AAB7D16223D347300CC1BA3 /* corps.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = corps.h; sourceTree = "<group>"; };
 		3AAB7D17223D347300CC1BA3 /* astro.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = astro.hpp; sourceTree = "<group>"; };
@@ -107,14 +105,12 @@
 			children = (
 				3AAB7D0B223D347300CC1BA3 /* attitude.hpp */,
 				3AAB7D0C223D347300CC1BA3 /* rk4.hpp */,
-				3AAB7D0D223D347300CC1BA3 /* cubicspline.hpp */,
 				3AAB7D0E223D347300CC1BA3 /* angle.hpp */,
 				3AAB7D0F223D347300CC1BA3 /* define.h */,
 				3AAB7D10223D347300CC1BA3 /* curl.hpp */,
 				3AAB7D11223D347300CC1BA3 /* quaternion.hpp */,
 				3AAB7D12223D347300CC1BA3 /* tle.hpp */,
 				3AAB7D13223D347300CC1BA3 /* date.hpp */,
-				3AAB7D14223D347300CC1BA3 /* lagrange.hpp */,
 				3AAB7D15223D347300CC1BA3 /* utils.hpp */,
 			);
 			path = utils;

@@ -1122,11 +1122,11 @@ namespace coordFK5
 		double rj2k[3], double vj2k[3], double aj2k[3],
 		const iau80data &iau80rec,
 		double ttt, double jdut1, double lod,
-		double xp, double yp, int eqeterms,
-		std::vector< std::vector<double> > &trans
-		)
+		double xp, double yp, int eqeterms)
 	{
-		trans.resize(3);  // rows
+    
+		std::vector<std::vector<double> > trans(3);  // rows
+    
 		for (std::vector< std::vector<double> >::iterator it = trans.begin(); it != trans.end(); ++it)
 			it->resize(3);
 		// locals
@@ -2009,13 +2009,14 @@ namespace coordFK5
 		double ttt, double ddpsi, double ddeps
 		)
 	{
+
 		std::vector< std::vector<double> > prec, nut, temp, tempmat, nutp, precp, eqep;
 		std::vector< std::vector<double> > eqe = std::vector< std::vector<double> >(3, std::vector<double>(3));
 		double psia, wa, epsa, chia, deltapsi, deltaeps, trueeps, meaneps, omega, eqeg;
-
+    
 		coordFK5::precess(ttt, e80, psia, wa, epsa, chia, prec);
 		coordFK5::nutation(ttt, ddpsi, ddeps, iau80rec, deltapsi, deltaeps, trueeps, meaneps, omega, nut);
-
+    
 		// ------------------------find eqeg----------------------
 		// rotate teme through just geometric terms
 		eqeg = deltapsi* cos(meaneps);
@@ -2033,14 +2034,15 @@ namespace coordFK5
 
 		if (direct == eTo)
 		{
+            
       astMath::mattrans(eqe, eqep, 3, 3);
-      
       astMath::matmult(nut, eqep, temp, 3, 3, 3);
       astMath::matmult(prec, temp, tempmat, 3, 3, 3);
       
       astMath::matvecmult(tempmat, rteme, rgcrf);
       astMath::matvecmult(tempmat, vteme, vgcrf);
       astMath::matvecmult(tempmat, ateme, agcrf);
+      
 		}
 		else
 		{

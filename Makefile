@@ -20,7 +20,6 @@ install:
 	mkdir -p $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)
 	cp -R ./include/* $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)
 	@cp astro.pc /usr/local/lib/pkgconfig/
-	@cp astro.pc /usr/local/lib/pkgconfig/	
 
 
 uninstall:

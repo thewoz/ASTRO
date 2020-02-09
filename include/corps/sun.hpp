@@ -83,7 +83,7 @@ namespace astro {
   class Sun {
     
     // NOTE:
-    // la posizione del sole e' in J2000
+    // la posizione del sole dovrebbe essere in J2000
     // dt di integrazione e' in secondi
     
   private:
@@ -99,40 +99,19 @@ namespace astro {
   public:
     
     /*****************************************************************************/
-    // operator ()
-    /*****************************************************************************/
-    inline astro::SunState operator () (double jDay, int crs = CRS::ECI) const { return position(jDay,crs); }
-    
-    /*****************************************************************************/
     // position
     /*****************************************************************************/
-    inline static astro::SunState position(double jDay, int crs = CRS::ECI) { astro::SunState state; _position(jDay, state, crs); return state; }
-    inline static void position(double jDay, astro::SunState & state, int crs = CRS::ECI) { _position(jDay, state, crs); }
+    inline static void position(double jDay, astro::SunState & state, int crs = CRS::ECI) {
+      
+      _position(jDay, state, crs);
+      
+    }
 
     /*****************************************************************************/
     // orbit
     /*****************************************************************************/
     static void orbit(double jDayStart, double jDayStop, double integrationTime, std::vector<astro::SunState> & states, int crs = CRS::ECI) {
-      _orbit(jDayStart, jDayStop, integrationTime, states, crs);
-    }
-    
-    static std::vector<astro::SunState> orbit(double jDayStart, double jDayStop, double integrationTime, int crs = CRS::ECI) {
-      std::vector<astro::SunState> states;
-      _orbit(jDayStart, jDayStop, integrationTime, states, crs);
-      return states;
-    }
-    
-  private:
-
-    /*****************************************************************************/
-    // _orbit
-    /*****************************************************************************/
-    static void _orbit(double jDayStart, double jDayStop, double integrationTime, std::vector<astro::SunState> & states, int crs = CRS::ECI) {
       
-      astro::eopc::init();
-      
-      double dummy[3];
-
       // converto il tempo di integrazione da secondi in jDay
       double integrationTimeJD = astro::Date::convert(integrationTime, astro::Date::FROM_SECOND_TO_JD);
       
@@ -142,34 +121,18 @@ namespace astro {
       // alloco lo spazio
       states.resize(samples);
       
-      double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
-
       // propago
       for(std::size_t step=0; step<samples; ++step) {
         
         states[step].jDay = jDayStart + (integrationTimeJD * step);
-
+        
         _position(states[step].jDay, states[step], crs);
-        
-        if(crs == CRS::ECEF) {
-          
-          astro::eopc::getParameters(states[step].jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
- 
-          astro::eci2ecef(&states[step].position[0], dummy, dummy, &states[step].position[0], dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-          
-        }
-        
-        if(crs == CRS::TEME) {
-          
-          astro::eopc::getParameters(states[step].jDay, 11, xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-          
-          astro::eci2teme(&states[step].position[0], dummy, dummy, &states[step].position[0], dummy, dummy, ttt, ddpsi, ddeps);
-          
-        }
         
       }
       
     }
+    
+  private:
     
 #ifdef SUN_VALLADO
     /*****************************************************************************/
@@ -179,15 +142,32 @@ namespace astro {
       
       double rtasc, decl;
       
+      double tmpCoord[3];
+      
       // chiamo la funzione di vallado
-      ast2Body::sun(jDay, 0.0, state.position, rtasc, decl);
+      ast2Body::sun(jDay, 0.0, tmpCoord, rtasc, decl);
       
       state.position[0] *= 149597870.7;
       state.position[1] *= 149597870.7;
       state.position[2] *= 149597870.7;
       
-      //FIXME: not used crs
+      if(crs != CRS::TEME) {
+
+        if(crs == CRS::ECEF)
+          astro::eci2ecef(tmpCoord, jDay, state.position);
+        
+        if(crs == CRS::TEME)
+          astro::eci2teme(tmpCoord, jDay, state.position);
      
+      } else {
+        
+        state.position[0] = tmpCoord[0];
+        state.position[1] = tmpCoord[1];
+        state.position[2] = tmpCoord[2];
+
+      }
+      
+      
     }
 #endif
 

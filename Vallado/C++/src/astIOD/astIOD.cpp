@@ -102,6 +102,30 @@ namespace astIOD
   }  // site
   
   
+  void site
+  (
+   double latgd, double lon, double alt,
+   double rsecef[3]
+   )
+  {
+    const double rearth = 6378.137;  // km
+    const double eesqrd = 0.00669437999013;
+    double   sinlat, cearth, rdel, rk;
+    
+    /* ---------------------  initialize values   ------------------- */
+    sinlat = sin(latgd);
+    
+    /* -------  find rdel and rk components of site vector  --------- */
+    cearth = rearth / sqrt(1.0 - (eesqrd * sinlat * sinlat));
+    rdel = (cearth + alt) * cos(latgd);
+    rk = ((1.0 - eesqrd) * cearth + alt) * sinlat;
+    
+    /* ----------------  find site position vector  ----------------- */
+    rsecef[0] = rdel * cos(lon);
+    rsecef[1] = rdel * sin(lon);
+    rsecef[2] = rk;
+
+  }  // site
   
   /* -------------------------- angles-only techniques ------------------------ */
   

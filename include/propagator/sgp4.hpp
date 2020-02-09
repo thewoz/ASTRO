@@ -72,6 +72,20 @@ namespace astro {
     
   }
   
+  /*****************************************************************************/
+  // sgp4
+  /*****************************************************************************/
+  void sgp4(elsetrec & satrec, double tsince, double r[3]) {
+    
+    SGP4Funcs::sgp4(satrec, tsince, r);
+    
+    if(satrec.error > 0) {
+      fprintf(stderr, "SGP4 error at time %f: %s\n",  satrec.t, util::getElesetrecErrorString(satrec.error));
+      abort();
+    }
+    
+  }
+  
 } /* namespace astro */
 
 #endif /* _H_ASTRO_SGP4_H_ */

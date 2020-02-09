@@ -25,8 +25,8 @@
 
 //#define TESTEOPC
 //#define TESTDATE
-//#define TESTSATELLITE
-#define TESTSUN
+#define TESTSATELLITE
+//#define TESTSUN
 //#define TESTSTATION
 //#define TESTATTITUDE
 
@@ -58,20 +58,20 @@ int main(int argc, char *argv[]) {
   double yaw   = 0;
   double roll  = 0;
 
-  //pitch = mpl::geometry::Radians(1.0);
-  //yaw   = mpl::geometry::Radians(1.0);
-  //roll  = mpl::geometry::Radians(1.0);
+  //pitch = astro::Radians(1.0);
+  //yaw   = astro::Radians(1.0);
+  //roll  = astro::Radians(1.0);
   
-  quaternion_t q(pitch, yaw, roll);
+  astro::quaternion_t q(pitch, yaw, roll);
 
   // velocita in radianti al secondo
   double Wx = 0.0;
   double Wy = 0.0;
   double Wz = 0.0;
   
-  //Wx = mpl::geometry::Radians(1.0);
-  //Wy = mpl::geometry::Radians(1.0);
-  //Wz = mpl::geometry::Radians(1.0);
+  //Wx = astro::Radians(1.0);
+  //Wy = astro::Radians(1.0);
+  //Wz = astro::Radians(1.0);
   
   double Jx = 1;
   double Jy = 1;
@@ -125,12 +125,10 @@ int main(int argc, char *argv[]) {
   // Test Epoc class
   /*****************************************************************************/
   fprintf(stderr, "Test Epoc class:\n\n");
-
-  astro::eopc::init(1, true);
   
   double xp, yp, lod, dpsi, deps, jdut1, jdut1Frac, ttt;
   
-  astro::eopc::getParameters(astro::Date(29, 1, 2017, 13, 34, 1).getJDay(), 11, xp, yp, lod, dpsi, deps, jdut1, jdut1Frac, ttt);
+  astro::eopc::getParameters(astro::Date(29, 1, 2017, 13, 34, 1).getJDay(), 'l', 'f', xp, yp, lod, dpsi, deps, jdut1, jdut1Frac, ttt);
   
   printf("\n xp %e\n yp %e\n lod %e\n dpsi %e\n deps %e\n jdut1 %e\n jdut1Frac %e\n ttt %e\n\n\n", xp, yp, lod, dpsi, deps, jdut1, jdut1Frac, ttt);
   
@@ -228,8 +226,8 @@ int main(int argc, char *argv[]) {
       abort();
     }
     
-    double latitude  = Radians(41.9577777777);
-    double longitude = Radians(12.505555555);
+    double latitude  = astro::Radians(41.9577777777);
+    double longitude = astro::Radians(12.505555555);
     double altitude  = 16.0;
     
     double dt = 60;
@@ -238,7 +236,7 @@ int main(int argc, char *argv[]) {
     
     std::vector<astro::ObservatoryState> states;
     
-    collepardo.positions(astro::Date(12,2,2018,4,19,59).getJDay(), astro::Date(12,2,2018,5,20,59).getJDay(), dt, states, CRS::TEME);
+    collepardo.orbit(astro::Date(12,2,2018,4,19,59).getJDay(), astro::Date(12,2,2018,5,20,59).getJDay(), dt, states, CRS::TEME);
     
     for(std::size_t i=0; i<states.size(); ++i){
       fprintf(stdout, "%s ", astro::Date(states[i].jDay).toGregorianString());

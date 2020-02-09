@@ -96,8 +96,8 @@ namespace astro {
 
    if(coord[0] < 0.1) coord[0] += 2 * M_PI;
    
-   tra  = Degrees(coord[0]);
-   tdec = Degrees(coord[1]);
+   tra  = astro::Degrees(coord[0]);
+   tdec = astro::Degrees(coord[1]);
 
  }
 

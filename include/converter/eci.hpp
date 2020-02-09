@@ -45,78 +45,50 @@ namespace astro {
    ********************************************************************************
    *  This function transforms a vector from the TEME True Equator Mean Equinox system,
    *  to the ECI mean equator mean equinox (j2000) system.
-   *
-   *  inputs:         description                     range / units
-   *    reci        - position vector of date         km
-   *    veci        - velocity vector of date         km / s
-   *    aeci        - acceleration vector of date     km / s2
-   *    ttt         - julian centuries of tt          centuries
-   *    ddpsi       - delta psi correction to gcrf    rad
-   *    ddeps       - delta eps correction to gcrf    rad
-   *
-   *  outputs :
-   *    rteme       - position vector eci             km
-   *    vteme       - velocity vector eci             km / s
-   *    ateme       - acceleration vector eci         km / s2
-   *
    **********************************************************************************/
   void eci2teme(double reci[3], double veci[3], double aeci[3],
-                double rteme[3],  double vteme[3],  double ateme[3],
-                double ttt,      double ddpsi,    double ddeps) {
+                double jDay,
+                double rteme[3],  double vteme[3],  double ateme[3]) {
     
-    coordFK5::teme_eci(rteme, vteme, ateme, edirection::eTo, reci, veci, aeci, astro::iau80::get(), ttt, ddpsi, ddeps);
+    double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+        
+    astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
+    
+    coordFK5::teme_eci(rteme, vteme, ateme, edirection::eFrom, reci, veci, aeci, astro::iau80::get(), ttt, ddpsi, ddeps);
     
   }
   
   /********************************************************************************
    * eci2teme
    ********************************************************************************/
-  void eci2teme(double reci[3],  double veci[3], double rteme[3], double vteme[3],
-                double ttt,      double ddpsi,    double ddeps) {
+  void eci2teme(double reci[3], double veci[3],
+                double jDay,
+                double rteme[3],  double vteme[3]) {
+    
+    double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+        
+    astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
     
     double dummy[3];
-    
-    coordFK5::teme_eci(rteme, vteme, dummy, edirection::eTo, reci, veci, dummy, astro::iau80::get(), ttt, ddpsi, ddeps);
+
+    coordFK5::teme_eci(rteme, vteme, dummy, edirection::eFrom, reci, veci, dummy, astro::iau80::get(), ttt, ddpsi, ddeps);
 
   }
   
   /********************************************************************************
    * eci2teme
    ********************************************************************************/
-  void eci2teme(std::vector<double> & reci,  std::vector<double> & veci,  std::vector<double> & aeci,
-                std::vector<double> & rteme, std::vector<double> & vteme, std::vector<double> & ateme,
-                const std::vector<double> & ttt, const std::vector<double> & ddpsi, const std::vector<double> & ddeps) {
+  void eci2teme(double reci[3],
+                double jDay,
+                double rteme[3]) {
     
-    //TODO: controlla che tutte le size sono uguali
-    
-    rteme.resize(reci.size());
-    vteme.resize(reci.size());
-    ateme.resize(reci.size());
-    
-    std::size_t size = reci.size();
-    
-    for(std::size_t i=0; i<size; ++i)
-      coordFK5::teme_eci(&rteme[i], &vteme[i], &ateme[i], edirection::eTo, &reci[i], &veci[i], &aeci[i], astro::iau80::get(), ttt[i], ddpsi[i], ddeps[i]);
-    
-  }
-  
-  /********************************************************************************
-   * eci2teme
-   ********************************************************************************/
-  void eci2teme(std::vector<double> & reci,  std::vector<double> & veci, std::vector<double> & rteme, std::vector<double> & vteme,
-                const std::vector<double> & ttt, const std::vector<double> & ddpsi, const std::vector<double> & ddeps) {
-    
-    //TODO: controlla che tutte le size sono uguali
+    double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+        
+    astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
     
     double dummy[3];
     
-    rteme.resize(reci.size());
-    vteme.resize(reci.size());
-    
-    std::size_t size = reci.size();
-    
-    for(std::size_t i=0; i<size; ++i)
-      coordFK5::teme_eci(&rteme[i], &vteme[i], dummy, edirection::eTo, &reci[i], &veci[i], dummy, astro::iau80::get(), ttt[i], ddpsi[i], ddeps[i]);
+    coordFK5::teme_eci(rteme, dummy, dummy, edirection::eFrom, reci, dummy, dummy, astro::iau80::get(), ttt, ddpsi, ddeps);
 
   }
   
@@ -126,92 +98,50 @@ namespace astro {
    *
    *  This function transforms a vector from the ECI mean Equator Mean Equinox (j2000)
    *  to the ECEF Earth Fixed (itrf) frame.
-   *
-   *  inputs:         description                     range / units
-   *    reci        - position vector eci             km
-   *    veci        - velocity vector eci             km/s
-   *    aeci        - acceleration vector eci         km/s2
-   *    ttt         - julian centuries of tt          centuries
-   *    jdut1       - julian date of ut1              days from 4713 bc
-   *    lod         - excess length of day            sec
-   *    xp          - polar motion coefficient        rad
-   *    yp          - polar motion coefficient        rad
-   *    eqeterms    - terms for ast calculation       0,2
-   *
-   *  outputs:
-   *    recef       - position vector earth fixed     km
-   *    vecef       - velocity vector earth fixed     km/s
-   *    aecef       - acceleration vector earth fixed km/s2
-   *
    **********************************************************************************/
-  void eci2ecef(double reci[3], double veci[3], double aeci[3], double recef[3], double vecef[3], double aecef[3],
-                double ttt,     double jdut1,   double lod,     double xp,       double yp,       int eqeterms = 2){
+  void eci2ecef(double reci[3], double veci[3], double aeci[3],
+                double jDay,
+                double recef[3], double vecef[3], double aecef[3]){
+        
+    double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
     
-    std::vector< std::vector<double> > trans;
-    
-    // NOTE: ultimo argomento non serve
-    coordFK5::itrf_j2k(recef, vecef, aecef, edirection::eFrom, reci, veci, aeci, astro::iau80::get(), ttt, jdut1, lod, xp, yp, eqeterms, trans);
+    astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
+
+    coordFK5::itrf_j2k(recef, vecef, aecef, edirection::eFrom, reci, veci, aeci, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
     
   }
   
   /********************************************************************************
    * eci2ecef
    ********************************************************************************/
-  void eci2ecef(double reci[3], double veci[3], double recef[3], double vecef[3],
-                double ttt,     double jdut1,   double lod,      double xp,       double yp, int eqeterms = 2){
+  void eci2ecef(double reci[3], double veci[3],
+                double jDay,
+                double recef[3], double vecef[3]){
     
-    std::vector< std::vector<double> > trans;
+    double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
+    
+    astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
     
     double dummy[3];
     
-    // NOTE: ultimo argomento non serve
-    coordFK5::itrf_j2k(recef, vecef, dummy, edirection::eFrom, reci, veci, dummy, astro::iau80::get(), ttt, jdut1, lod, xp, yp, eqeterms, trans);
+    coordFK5::itrf_j2k(recef, vecef, dummy, edirection::eFrom, reci, veci, dummy, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
     
   }
   
   /********************************************************************************
    * eci2ecef
    ********************************************************************************/
-  void eci2ecef(std::vector<double> & reci,  std::vector<double> & veci,  std::vector<double> & aeci,
-                std::vector<double> & recef, std::vector<double> & vecef, std::vector<double> & aecef,
-                std::vector<double> & ttt,   std::vector<double> & jdut1, std::vector<double> & lod,
-                std::vector<double> & xp,    std::vector<double> & yp,    int eqeterms = 2) {
+  void eci2ecef(double reci[3],
+                double jDay,
+                double recef[3]){
     
-    //TODO: controlla che tutte le size sono uguali
+    double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
     
-    std::vector< std::vector<double> > trans;
-    
-    std::size_t size = reci.size();
-    
-    recef.resize(size);
-    vecef.resize(size);
-    aecef.resize(size);
-    
-    for(std::size_t i=0; i<size; ++i)
-      coordFK5::itrf_j2k(&recef[i], &vecef[i], &aecef[i], edirection::eFrom, &reci[i], &veci[i], &aeci[i], astro::iau80::get(), ttt[i], jdut1[i], lod[i], xp[i], yp[i], eqeterms, trans);
-    
-  }
-  
-  /********************************************************************************
-   * eci2ecef
-   ********************************************************************************/
-  void eci2ecef(std::vector<double> & reci, std::vector<double> & veci,  std::vector<double> & recef, std::vector<double> & vecef,
-                std::vector<double> & ttt,  std::vector<double> & jdut1, std::vector<double> & lod,
-                std::vector<double> & xp,   std::vector<double> & yp, int eqeterms = 2) {
-    
-    //TODO: controlla che tutte le size sono uguali
-    
-    std::vector< std::vector<double> > trans;
+    astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
     
     double dummy[3];
     
-    std::size_t size = reci.size();
-    
-    recef.resize(size);
-    vecef.resize(size);
-    
-    for(std::size_t i=0; i<size; ++i)
-      coordFK5::itrf_j2k(&recef[i], &vecef[i], dummy, edirection::eFrom, &reci[i], &veci[i], dummy, astro::iau80::get(), ttt[i], jdut1[i], lod[i], xp[i], yp[i], eqeterms, trans);
+    coordFK5::itrf_j2k(recef, dummy, dummy, edirection::eFrom, reci, dummy, dummy, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
     
   }
   

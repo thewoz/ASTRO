@@ -58,19 +58,19 @@ namespace astro {
     // astronomical algorithms meeus
     double t = (jDay-2451545.0) / 36525.0;
     
-    raEci  = Radians(raEci);
-    decEci = Radians(decEci);
+    raEci  = astro::Radians(raEci);
+    decEci = astro::Radians(decEci);
 
-    double zita  = Radians((2306.2181*t+0.30188*t*t+0.017998*t*t*t)/3600.0);
-    double zeta  = Radians((2306.2181*t+1.09468*t*t+0.018203*t*t*t)/3600.0);
-    double theta = Radians((2004.3109*t-0.42665*t*t-0.041833*t*t*t)/3600.0);
+    double zita  = astro::Radians((2306.2181*t+0.30188*t*t+0.017998*t*t*t)/3600.0);
+    double zeta  = astro::Radians((2306.2181*t+1.09468*t*t+0.018203*t*t*t)/3600.0);
+    double theta = astro::Radians((2004.3109*t-0.42665*t*t-0.041833*t*t*t)/3600.0);
     
     double A = cos(decEci)*sin(raEci+zita);
     double B = cos(theta)*cos(decEci)*cos(raEci+zita)-sin(theta)*sin(decEci);
     double C = sin(theta)*cos(decEci)*cos(raEci+zita)+cos(theta)*sin(decEci);
     
-    raJnow  = Degrees(atan2(A,B) + zeta);
-    decJnow = Degrees(asin(C));
+    raJnow  = astro::Degrees(atan2(A,B) + zeta);
+    decJnow = astro::Degrees(asin(C));
 
   }
   

@@ -84,7 +84,9 @@ namespace astro {
     std::string name;
     
     Satellite() : isInit(false) { }
+    
     Satellite(FILE * input) : isInit(true) { tle.init(input); name = tle.name; }
+    
     Satellite(const char * input) : isInit(true) {
       FILE * tleFile = fopen(input, "r");
       if(tleFile == NULL) {
@@ -104,78 +106,11 @@ namespace astro {
     // orbit
     /*****************************************************************************/
     void orbit(astro::Date startDate, astro::Date stopDate, double integrationTimeSec, std::vector<SatelliteState> & states, int crs = CRS::TEME) {
-      _orbit(startDate, stopDate, integrationTimeSec, states, crs);
-    }
-    
-    /*****************************************************************************/
-    // orbit
-    /*****************************************************************************/
-    std::vector<SatelliteState> orbit(astro::Date startDate, astro::Date stopDate, double integrationTimeSec, int crs = CRS::TEME) {
-      
-      std::vector<SatelliteState> states;
-      
-      _orbit(startDate, stopDate, integrationTimeSec, states, crs);
-    
-      return states;
-      
-    }
-    
-    /*****************************************************************************/
-    // position
-    /*****************************************************************************/
-    void position(double jDay, double coord[3], int crs = CRS::TEME) {
       
       if(!isInit){
         fprintf(stderr, "satellite must init before\n");
         abort();
       }
-      
-      astro::eopc::init();
-
-      double startTimeMin = Date::difference(jDay, tle.releaseDate, Date::MINUTES);
-      
-      double dummy[3];
-      
-      astro::sgp4(tle.satrec, startTimeMin, coord, dummy);
-
-      if(crs != CRS::TEME) {
-        
-        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
-        
-        astro::eopc::getParameters(jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-        
-        if(crs == CRS::ECI){
-          astro::teme2ecef(coord, dummy, coord, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-          astro::ecef2eci(coord, dummy, coord, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-          //astro::teme2eci(coord, dummy, coord, dummy, ttt, ddpsi, ddeps);
-        }
-        
-        if(crs == CRS::ECEF)
-          astro::teme2ecef(coord, dummy, coord, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-        
-      } // crs != CRS::TEME
-      
-    }
-    
-  private:
-    
-    // satellite tle
-    astro::TLE tle;
-    
-    // true if the satellite in inited
-    bool isInit;
-    
-    /*****************************************************************************/
-    // _orbit
-    /*****************************************************************************/
-    void _orbit(astro::Date & startDate, astro::Date & stopDate, double integrationTimeSec, std::vector<SatelliteState> & states, int crs) {
-      
-      if(!isInit){
-        fprintf(stderr, "satellite must init before\n");
-        abort();
-      }
-      
-      astro::eopc::init();
       
       // tempo di propagazione (in minuti)
       double propagationTimeMin = Date::difference(stopDate, startDate, Date::MINUTES);
@@ -189,7 +124,7 @@ namespace astro {
       // numero di campionamenti da fare
       // FIXME: sto piu uno non mi torna
       int samples = (propagationTimeMin / integrationTimeMin) + 1;
-           
+      
       // alloco lo spazio
       states.resize(samples);
       
@@ -202,67 +137,73 @@ namespace astro {
       for(std::size_t step=0; step<samples; ++step) {
         
         double sinceTimeMin = startTimeMin + (integrationTimeMin * step);
-                
+        
         states[step].jDay = startTimeJD + (integrationTimeJD * step);
-
-        astro::sgp4(tle.satrec, sinceTimeMin, &states[step].position[0], &states[step].velocity[0]);
         
-        if(crs != CRS::TEME) {
+        _position(states[step].jDay, sinceTimeMin, states[step].position, states[step].velocity);
         
-          double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
-
-          astro::eopc::getParameters(states[step].jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-
-          if(crs == CRS::ECI){
-            astro::teme2ecef(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
-            astro::ecef2eci(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
-            //astro::teme2eci(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, ddpsi, ddeps);
-          }
-          
-          if(crs == CRS::ECEF)
-            astro::teme2ecef(&states[step].position[0], &states[step].velocity[0], &states[step].position[0], &states[step].velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
-        
-        } // crs != CRS::TEME
-      
       } // for(step)
-
+      
     }
     
-#if(0)
     /*****************************************************************************/
-    // _position
+    // position
     /*****************************************************************************/
-    inline void _position(double jDay, astro::SatelliteState & state, int crs) {
+    // NOTE: si potrebbe chiamare
+    void position(double jDay, double coord[3], int crs = CRS::TEME) {
       
       if(!isInit){
         fprintf(stderr, "satellite must init before\n");
         abort();
       }
       
-      // tempo d'inzio della propagazione dal rilascio (in minuti)
       double sinceTimeMin = Date::difference(jDay, tle.releaseDate, Date::MINUTES);
       
-      state.jDay = jDay;
+      double dummy[3];
       
-      astro::sgp4(tle.satrec, sinceTimeMin, &state.position[0], &state.velocity[0]);
-      
-      if(crs != CRS::TEME) {
-        
-        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
-        
-        astro::eopc::getParameters(state.jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-        
-        if(crs == CRS::ECI)
-          astro::teme2eci(&state.position[0], &state.velocity[0], &state.position[0], &state.velocity[0], ttt, ddpsi, ddeps);
-        
-        if(crs == CRS::ECEF)
-          astro::teme2ecef(&state.position[0], &state.velocity[0], &state.position[0], &state.velocity[0], ttt, jdut1+jdut1Frac, lod, xp, yp);
-        
-      } // crs != CRS::TEME
+      _position(jDay, sinceTimeMin, coord, dummy);
       
     }
     
-#endif
+  private:
+    
+    // satellite tle
+    astro::TLE tle;
+    
+    // true if the satellite in inited
+    bool isInit;
+    
+    /*****************************************************************************/
+    // _position
+    /*****************************************************************************/
+    void _position(double jDay, double sinceTimeMin, double coord[3], double vel[3], int crs = CRS::TEME) {
+      
+      double tmpCoord[3]; double tmpVel[3];
+      
+      astro::sgp4(tle.satrec, sinceTimeMin, tmpCoord, tmpVel);
+      
+      if(crs != CRS::TEME) {
+        
+        if(crs == CRS::ECI)
+          astro::teme2eci(tmpCoord, tmpVel, jDay, coord, vel);
+        
+        if(crs == CRS::ECEF)
+          astro::teme2ecef(tmpCoord, tmpVel, jDay, coord, vel);
+        
+      } else {
+        
+        coord[0] = tmpCoord[0];
+        coord[1] = tmpCoord[1];
+        coord[2] = tmpCoord[2];
+        
+        vel[0] = tmpVel[0];
+        vel[1] = tmpVel[1];
+        vel[2] = tmpVel[2];
+        
+      }
+      
+      
+    }
     
   }; /* class satellite */
   

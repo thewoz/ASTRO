@@ -23,8 +23,8 @@
  * SOFTWARE.
  */
 
-#ifndef _H_MPL_CURL_H
-#define _H_MPL_CURL_H
+#ifndef _H_ASTRO_CURL_H
+#define _H_ASTRO_CURL_H
 
 #include <cstdio>
 #include <cstdlib>
@@ -90,4 +90,4 @@ namespace curl {
   
 } /* namespace curl */
 
-#endif /* _H_MPL_CURL_H */
+#endif /* _H_ASTRO_CURL_H */

@@ -89,7 +89,6 @@ namespace astro {
     
     // in km
     double height    = 0.0;
-
     
     /*****************************************************************************/
     // constructor
@@ -104,19 +103,15 @@ namespace astro {
       longitude = Radians(_longitude);
       
       height    = _height / 1000;
-      
-      double vsecef[3];
-      
-      //_convert(states[i].jDay, states[i].position);
-      //astro::lla2ecef(latitude, longitude, height, coord);
-      astIOD::site(latitude, longitude, height, coord, vsecef);
+            
+      astIOD::site(latitude, longitude, height, coord);
       
     }
 
     /*****************************************************************************/
-    // position
+    // orbit
     /*****************************************************************************/
-    void positions(double jDayStart, double jDayEnd, double integrationTimeSec, std::vector<astro::ObservatoryState> & states, int crs = CRS::ECEF) {
+    void orbit(double jDayStart, double jDayEnd, double integrationTimeSec, std::vector<astro::ObservatoryState> & states, int crs = CRS::ECEF) {
       
       double integrationTimeJD = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_JD);
       
@@ -128,64 +123,42 @@ namespace astro {
         
         states[i].jDay = jDayStart + (integrationTimeJD*i);
         
-        states[i].position[0] = coord[0]; states[i].position[1] = coord[1]; states[i].position[2] = coord[2];
-        
-        //FIXME:TOGLIERE SOLO SE NON HO FATTO INIT
-        // METTERE INIT
-        //_convert(states[i].jDay, states[i].position);
-        //astro::lla2ecef(latitude, longitude, height, coord);
-        double vsecef[3];
-        astIOD::site(latitude, longitude, height, coord, vsecef);
+        _position(states[i].jDay, states[i].position, crs);
 
-      }
-      
-      if(crs != CRS::ECEF) {
-        
-        double dummy[3];
-        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
-
-        for(std::size_t i=0; i<samples; ++i) {
-
-          astro::eopc::getParameters(states[i].jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-          
-          if(crs == CRS::TEME)
-            astro::ecef2teme(states[i].position, dummy, dummy, states[i].position, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-          
-          if(crs == CRS::ECI)
-            astro::ecef2eci(states[i].position, dummy, dummy, states[i].position, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-          
-        }
-        
       }
       
     }
 
+    /*****************************************************************************/
     // position
     /*****************************************************************************/
     void position(double jDay, double _coord[3], int crs = CRS::ECEF) {
       
-      //VEDI SOPRA
-      //astro::lla2ecef(latitude, longitude, height, _coord);
-      double vsecef[3];
-      astIOD::site(latitude, longitude, height, _coord, vsecef);
-      
-      if(crs != CRS::ECEF) {
-        
-        double dummy[3];
-        double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
-      
-        astro::eopc::getParameters(jDay, 'l', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
-        
-        if(crs == CRS::TEME)
-          astro::ecef2teme(_coord, dummy, dummy, _coord, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-        
-        if(crs == CRS::ECI)
-          astro::ecef2eci(_coord, dummy, dummy, _coord, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp);
-        
-      }
+      _position(jDay, _coord, crs);
       
     }
 
+  private:
+    
+    /*****************************************************************************/
+    // _position
+    /*****************************************************************************/
+    void _position(double jDay, double _coord[3], int crs = CRS::ECEF) {
+      
+      if(crs == CRS::ECEF) {
+        _coord[0] = coord[0];
+        _coord[1] = coord[1];
+        _coord[2] = coord[2];
+      }
+                              
+      if(crs == CRS::TEME)
+        astro::ecef2teme(coord, jDay, _coord);
+        
+      if(crs == CRS::ECI)
+        astro::ecef2eci(coord, jDay, _coord);
+              
+    }
+    
   }; /* class Observatory */
   
 } /* namespace astro */

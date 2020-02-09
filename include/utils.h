@@ -33,8 +33,6 @@
 #include "./utils/tle.hpp"
 
 #include "./utils/angle.hpp"
-#include "./utils/cubicspline.hpp"
-#include "./utils/lagrange.hpp"
 #include "./utils/rk4.hpp"
 #include "./utils/quaternion.hpp"
 #include "./utils/attitude.hpp"

@@ -24,8 +24,8 @@
  */
 
 
-#ifndef _H_RK4_H_
-#define _H_RK4_H_
+#ifndef _H_ASTRO_RK4_H_
+#define _H_ASTRO_RK4_H_
 
 #include <cstdlib>
 #include <cstdio>
@@ -33,6 +33,8 @@
 #include <vector>
 #include <array>
     
+namespace astro {
+
     //****************************************************************************
     //
     //  Purpose:
@@ -116,5 +118,7 @@
         ut[i] = u0[i] + (dt/6.0) * (k1[i] + 2.0*k2[i] + 2.0*k3[i] + k4[i]);
             
     }
+  
+} /* namespace astro */
 
-#endif /* _H_RK4_H_ */
+#endif /* _H_ASTRO_RK4_H_ */

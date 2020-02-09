@@ -67,7 +67,7 @@ namespace astro {
     /*****************************************************************************/
     // get quaternion
     /*****************************************************************************/
-    quaternion_t q() const { return quaternion_t(data[q4], data[q1], data[q2], data[q3]); }
+    astro::quaternion_t q() const { return astro::quaternion_t(data[q4], data[q1], data[q2], data[q3]); }
 
     /*****************************************************************************/
     // normalize quaternion
@@ -124,7 +124,7 @@ namespace astro {
 //      glm::dvec3 angles = glm::eulerAngles(glm::dquat(data[q4], data[q1], data[q2], data[q3]));
 //      pitch = angles.x; yaw = angles.y; roll = angles.z;
 
-      quaternion_t(data[q4], data[q1], data[q2], data[q3]).getAngles(pitch, yaw, roll);
+      astro::quaternion_t(data[q4], data[q1], data[q2], data[q3]).getAngles(pitch, yaw, roll);
       
     }
     
@@ -200,7 +200,7 @@ namespace astro {
       
       for(std::size_t i=1; i<steps; ++i) {
         
-        rk4<10>(attitude[i-1].data, dt, attitude[i].data, attitude::integration);
+        astro::rk4<10>(attitude[i-1].data, dt, attitude[i].data, attitude::integration);
         
         attitude[i].normalize();
         

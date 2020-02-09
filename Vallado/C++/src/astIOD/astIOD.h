@@ -52,6 +52,12 @@ namespace astIOD
 		double latgd, double lon, double alt,
 		double rsecef[3], double vsecef[3]
 		);
+  
+  void site
+  (
+   double latgd, double lon, double alt,
+   double rsecef[3]
+   );
 
 	/* ------------------------ angles-only techniques -------------------------- */
 	void anglesgauss

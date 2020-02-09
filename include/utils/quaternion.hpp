@@ -23,14 +23,15 @@
  * SOFTWARE.
  */
 
-#ifndef _H_QUATERNION_H_
-#define _H_QUATERNION_H_
+#ifndef _H_ASTRO_QUATERNION_H_
+#define _H_ASTRO_QUATERNION_H_
 
 #include <cstdlib>
 #include <cstdio>
 
 #include <cmath>
 
+namespace astro {
 
     /*****************************************************************************/
     // union quaternion_t
@@ -140,9 +141,11 @@
       }
       
     };
+  
+} /* namespace astro */
 
 
-#endif /* _H_QUATERNION_H_ */
+#endif /* _H_ASTRO_QUATERNION_H_ */
 
 
 

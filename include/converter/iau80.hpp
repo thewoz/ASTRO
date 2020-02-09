@@ -54,7 +54,7 @@ namespace astro {
     //}
     
     static iau80data iau80rec;
-    
+
     /*****************************************************************************/
     // init
     /*****************************************************************************/
@@ -63,7 +63,7 @@ namespace astro {
       if(!isInited) {
 
         coordFK5::iau80in(iau80rec, "/usr/local/include/vallado/data/nut80.dat");
-        
+                
         isInited = true;
         
         //print();
@@ -85,13 +85,14 @@ namespace astro {
     static void print(FILE * output = stdout) {
       
       //double convrt = 3600.0 / 0.0001; // 0.0001" to deg
-      double convrt = 0.0001;//0.0001 * pi / (180*3600.0); // 0.0001" to rad
+      double convrt = 0.0001 * M_PI / (180 * 3600.0);   // 0.0001" to rad
 
-      for(int i=0; i<107; ++i)
-        fprintf(output, "%d %d %d %d %d %d %.16lf %.16lf %.16lf %.16lf %.1lf\n",
-                iau80rec.iar80[i][0], iau80rec.iar80[i][1], iau80rec.iar80[i][2], iau80rec.iar80[i][3], iau80rec.iar80[i][4], iau80rec.iar80[i][5],
-                iau80rec.rar80[i][0] / convrt, iau80rec.rar80[i][1] / convrt, iau80rec.rar80[i][2] / convrt, iau80rec.rar80[i][3] / convrt, iau80rec.rar80[i][4] / convrt);
-      
+      for(int i=1; i<=106; ++i)
+        fprintf(output, "%d %d %d %d %d %lf %lf %lf %lf\n",
+                iau80rec.iar80[i][1], iau80rec.iar80[i][2], iau80rec.iar80[i][3],
+                iau80rec.iar80[i][4], iau80rec.iar80[i][5],
+                iau80rec.rar80[i][1]/ convrt, iau80rec.rar80[i][2]/ convrt, iau80rec.rar80[i][3]/ convrt,
+                iau80rec.rar80[i][4]/ convrt);
     }
   
   }; /* class iau80 */

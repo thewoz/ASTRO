@@ -17,6 +17,12 @@ Modifiche dei sorgenti che non alterano il funzionamento del codice originale:
 13) Modificati i prototipi di due funzioni in EopSwp.h
 14) Modificata days2mdhms() per evitare situazioni tipo 9h60m00s
 15) Modificata hms_rad() e dms_rad() per gestire gli angoli negativi
+16) Modificata itrf_j2k() togliendo l'ultimo argomento
+17) Modificata itrf_j2k() mettendo il penultimo con valore con default
+18) Modificata teme_ecef() mettendo lultimo con valore con default 
+19) Aggiunta una funzione sgp4() che non prende la velocita come parametro
+20) Aggiunta la funzione site() senza la velocita
+
 
 Modifiche che posso alterare il funzionamento del codice rispetto all'originale:
 

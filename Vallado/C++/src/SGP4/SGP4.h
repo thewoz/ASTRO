@@ -132,6 +132,8 @@ namespace SGP4Funcs
 		double r[3], double v[3]
 		);
 
+  bool sgp4(elsetrec& satrec, double tsince, double r[3]);
+
 	void getgravconst
 		(
 		gravconsttype whichconst,

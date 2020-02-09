@@ -2037,7 +2037,13 @@ namespace SGP4Funcs
 	}  // sgp4
 
 
+  bool sgp4(elsetrec& satrec, double tsince, double r[3]) {
+    
+    double dummy[3];
+    
+    return sgp4(satrec, tsince, r, dummy);
 
+  }
 
 
 	/* -----------------------------------------------------------------------------
