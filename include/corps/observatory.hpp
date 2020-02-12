@@ -99,9 +99,11 @@ namespace astro {
     /*****************************************************************************/
     Observatory(double _latitude, double _longitude, double _height = 0.0, int crs = CRS::ECEF) {
       
-      latitude  = Radians(_latitude);
-      longitude = Radians(_longitude);
+      // Passo da gradi a radianti
+      latitude  = astro::Radians(_latitude);
+      longitude = astro::Radians(_longitude);
       
+      // Passo da metri a chilometri
       height    = _height / 1000;
             
       astIOD::site(latitude, longitude, height, coord);
