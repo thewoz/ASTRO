@@ -22,14 +22,12 @@
 
 * Attitude.hpp -- Funzioni per propagare l'assetto
 * RK4.hpp  -- Funzione per itegrare tramite Runge-Kutta
-* Cubicspline.hpp -- Funzione per fittare con una spline
 * Angle.hpp  -- Funzioni per convertire tra angoli e radianti
 * Curl.hpp -- Funzioni per scaricare file dal web
 * Quaternion.hpp -- Funzioni per gestire i quaterioni
 * TLE.hpp -- Funzioni per gestire i TLE
 * Date.hpp -- Funzioni per gestire le date
-* Lagrange.hpp -- Funzione per fittare tramite Lagrange
-* Utils,hpp -- Funzioni per calcolarsi l'elevazione del satellite , l'angolo theta con il sole e il fattore di attenuazione atmosferico
+* Utils.hpp -- Funzioni per calcolarsi l'elevazione del satellite, l'angolo theta con il sole e il fattore di attenuazione atmosferico
 
 
 ###### Nel folder Corps:
@@ -43,7 +41,8 @@
 
 * Controllare che gli step di integrazione del orbita del satellite del sole e della stazione a terra siano corretti
 * Controllare la posizione del sole in che sistema di riferimento si trova
-* Errore nelle funzioni da TEME ad ECI
+* Controllare l'integrazione dell'assetto del satellite
+
 
 ## TODO
 
