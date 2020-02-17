@@ -140,7 +140,7 @@ namespace astro {
         
         states[step].jDay = startTimeJD + (integrationTimeJD * step);
         
-        _position(states[step].jDay, sinceTimeMin, states[step].position, states[step].velocity);
+        _position(states[step].jDay, sinceTimeMin, states[step].position, states[step].velocity, crs);
         
       } // for(step)
       
@@ -161,7 +161,7 @@ namespace astro {
       
       double dummy[3];
       
-      _position(jDay, sinceTimeMin, coord, dummy);
+      _position(jDay, sinceTimeMin, coord, dummy, crs);
       
     }
     
