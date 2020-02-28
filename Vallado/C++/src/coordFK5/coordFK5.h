@@ -214,10 +214,6 @@ namespace coordFK5
 		double recef[3], double vecef[3], double aecef[3],
 		double ttt, double jdut1, double lod, double xp, double yp, int eqeterms = 2
 		);
-
-  
-  void radec_j2k_to_jnow(double jd , double ra, double dec, double & ranow, double & decnow);
-  
   
 }  // namespace coordFK5
 

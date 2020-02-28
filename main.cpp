@@ -25,10 +25,11 @@
 
 //#define TESTEOPC
 //#define TESTDATE
-#define TESTSATELLITE
+//#define TESTSATELLITE
 //#define TESTSUN
 //#define TESTSTATION
 //#define TESTATTITUDE
+//#define TESTCONVERT
 
 #include <cstdio>
 #include <cstdlib>
@@ -45,6 +46,48 @@
 // main
 /*****************************************************************************/
 int main(int argc, char *argv[]) {
+
+  /*****************************************************************************/
+  // Test Convert
+  /*****************************************************************************/
+#ifdef TESTCONVERT
+
+
+
+
+
+  double a[3] = {1000, 2000, 3000}; double b[3]; double c[3];
+
+  astro::teme2ecef(a, 2440588.0, b); astro::ecef2teme(b, 2440588.0, c); printf("teme2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::teme2eci(a,  2440588.0, b);  astro::eci2teme(b, 2440588.0, c); printf("eci2teme  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+
+  astro::ecef2teme(a, 2440588.0, b); astro::teme2ecef(b, 2440588.0, c); printf("ecef2teme %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::ecef2eci(a,  2440588.0, b);  astro::eci2ecef(b, 2440588.0, c); printf("ecef2eci  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+
+  astro::eci2ecef(a, 2440588.0, b); astro::ecef2eci(b, 2440588.0, c); printf("eci2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::eci2teme(a, 2440588.0, b); astro::teme2eci(b, 2440588.0, c); printf("eci2teme %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  
+  char TLE_line1[] = "1 40697U 15028A   19183.14463244 -.00000013  00000-0  11813-4 0  9995";
+  char TLE_line2[] = "2 40697  98.5665 257.4286 0001154  84.4667 275.6654 14.30816706210225";
+
+  double jday = astro::Date(22,2,2019,22,07,3.0).getJDay();
+
+  astro::Satellite(TLE_line1, TLE_line2).position(jday, a, CRS::TEME);
+
+  double vijk[3];
+
+  double rr; double ra; double dec; double drr; double drtasc; double ddecl;
+
+  astIOD::rv_radec(a, vijk, edirection::eTo, rr, ra, dec, drr, drtasc, ddecl);
+
+  printf("ra %f dec %f\n", astro::Degrees(ra), astro::Degrees(dec));
+
+  astro::teme2ecef(a, jday, b); astro::ecef2teme(b, jday, c); printf("teme2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::teme2eci(a,  jday, b);  astro::eci2teme(b, jday, c); printf("eci2teme  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+
+#endif
+
+
 
 #ifdef TESTATTITUDE
   /*****************************************************************************/

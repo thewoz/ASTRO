@@ -38,6 +38,11 @@ test:
 	g++ -march=native -Os -std=c++17 -I./include -DTESTSUN      ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testSun
 	g++ -march=native -Os -std=c++17 -I./include -DTESTSTATION  ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testStation
 	g++ -march=native -Os -std=c++17 -I./include -DTESTATTITUDE ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testAttitude
+	g++ -march=native -Os -std=c++17 -I./include -DTESTCONVERT  ./main.cpp -L/usr/local/lib/ -lcoordFK5 -lastTime -lastMath -lastIOD -lSGP4 -lastUtils -last2Body -lEopSpw -lcurl -o ./bin/testConvert
+
+
+
+
 
 
 

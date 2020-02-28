@@ -160,7 +160,6 @@ namespace astIOD
 		double v1t[3], double v2t[3], double dv1[3], double dv2[3], char error[12]
 		);
 
-
 }  // namespace 
 
 #endif
