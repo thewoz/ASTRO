@@ -18,6 +18,7 @@ install: setup SGP4 astTime astMath ast2Body astUtils coordFK5 astIOD EopSpw
 	@cp ./build/include/* $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)/
 	@cp ./build/lib/*     $(LIBRARY_INSTALL_PATH)/
 	@cp -r ./data         $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)/
+	@chmod a+wr $(INCLUDE_INSTALL_PATH)/$(LIBRARY_NAME)/data
 	@rm -r ./build
 	@cp vallado.pc /usr/local/lib/pkgconfig/
 
