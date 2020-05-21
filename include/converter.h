@@ -268,8 +268,8 @@ vector<double> RaDec2AzEl(double ra, double dec, double lat, double lon, double 
  // site invece le cordinate del sito in TEME
  // sat invece le cordinate del satellite in TEME
  /*****************************************************************************/
- /*
- void ra2tradec(double sat[3],  double tra, double tdec, double site[3]) {
+/*
+ void rv2tradec(double sat[3],  double & tra, double & tdec, double site[3]) {
    
    double rho[3];
    
