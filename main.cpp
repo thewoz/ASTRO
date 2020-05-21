@@ -376,10 +376,8 @@ int main(int argc, char *argv[]) {
   {
     //inizializzazione variabili
     double r_sat_eci[3], v_sat_eci[3], r_obs_ecef[3], r_obs_eci[3];
-    double ra,dec;
-    vector<double> coord;
 
-    //poszione satellite e osservatorio in ECI e ECEFw
+    //poszione satellite e osservatorio in ECI e ECEF
     for(int i = 0; i < 3; i++)
     {
       r_sat_eci[i]  = sat_states[j].position[i];
@@ -389,17 +387,15 @@ int main(int argc, char *argv[]) {
     }
 
 
+    double ra,dec;
     //conversione da r [km],v[km/s] a ra,dec topocentriche [rad]
-    coord = astro::rv2radec(r_sat_eci, v_sat_eci, r_obs_ecef, jday);
-    ra  = coord[0];
-    dec = coord[1];
+    astro::rv2radec(r_sat_eci, v_sat_eci, r_obs_ecef, jday, ra, dec);
     //printf("RA  = %f, DEC\n",ra);
     //printf("DEC = %f\n",dec);
 
+    double Az,El;
     //conversione ra,dec [deg,deg] topocentriche in azimut ed elevazione [deg,deg]
-    vector<double> AzEl = astro::RaDec2AzEl(ra,dec,latitude,longitude,jday);
-    double Az = AzEl[0];
-    double El = AzEl[1];
+    astro::RaDec2AzEl(ra,dec,latitude,longitude,jday,Az,El);
     //printf("Az  = %f\n",Az);
     //printf("El  = %f\n",El);
 
@@ -424,7 +420,6 @@ int main(int argc, char *argv[]) {
     {cout << "Il satellite è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
     else
     {cout << "Il satellite NON è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
-
 
     //aggiornamento tempo di propagazione e contatore
     jday += step/(24.0*3600.0);

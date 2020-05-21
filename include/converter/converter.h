@@ -27,94 +27,78 @@
 #ifndef _H_ASTRO_CONVERTER_H
 #define _H_ASTRO_CONVERTER_H
 
-#include <iostream>
-#include <vector>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 
-using namespace std;
-
+//****************************************************************************/
+// namespace astro
+//****************************************************************************/
 namespace astro {
-
-//double dot(double vect_A[3], double vect_B[3])
-//{
-//  double product = 0;
-//  for (int i = 0; i < 3; i++){product = product + vect_A[i] * vect_B[i];}
-//  return product;
-//}
-
-
-vector<double> rv2radec(double r_sat_ECI[3], double v_sat_ECI[3],double r_obs_ECEF[3], double jday)// double rho_eci[3], double ra, double dec, double drho_eci[3], double dtrtasc, double dtdecl)
-{
-
-  // FIXED: Modifica della funzione, da void a vector<double>
-  vector<double> coord;
-  double rho_eci[3], ra, dec, drho_eci[3], dtrtasc, dtdecl;
-  const double small = 0.00000001;
   
-  // --------------------- implementation ------------------------
-  //----------------- get site vector in ecef -------------------
-  //double r_obs_ECEF[3];
-  //astIOD::site(latgd,lon,alt,r_obs_ECEF);
-  
-  double trtasc, tdecl;
+  //****************************************************************************/
+  // rv2radec
+  //****************************************************************************/
+  void rv2radec(double r_sat_ECI[3], double v_sat_ECI[3],double r_obs_ECEF[3], double jday, double & ra, double & dec) {
 
-  // -------------------- convert ecef to eci -------------------
-  //METTERE DIRETTAMENTE LA POSIZIONE DELL'OSSERVATORIO IN ECI
-  double r_obs_ECI[3];
-  double v_obs_ECI[3];
-  double v_obs_ECEF[3] = {0,0,0};
-  astro::ecef2eci(r_obs_ECEF,v_obs_ECEF, jday,r_obs_ECI,v_obs_ECI);
+    double rho_eci[3], drho_eci[3], dtrtasc, dtdecl;
+    const double small = 0.00000001;
 
-  //---------------------range ------------------------
-  rho_eci[0]  = r_sat_ECI[0] - r_obs_ECI[0];
-  rho_eci[1]  = r_sat_ECI[1] - r_obs_ECI[1];
-  rho_eci[2]  = r_sat_ECI[2] - r_obs_ECI[2];
-  drho_eci[0] = v_sat_ECI[0] - v_obs_ECI[0];
-  drho_eci[1] = v_sat_ECI[1] - v_obs_ECI[1];
-  drho_eci[2] = v_sat_ECI[2] - v_obs_ECI[2];
-  
-  double normRho = astMath::mag(rho_eci);
+    double trtasc, tdecl;
 
-  double temp = sqrt(pow(rho_eci[0],2) + pow(rho_eci[1],2));
-  if(temp < small){trtasc = atan2(drho_eci[1], drho_eci[0]);}
-  else{trtasc = atan2(rho_eci[1], rho_eci[0]);} //rad
-  
-  //FIXED: controllo sulla ra (RIGA AGGIUNTA PER CORREGGERE CODICE VALLADO)
-  if(trtasc < 0.1) trtasc += 2.0 * M_PI; 
+    // -------------------- convert ecef to eci -------------------
+    //METTERE DIRETTAMENTE LA POSIZIONE DELL'OSSERVATORIO IN ECI
+    double r_obs_ECI[3]; double v_obs_ECI[3];
+    double v_obs_ECEF[3] = {0,0,0};
+    astro::ecef2eci(r_obs_ECEF, v_obs_ECEF, jday, r_obs_ECI, v_obs_ECI);
 
-  if (temp < small)           //directly over the north pole
-  {
-    if(rho_eci[2] > 0){tdecl= M_PI/2;}    // +90 deg
-    else if(rho_eci[2] == 0){tdecl = 0.0;}  // 0
-    else {tdecl= -M_PI/2;}                // -90 deg
+    //---------------------range ------------------------
+    rho_eci[0]  = r_sat_ECI[0] - r_obs_ECI[0];
+    rho_eci[1]  = r_sat_ECI[1] - r_obs_ECI[1];
+    rho_eci[2]  = r_sat_ECI[2] - r_obs_ECI[2];
+    drho_eci[0] = v_sat_ECI[0] - v_obs_ECI[0];
+    drho_eci[1] = v_sat_ECI[1] - v_obs_ECI[1];
+    drho_eci[2] = v_sat_ECI[2] - v_obs_ECI[2];
+    
+    double normRho = astMath::mag(rho_eci);
+
+    double temp = sqrt(pow(rho_eci[0],2) + pow(rho_eci[1],2));
+    if(temp < small){trtasc = atan2(drho_eci[1], drho_eci[0]);}
+    else{trtasc = atan2(rho_eci[1], rho_eci[0]);} //rad
+    
+    //FIXED: controllo sulla ra (RIGA AGGIUNTA PER CORREGGERE CODICE VALLADO)
+    if(trtasc < 0.1) trtasc += 2.0 * M_PI;
+
+    if (temp < small)           //directly over the north pole
+    {
+      if(rho_eci[2] > 0){tdecl= M_PI/2;}    // +90 deg
+      else if(rho_eci[2] == 0){tdecl = 0.0;}  // 0
+      else {tdecl= -M_PI/2;}                // -90 deg
+    }
+    else
+    {
+      double magrhoeci = astMath::mag(rho_eci);
+      tdecl= asin(rho_eci[2]/magrhoeci); //rad
+    }
+
+
+    double temp1 = -rho_eci[1]*rho_eci[1] - rho_eci[0]*rho_eci[0];
+    double d_rho = astMath::dot(rho_eci,drho_eci)/normRho;
+    if (abs(temp1)>small){dtrtasc = (drho_eci[0]*rho_eci[1] - drho_eci[1]*rho_eci[0])/temp1;}
+    else {dtrtasc = 0.0;}
+    if (abs(temp)>small){dtdecl = (drho_eci[2] - d_rho*sin(tdecl))/temp;}
+    else{dtdecl= 0.0;}
+
+    //conversione in gradi ra e dec topocentriche
+    ra  = astro::degrees(trtasc);
+    dec = astro::degrees(tdecl);
+    
   }
-  else
-  {
-    double magrhoeci = astMath::mag(rho_eci);
-    tdecl= asin(rho_eci[2]/magrhoeci); //rad
-  }
 
-
-  double temp1 = -rho_eci[1]*rho_eci[1] - rho_eci[0]*rho_eci[0];
-  double d_rho = astMath::dot(rho_eci,drho_eci)/normRho;
-  if (abs(temp1)>small){dtrtasc = (drho_eci[0]*rho_eci[1] - drho_eci[1]*rho_eci[0])/temp1;}
-  else {dtrtasc = 0.0;}
-  if (abs(temp)>small){dtdecl = (drho_eci[2] - d_rho*sin(tdecl))/temp;}
-  else{dtdecl= 0.0;}
-
-
-  //conversione in gradi ra e dec topocentriche
-  ra  = astro::degrees(trtasc);
-  dec = astro::degrees(tdecl);
-
-  coord.push_back(ra);
-  coord.push_back(dec);
-
-  return coord;
-  
-}
-
-vector<double> RaDec2AzEl(double ra, double dec, double lat, double lon, double JD)
-{
+  //****************************************************************************/
+  // RaDec2AzEl
+  //****************************************************************************/
+  void RaDec2AzEl(double ra, double dec, double lat, double lon, double JD, double & Az, double & El) {
   /*
   % Modifica Fabio: input tempo in jd
   %
@@ -186,19 +170,13 @@ vector<double> RaDec2AzEl(double ra, double dec, double lat, double lon, double 
   double LHA_rad = astro::radians(LHA);
   //Elevation deg
   double El_rad = asin(sin(lat_rad)*sin(dec_rad)+cos(lat_rad)*cos(dec_rad)*cos(LHA_rad));
-  double El = astro::degrees(El_rad);
+  El = astro::degrees(El_rad);
 
   //Azimuth deg
   double c_rad = atan2(-sin(LHA_rad)*cos(dec_rad)/cos(El_rad),(sin(dec_rad)-sin(El_rad)*sin(lat_rad))/(cos(El_rad)*cos(lat_rad)));
   double c     = astro::degrees(c_rad);
-  double Az    = c - floor(c/360.0)*360.0; //deg
+  Az    = c - floor(c/360.0)*360.0; //deg
 
-  vector<double> AzEl;
-
-  AzEl.push_back(Az);
-  AzEl.push_back(El);
-
-  return AzEl;
 }
 
 } /* namespace astro */
