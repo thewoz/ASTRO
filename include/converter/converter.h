@@ -27,16 +27,6 @@
 #ifndef _H_ASTRO_CONVERTER_H
 #define _H_ASTRO_CONVERTER_H
 
-#include "./converter/eopc.hpp"
-
-#include "./converter/ecef.hpp"
-#include "./converter/teme.hpp"
-#include "./converter/eci.hpp"
-
-#include "./converter/lla2ecef.hpp"
-
-#include "./converter/eci2jnow.hpp"
-
 #include <iostream>
 #include <vector>
 
@@ -44,52 +34,12 @@ using namespace std;
 
 namespace astro {
 
-
-/*****************************************************************************
- %  this function converts the position of on object in right ascension and declination values.
- % uses velocity vector to find the solution of singular cases.
- %
- %  inputs:       description                    range / units
- %    r           -  position vector             km
- %    v           -  velocity vector             km/s
- %
- %  outputs:
- %    ra         - right ascension               rad
- %    dec        - declination                   rad
- %
- *****************************************************************************/
-
-  ////// CI HAI PROVATO LEO, MA PURTROPPO SEI SOLO UN INFORMATICO!!!!!!!!!!!!!!!!!!!
-  /*
-  void rv2radec(const double r[3], const double v[3], double & ra, double & dec) {
-    
-    const double small = 0.00000001;
-    
-    double temp = sqrt(r[0]*r[0] + r[1]*r[1]);
-    
-    if(temp < small) {
-      
-      double temp1 = sqrt(v[0]*v[0] + v[1]*v[1]);
-      
-      ra = 0.0;
-      
-      if(fabs(temp1) > small) ra = atan2(v[1]/temp1, v[0]/temp1);
-      
-    } else { ra = atan2(r[1]/temp, r[0]/temp); }
-    
-    dec = asin(r[2] / astMath::mag(r));
-    
-  }
-  */
-}
-
-
-double dot(double vect_A[3], double vect_B[3]) 
-{ 
-  double product = 0; 
-  for (int i = 0; i < 3; i++){product = product + vect_A[i] * vect_B[i];}
-  return product; 
-} 
+//double dot(double vect_A[3], double vect_B[3])
+//{
+//  double product = 0;
+//  for (int i = 0; i < 3; i++){product = product + vect_A[i] * vect_B[i];}
+//  return product;
+//}
 
 
 vector<double> rv2radec(double r_sat_ECI[3], double v_sat_ECI[3],double r_obs_ECEF[3], double jday)// double rho_eci[3], double ra, double dec, double drho_eci[3], double dtrtasc, double dtdecl)
@@ -125,7 +75,7 @@ vector<double> rv2radec(double r_sat_ECI[3], double v_sat_ECI[3],double r_obs_EC
   double normRho = astMath::mag(rho_eci);
 
   double temp = sqrt(pow(rho_eci[0],2) + pow(rho_eci[1],2));
-  if (temp < small){trtasc = atan2(drho_eci[1], drho_eci[0]);}
+  if(temp < small){trtasc = atan2(drho_eci[1], drho_eci[0]);}
   else{trtasc = atan2(rho_eci[1], rho_eci[0]);} //rad
   
   //FIXED: controllo sulla ra (RIGA AGGIUNTA PER CORREGGERE CODICE VALLADO)
@@ -134,7 +84,7 @@ vector<double> rv2radec(double r_sat_ECI[3], double v_sat_ECI[3],double r_obs_EC
   if (temp < small)           //directly over the north pole
   {
     if(rho_eci[2] > 0){tdecl= M_PI/2;}    // +90 deg
-    else if(rho_eci[2] = 0){tdecl= 0.0;}  // 0
+    else if(rho_eci[2] == 0){tdecl = 0.0;}  // 0
     else {tdecl= -M_PI/2;}                // -90 deg
   }
   else
@@ -145,7 +95,7 @@ vector<double> rv2radec(double r_sat_ECI[3], double v_sat_ECI[3],double r_obs_EC
 
 
   double temp1 = -rho_eci[1]*rho_eci[1] - rho_eci[0]*rho_eci[0];
-  double d_rho = dot(rho_eci,drho_eci)/normRho;
+  double d_rho = astMath::dot(rho_eci,drho_eci)/normRho;
   if (abs(temp1)>small){dtrtasc = (drho_eci[0]*rho_eci[1] - drho_eci[1]*rho_eci[0])/temp1;}
   else {dtrtasc = 0.0;}
   if (abs(temp)>small){dtdecl = (drho_eci[2] - d_rho*sin(tdecl))/temp;}
@@ -153,8 +103,8 @@ vector<double> rv2radec(double r_sat_ECI[3], double v_sat_ECI[3],double r_obs_EC
 
 
   //conversione in gradi ra e dec topocentriche
-  ra  = astro::Degrees(trtasc);
-  dec = astro::Degrees(tdecl);
+  ra  = astro::degrees(trtasc);
+  dec = astro::degrees(tdecl);
 
   coord.push_back(ra);
   coord.push_back(dec);
@@ -216,10 +166,10 @@ vector<double> RaDec2AzEl(double ra, double dec, double lat, double lon, double 
   %JD = juliandate(yyyy,mm,dd,HH,MM,SS);
   */
 
-  double lat_rad = astro::Radians(lat);
-  double lon_rad = astro::Radians(lon);
-  double ra_rad  = astro::Radians(ra);
-  double dec_rad = astro::Radians(dec);
+  double lat_rad = astro::radians(lat);
+  //double lon_rad = astro::radians(lon);
+  //double ra_rad  = astro::radians(ra);
+  double dec_rad = astro::radians(dec);
 
   double T_UT1 = (JD-2451545)/36525.0;                                                      
   double ThetaGMST = 67310.54841 + (876600.0*3600.0 + 8640184.812866)*T_UT1 + 0.093104*(pow(T_UT1,2)) -(6.2*pow(10.0,-6))*(pow(T_UT1,3)); //deg
@@ -233,14 +183,14 @@ vector<double> RaDec2AzEl(double ra, double dec, double lat, double lon, double 
 
   //Define Siderial Time LHA)
   double LHA = (ThetaLST-ra) - floor((ThetaLST-ra)/360.0)*360.0; //funzione modulo [deg]
-  double LHA_rad = astro::Radians(LHA);
+  double LHA_rad = astro::radians(LHA);
   //Elevation deg
   double El_rad = asin(sin(lat_rad)*sin(dec_rad)+cos(lat_rad)*cos(dec_rad)*cos(LHA_rad));
-  double El = astro::Degrees(El_rad);
+  double El = astro::degrees(El_rad);
 
   //Azimuth deg
   double c_rad = atan2(-sin(LHA_rad)*cos(dec_rad)/cos(El_rad),(sin(dec_rad)-sin(El_rad)*sin(lat_rad))/(cos(El_rad)*cos(lat_rad)));
-  double c     = astro::Degrees(c_rad);
+  double c     = astro::degrees(c_rad);
   double Az    = c - floor(c/360.0)*360.0; //deg
 
   vector<double> AzEl;
@@ -251,45 +201,6 @@ vector<double> RaDec2AzEl(double ra, double dec, double lat, double lon, double 
   return AzEl;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-/*****************************************************************************/
- // converte da ra e dec geocentrice a ra e dec topocentriche
- // le ra e dec devono essere in gradi
- // site invece le cordinate del sito in TEME
- // sat invece le cordinate del satellite in TEME
- /*****************************************************************************/
-/*
- void rv2tradec(double sat[3],  double & tra, double & tdec, double site[3]) {
-   
-   double rho[3];
-   
-   rho[0] = sat[0] - site[0];
-   rho[1] = sat[1] - site[1];
-   rho[2] = sat[2] - site[2];
-   
-   double normRho = astMath::mag(rho);
-   
-   double coord[2];
-   
-   coord[0] = atan2(rho[1],rho[0]);
-   coord[1] = asin(rho[2] / normRho);
-
-   if(coord[0] < 0.1) coord[0] += 2 * M_PI;
-   
-   tra  = astro::Degrees(coord[0]);
-   tdec = astro::Degrees(coord[1]);
-
- }
-  */
+} /* namespace astro */
 
 #endif /* _H_ASTRO_CONVERTER_H */

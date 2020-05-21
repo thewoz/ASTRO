@@ -32,21 +32,17 @@
 #include <vector>
 #include <string>
 
-#include "../utils.h"
-#include "../propagator.h"
-#include "../converter.h"
-
-/*****************************************************************************/
+//****************************************************************************/
 // namespace astro
-/*****************************************************************************/
+//****************************************************************************/
 namespace astro {
   
   class observatory;
   class sun;
   
-  /*****************************************************************************/
+  //****************************************************************************/
   // class SatelliteState
-  /*****************************************************************************/
+  //****************************************************************************/
   class SatelliteState {
     
   public:
@@ -73,9 +69,9 @@ namespace astro {
   
   
   
-  /*****************************************************************************/
+  //****************************************************************************/
   // class Satellite
-  /*****************************************************************************/
+  //****************************************************************************/
   class Satellite {
     
   public:
@@ -102,10 +98,10 @@ namespace astro {
       name = tle.name;
     }
 
-    /*****************************************************************************/
+    //****************************************************************************/
     // orbit
-    /*****************************************************************************/
-    void orbit(astro::Date startDate, astro::Date stopDate, double integrationTimeSec, std::vector<SatelliteState> & states, int crs = CRS::TEME) {
+    //****************************************************************************/
+    void orbit(astro::Date startDate, astro::Date stopDate, double integrationTimeSec, std::vector<astro::SatelliteState> & states, int crs = CRS::TEME) {
       
       if(!isInit){
         fprintf(stderr, "satellite must init before\n");
@@ -113,13 +109,13 @@ namespace astro {
       }
       
       // tempo di propagazione (in minuti)
-      double propagationTimeMin = Date::difference(stopDate, startDate, Date::MINUTES);
+      double propagationTimeMin = astro::Date::difference(stopDate, startDate, astro::Date::MINUTES);
       
       // converto il tempo di integrazione (in minuti)
       double integrationTimeMin = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_MINUTE);
       
       // tempo d'inzio della propagazione dal rilascio (in minuti)
-      double startTimeMin = Date::difference(startDate, tle.releaseDate, Date::MINUTES);
+      double startTimeMin = astro::Date::difference(startDate, tle.releaseDate, astro::Date::MINUTES);
       
       // numero di campionamenti da fare
       // FIXME: sto piu uno non mi torna
@@ -146,9 +142,9 @@ namespace astro {
       
     }
     
-    /*****************************************************************************/
+    //****************************************************************************/
     // position
-    /*****************************************************************************/
+    //****************************************************************************/
     // NOTE: si potrebbe chiamare
     void position(double jDay, double coord[3], int crs = CRS::TEME) {
       
@@ -157,7 +153,7 @@ namespace astro {
         abort();
       }
       
-      double sinceTimeMin = Date::difference(jDay, tle.releaseDate, Date::MINUTES);
+      double sinceTimeMin = astro::Date::difference(jDay, tle.releaseDate, astro::Date::MINUTES);
       
       double dummy[3];
       
@@ -173,9 +169,9 @@ namespace astro {
     // true if the satellite in inited
     bool isInit;
     
-    /*****************************************************************************/
+    //****************************************************************************/
     // _position
-    /*****************************************************************************/
+    //****************************************************************************/
     void _position(double jDay, double sinceTimeMin, double coord[3], double vel[3], int crs = CRS::TEME) {
       
       double tmpCoord[3]; double tmpVel[3];

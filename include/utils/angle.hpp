@@ -31,14 +31,14 @@
 
 #include <cmath>
 
-/*****************************************************************************/
+//**********************************************************************************/
 // namespace astro
-/*****************************************************************************/
+//**********************************************************************************/
 namespace astro {
 
-  /*****************************************************************************/
+  //**********************************************************************************/
   // namespace utils
-  /*****************************************************************************/
+  //**********************************************************************************/
   namespace utils {
     
     const double deg2rad = M_PI  / 180.0;
@@ -46,9 +46,9 @@ namespace astro {
     
   }
   
-  inline double Radians(double deg, double min, double sec) { return (deg + min/60.0 + sec/3600.0) * utils::deg2rad; }
-  inline double Radians(double deg) { return deg * utils::deg2rad; }
-  inline double Degrees(double rad) { return rad * utils::rad2deg; }
+  inline double radians(double deg, double min, double sec) { return (deg + min/60.0 + sec/3600.0) * utils::deg2rad; }
+  inline double radians(double deg) { return deg * utils::deg2rad; }
+  inline double degrees(double rad) { return rad * utils::rad2deg; }
  
 
 } /* namespace astro */

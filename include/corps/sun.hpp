@@ -32,12 +32,6 @@
 #include <vector>
 #include <string>
 
-#include <vallado/ast2Body.h>
-#include <vallado/astUtils.h>
-
-#include "../utils.h"
-#include "../converter.h"
-
 #define SUN_VALLADO
 //#define SUN_KDE_QUICK
 //define SUN_KDE_PRECISE

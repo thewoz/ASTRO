@@ -32,13 +32,10 @@
 
 #include <vector>
 
-#include <vallado/coordFK5.h>
 
-#include "iau80.hpp"
-
-/*****************************************************************************/
+//****************************************************************************/
 // namespace astro
-/*****************************************************************************/
+//****************************************************************************/
 namespace astro {
   
   /* ******************* Function J2K_JNOW ***************************** * \
@@ -58,22 +55,21 @@ namespace astro {
     // astronomical algorithms meeus
     double t = (jDay-2451545.0) / 36525.0;
     
-    raEci  = astro::Radians(raEci);
-    decEci = astro::Radians(decEci);
+    raEci  = astro::radians(raEci);
+    decEci = astro::radians(decEci);
 
-    double zita  = astro::Radians((2306.2181*t+0.30188*t*t+0.017998*t*t*t)/3600.0);
-    double zeta  = astro::Radians((2306.2181*t+1.09468*t*t+0.018203*t*t*t)/3600.0);
-    double theta = astro::Radians((2004.3109*t-0.42665*t*t-0.041833*t*t*t)/3600.0);
+    double zita  = astro::radians((2306.2181*t+0.30188*t*t+0.017998*t*t*t)/3600.0);
+    double zeta  = astro::radians((2306.2181*t+1.09468*t*t+0.018203*t*t*t)/3600.0);
+    double theta = astro::radians((2004.3109*t-0.42665*t*t-0.041833*t*t*t)/3600.0);
     
     double A = cos(decEci)*sin(raEci+zita);
     double B = cos(theta)*cos(decEci)*cos(raEci+zita)-sin(theta)*sin(decEci);
     double C = sin(theta)*cos(decEci)*cos(raEci+zita)+cos(theta)*sin(decEci);
     
-    raJnow  = astro::Degrees(atan2(A,B) + zeta);
-    decJnow = astro::Degrees(asin(C));
+    raJnow  = astro::degrees(atan2(A,B) + zeta);
+    decJnow = astro::degrees(asin(C));
 
   }
-  
 
 } /* namespace astro */
 

@@ -31,22 +31,16 @@
 
 #include <cmath>
 
-//#include <glm/glm.hpp>
-//#include <glm/gtc/quaternion.hpp>
-
-#include "quaternion.hpp"
-#include "rk4.hpp"
-
-/*****************************************************************************/
+//**********************************************************************************/
 // namespace astro
-/*****************************************************************************/
+//**********************************************************************************/
 namespace astro {
  
   enum { wx, wy, wz, q4, q1, q2, q3, ix, iy, iz };
   
-  /*****************************************************************************/
+  //**********************************************************************************/
   // struct attitude_t
-  /*****************************************************************************/
+  //**********************************************************************************/
   struct attitude_t {
     
     attitude_t() {}
@@ -57,41 +51,35 @@ namespace astro {
     
     double data[10];
 
-    /*****************************************************************************/
+    //**********************************************************************************/
     // get omega function
-    /*****************************************************************************/
+    //**********************************************************************************/
     double Wx() const { return data[wx]; }
     double Wy() const { return data[wy]; }
     double Wz() const { return data[wz]; }
     
-    /*****************************************************************************/
+    //**********************************************************************************/
     // get quaternion
-    /*****************************************************************************/
+    //**********************************************************************************/
     astro::quaternion_t q() const { return astro::quaternion_t(data[q4], data[q1], data[q2], data[q3]); }
 
-    /*****************************************************************************/
+    //**********************************************************************************/
     // normalize quaternion
-    /*****************************************************************************/
+    //**********************************************************************************/
     inline void normalize() {
       
       double norm = sqrt((data[q1] * data[q1]) + (data[q2] * data[q2]) + (data[q3] * data[q3]) + (data[q4] * data[q4]));
       
-      //printf("%f %f %f %f - %f\n", data[q1], data[q2], data[q3], data[q4], norm);
-
       data[q1] /= norm;
       data[q2] /= norm;
       data[q3] /= norm;
       data[q4] /= norm;
-      
-      //norm = sqrt((data[q1] * data[q1]) + (data[q2] * data[q2]) + (data[q3] * data[q3]) + (data[q4] * data[q4]));
-      
-      //printf("%f %f %f %f - %f\n\n", data[q1], data[q2], data[q3], data[q4], norm);
-
+    
     }
     
-    /*****************************************************************************/
+    //**********************************************************************************/
     // operator ()
-    /*****************************************************************************/
+    //**********************************************************************************/
     inline void operator () (double Wx, double Wy, double Wz, double Q4, double Q1, double Q2, double Q3, double Jx, double Jy, double Jz) {
       
       data[wx] = Wx; data[wy] = Wy; data[wz] = Wz;
@@ -106,33 +94,31 @@ namespace astro {
       
     }
     
-    /*****************************************************************************/
+    //**********************************************************************************/
     // println
-    /*****************************************************************************/
+    //**********************************************************************************/
     inline void println(FILE * output = stdout) {
       
       fprintf(output, "%f %f %f %f %f %f %f %f %f %f\n", data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9]);
       
     }
     
-    /*****************************************************************************/
+    //**********************************************************************************/
     // getAngles
-    /*****************************************************************************/
+    //**********************************************************************************/
     template <typename T>
     inline void getAngles(T & pitch, T & yaw, T & roll) const {
     
-//      glm::dvec3 angles = glm::eulerAngles(glm::dquat(data[q4], data[q1], data[q2], data[q3]));
-//      pitch = angles.x; yaw = angles.y; roll = angles.z;
-
       astro::quaternion_t(data[q4], data[q1], data[q2], data[q3]).getAngles(pitch, yaw, roll);
       
     }
     
   };
   
-  /*****************************************************************************/
+  
+  //**********************************************************************************/
   // namespace attitude
-  /*****************************************************************************/
+  //**********************************************************************************/
   namespace attitude {
     
     void integration(const double * const input, double * output) {
@@ -172,26 +158,10 @@ namespace astro {
       //printf("I %e %e %e\n", input[ix], input[iy], input[iz]);
       
     }
-    
-//    /*****************************************************************************/
-//    // Compute attitude for just a dt
-//    /*****************************************************************************/
-//    void compute(const attitude_t & attitude0, double dt, attitude_t & attitude) {
-//      rk4<10>(attitude0.data, dt, attitude.data, attitude::integration);
-//    }
-//
-//    /*****************************************************************************/
-//    // Compute attitude for just a dt
-//    /*****************************************************************************/
-//    attitude_t compute(const attitude_t & attitude0, double dt) {
-//      attitude_t attitude;
-//      compute(attitude0, dt, attitude);
-//      return attitude;
-//    }
-//
-    /*****************************************************************************/
+  
+    //**********************************************************************************/
     // Compute attitude for just multiple dt
-    /*****************************************************************************/
+    //**********************************************************************************/
     void compute(const attitude_t & attitude0, std::size_t steps, double dt, std::vector<attitude_t> & attitude) {
       
       attitude.resize(steps, attitude0);
@@ -207,130 +177,6 @@ namespace astro {
       }
       
     }
-    
-//    /*****************************************************************************/
-//    // Compute attitude for just multiple dt
-//    /*****************************************************************************/
-//    std::vector<attitude_t> compute(const attitude_t & attitude0, std::size_t steps, double dt) {
-//      std::vector<attitude_t> attitude;
-//      compute(attitude0, steps, dt, attitude);
-//      return attitude;
-//    }
- 
-    /*****************************************************************************/
-    // test
-    /*****************************************************************************/
-//    void test() {
-//      
-//      float pitch = glm::radians(45.0f);
-//      float yaw = glm::radians(30.0f);
-//      float roll = glm::radians(20.0f);
-//      
-//      glm::quat qGlm = glm::vec3(pitch, yaw, roll);
-//      quaternion_t qMpl(pitch, yaw, roll);
-//
-//      glm::vec3 euAnglesGlm = glm::eulerAngles(qGlm);
-//      glm::vec3 euAnglesMpl; qMpl.getAngles(euAnglesMpl.x, euAnglesMpl.y, euAnglesMpl.z);
-//      
-//      printf("glm %f %f %f\n", glm::degrees(euAnglesGlm.x), glm::degrees(euAnglesGlm.y), glm::degrees(euAnglesGlm.z));
-//      printf("mpl %f %f %f\n", glm::degrees(euAnglesMpl.x), glm::degrees(euAnglesMpl.y), glm::degrees(euAnglesMpl.z));
-//      
-//      printf("glm q %f %f %f %f\n", qGlm.x, qGlm.y, qGlm.z, qGlm.w);
-//      printf("mpl q %f %f %f %f\n", qMpl.x, qMpl.y, qMpl.z, qMpl.w);
-//      
-//      glm::quat qGlm2 =  glm::quat(qMpl.w, qMpl.x, qMpl.y, qMpl.z);
-//      glm::vec3 euAnglesGlm2 = glm::eulerAngles(qGlm2);
-//      printf("glm %f %f %f\n", glm::degrees(euAnglesGlm2.x), glm::degrees(euAnglesGlm2.y), glm::degrees(euAnglesGlm2.z));
-//
-//      attitude_t att = attitude_t(0,0,0, qMpl.w, qMpl.x, qMpl.y, qMpl.z, 1, 1, 1);
-//      glm::vec3 euAnglesAtt; att.getAngles(euAnglesAtt.x, euAnglesAtt.y, euAnglesAtt.z);
-//      printf("att %f %f %f\n", glm::degrees(euAnglesAtt.x), glm::degrees(euAnglesAtt.y), glm::degrees(euAnglesAtt.z));
-//      quaternion_t attQ = att.q();
-//      printf("att q %f %f %f %f\n", attQ.x, attQ.y, attQ.z, attQ.w);
-//      
-//      glm::mat3 matrixGlm = glm::mat3_cast(qGlm);
-//      
-//      printf("%f %f %f\n", matrixGlm[0][0], matrixGlm[0][1], matrixGlm[0][2]);
-//      printf("%f %f %f\n", matrixGlm[1][0], matrixGlm[1][1], matrixGlm[1][2]);
-//      printf("%f %f %f\n", matrixGlm[2][0], matrixGlm[2][1], matrixGlm[2][2]);
-//      
-//      double matrixMpl[3][3];
-//      qMpl.getRotationMatrix(matrixMpl);
-//      
-//      printf("%f %f %f\n", matrixMpl[0][0], matrixMpl[0][1], matrixMpl[0][2]);
-//      printf("%f %f %f\n", matrixMpl[1][0], matrixMpl[1][1], matrixMpl[1][2]);
-//      printf("%f %f %f\n", matrixMpl[2][0], matrixMpl[2][1], matrixMpl[2][2]);
-//      
-//    }
-    
-    //  /*****************************************************************************/
-    //  // struct inertia_t
-    //  /*****************************************************************************/
-    //  struct inertia_t {
-    //
-    //    // Principal axes of inertia
-    //    double axes[3];
-    //
-    //    inertia_t() {}
-    //    inertia_t(double axesX, double axesY, double axesZ) { (*this)(axesX, axesY, axesZ);   };
-    //
-    //    inline void operator () (double axesX, double axesY, double axesZ) {
-    //      axes[0] = axesX; axes[1] = axesY; axes[2] = axesZ;
-    //    }
-    //
-    //    inline double   operator [] (size_t index) const { return axes[index]; }
-    //    inline double & operator [] (size_t index)       { return axes[index]; }
-    //
-    //  };
-    //
-    //  /*****************************************************************************/
-    //  // struct rotation_t
-    //  /*****************************************************************************/
-    //  struct rotation_t {
-    //
-    //  public:
-    //
-    //    // Quaterion
-    //    mpl::math::quaternion_t q;
-    //
-    //    rotation_t() {}
-    //    rotation_t(double q4, double q1, double q2, double q3) { (*this)(q4, q1, q2, q3);   };
-    //
-    //    inline void operator () (double q4, double q1, double q2, double q3) {
-    //
-    //      q[0] = q4; q[1] = q1; q[2] = q2; q[3] = q3;
-    //
-    //      double check = fabs((q4*q4)+(q1*q1)+(q2*q2)+(q3*q3)-1);
-    //
-    //      if(check > 1.0e-08) printf("MERDA %f\n", check);
-    //
-    //    }
-    //
-    //    inline double   operator [] (size_t index) const { return q[index]; }
-    //    inline double & operator [] (size_t index)       { return q[index]; }
-    //
-    //  };
-    //
-    //  /*****************************************************************************/
-    //  // struct velocity_t
-    //  /*****************************************************************************/
-    //  struct velocity_t {
-    //
-    //    double omega[3];
-    //
-    //    velocity_t() {}
-    //    velocity_t(double omegaX, double omegaY, double omegaZ) { (*this)(omegaX, omegaY, omegaZ);   };
-    //
-    //    inline void operator () (double omegaX, double omegaY, double omegaZ) {
-    //      omega[0] = omegaX; omega[1] = omegaY; omega[2] = omegaZ;
-    //    }
-    //
-    //    inline double   operator [] (size_t index) const { return omega[index]; }
-    //    inline double & operator [] (size_t index)       { return omega[index]; }
-    //
-    //  };
-    
-    
     
   } /* namespace attitude */
   
