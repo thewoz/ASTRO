@@ -38,10 +38,10 @@
 
 // Utils
 #include "./utils/define.h"
+#include "./utils/angle.hpp"
 #include "./utils/utils.hpp"
 #include "./utils/date.hpp"
 #include "./utils/tle.hpp"
-#include "./utils/angle.hpp"
 #include "./utils/rk4.hpp"
 #include "./utils/quaternion.hpp"
 #include "./utils/attitude.hpp"
