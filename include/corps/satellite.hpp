@@ -123,7 +123,7 @@ namespace astro {
       
       // numero di campionamenti da fare
       // FIXME: sto piu uno non mi torna
-      int samples = (propagationTimeMin / integrationTimeMin) + 1;
+      int samples = (propagationTimeMin / integrationTimeMin);
       
       // alloco lo spazio
       states.resize(samples);

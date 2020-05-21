@@ -3,6 +3,7 @@
  *
  * Copyright © 2017 S5Lab
  * Created by Leonardo Parisi (leonardo.parisi[at]gmail.com)
+ * Modified by Gaetano Zarcone, Lorenzo Mariani
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +31,7 @@
 //#define TESTSTATION
 //#define TESTATTITUDE
 //#define TESTCONVERT
+#define TESTRADEC
 
 #include <cstdio>
 #include <cstdlib>
@@ -39,7 +41,15 @@
 
 #include <string>
 
-#include "astro.hpp"
+#include "astro/astro.hpp"
+
+#include <iostream>
+
+using namespace std;
+
+
+
+
 
 
 /*****************************************************************************/
@@ -54,23 +64,41 @@ int main(int argc, char *argv[]) {
 
 
 
-
-
+  double jday_prova = astro::Date(19,04,2020,11,00,00).getJDay();
   double a[3] = {1000, 2000, 3000}; double b[3]; double c[3];
 
-  astro::teme2ecef(a, 2440588.0, b); astro::ecef2teme(b, 2440588.0, c); printf("teme2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
-  astro::teme2eci(a,  2440588.0, b);  astro::eci2teme(b, 2440588.0, c); printf("eci2teme  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::teme2ecef(a, jday_prova, b); 
+  astro::ecef2teme(b, jday_prova, c); 
+  printf("teme2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::teme2eci(a,  jday_prova, b);  
+  astro::eci2teme(b, jday_prova, c); 
+  printf("eci2teme  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
 
-  astro::ecef2teme(a, 2440588.0, b); astro::teme2ecef(b, 2440588.0, c); printf("ecef2teme %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
-  astro::ecef2eci(a,  2440588.0, b);  astro::eci2ecef(b, 2440588.0, c); printf("ecef2eci  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::ecef2teme(a, jday_prova, b); 
+  astro::teme2ecef(b, jday_prova, c); 
+  printf("ecef2teme %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::ecef2eci(a,  jday_prova, b);  
+  astro::eci2ecef(b, jday_prova, c); 
+  printf("ecef2eci  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
 
-  astro::eci2ecef(a, 2440588.0, b); astro::ecef2eci(b, 2440588.0, c); printf("eci2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
-  astro::eci2teme(a, 2440588.0, b); astro::teme2eci(b, 2440588.0, c); printf("eci2teme %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::eci2ecef(a, jday_prova, b); 
+  astro::ecef2eci(b, jday_prova, c); 
+  printf("eci2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::eci2teme(a, jday_prova, b); 
+  astro::teme2eci(b, jday_prova, c); 
+  printf("eci2teme %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
   
-  char TLE_line1[] = "1 40697U 15028A   19183.14463244 -.00000013  00000-0  11813-4 0  9995";
-  char TLE_line2[] = "2 40697  98.5665 257.4286 0001154  84.4667 275.6654 14.30816706210225";
 
-  double jday = astro::Date(22,2,2019,22,07,3.0).getJDay();
+  //ATLAS CENTAUR 2         
+  //1 00694U 63047A   20140.15326762  .00000182  00000-0  82935-5 0  9991
+  //2 00694  30.3610  52.1406 0585972 292.3446  61.6075 14.02595276832603
+
+
+
+  char TLE_line1[] = "1 00694U 63047A   20140.15326762  .00000182  00000-0  82935-5 0  9991";
+  char TLE_line2[] = "2 00694  30.3610  52.1406 0585972 292.3446  61.6075 14.02595276832603";
+
+  double jday = astro::Date(19,05,2020,11,00,0.0).getJDay();
 
   astro::Satellite(TLE_line1, TLE_line2).position(jday, a, CRS::TEME);
 
@@ -82,8 +110,12 @@ int main(int argc, char *argv[]) {
 
   printf("ra %f dec %f\n", astro::Degrees(ra), astro::Degrees(dec));
 
-  astro::teme2ecef(a, jday, b); astro::ecef2teme(b, jday, c); printf("teme2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
-  astro::teme2eci(a,  jday, b);  astro::eci2teme(b, jday, c); printf("eci2teme  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::teme2ecef(a, jday, b); 
+  astro::ecef2teme(b, jday, c); 
+  printf("teme2ecef %e\n", sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
+  astro::teme2eci(a,  jday, b);  
+  astro::eci2teme(b, jday, c); 
+  printf("eci2teme  %e\n",  sqrt((((a[0]-c[0])*(a[0]-c[0]))+((a[1]-c[1])*(a[1]-c[1]))+((a[2]-c[2])*(a[2]-c[2])))));
 
 #endif
 
@@ -187,7 +219,7 @@ int main(int argc, char *argv[]) {
     
     fprintf(stderr, "Test Satellite:\n\n");
   
-    std::string outStrSatellite = "/Users/thewoz/Desktop/satellite.dat";
+    std::string outStrSatellite = "/home/gaetano/Desktop/satellite.dat";
   
     FILE * outputSatellite = fopen(outStrSatellite.c_str(), "w");
   
@@ -196,12 +228,12 @@ int main(int argc, char *argv[]) {
       abort();
     }
 
-    char TLE_line1[] = "1 25544U 98067A   19047.93785069  .00001237  00000-0  26703-4 0  9993";
-    char TLE_line2[] = "2 25544  51.6407 239.1790 0005867  36.2033  74.9248 15.53268833156571";
+    char TLE_line1[] = "1 00694U 63047A   20140.15326762  .00000182  00000-0  82935-5 0  9991";
+    char TLE_line2[] = "2 00694  30.3610  52.1406 0585972 292.3446  61.6075 14.02595276832603";
     
     std::vector<astro::SatelliteState> states;
 
-    astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(17,2,2019,11,00,00), astro::Date(17,2,2019,12,00,00), 60, states, CRS::ECI);
+    astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(19,05,2020,11,00,00), astro::Date(19,05,2020,12,00,00), 60, states, CRS::ECI);
 
     for(std::size_t i=0; i<states.size(); ++i){
       states[i].println(outputSatellite);
@@ -260,7 +292,7 @@ int main(int argc, char *argv[]) {
     
     fprintf(stderr, "Test Station:\n\n");
 
-    std::string outStrStation = "/Users/thewoz/Desktop/station.dat";
+    std::string outStrStation = "/home/gaetano/Desktop/urbe.dat";
     
     FILE * outputStation = fopen(outStrStation.c_str(), "w");
     
@@ -269,18 +301,28 @@ int main(int argc, char *argv[]) {
       abort();
     }
     
-    double latitude  = astro::Radians(41.9577777777);
-    double longitude = astro::Radians(12.505555555);
-    double altitude  = 16.0;
+    //double latitude  = astro::Radians(41.9558333333333);
+    //double longitude = astro::Radians(12.5055555555556);
+    //double altitude  = 76.0;
+
+    //astro::Observatory collepardo(latitude, longitude, altitude);
+    //std::vector<astro::ObservatoryState> states;
+    //collepardo.orbit(astro::Date(19,05,2020,11,00,00).getJDay(), astro::Date(19,05,2020,12,00,00).getJDay(), dt, states, CRS::TEME);
+
+    double latitude  = 41.9558333333333;
+    double longitude = 12.5055555555556;
+    double altitude  = 76.0;
     
     double dt = 60;
 
-    astro::Observatory collepardo(latitude, longitude, altitude);
+    //lat e lon sono in gradi. La conversione in rad la fa dentro Observatory
+    astro::Observatory urbe(latitude, longitude, altitude);
     
     std::vector<astro::ObservatoryState> states;
     
-    collepardo.orbit(astro::Date(12,2,2018,4,19,59).getJDay(), astro::Date(12,2,2018,5,20,59).getJDay(), dt, states, CRS::TEME);
-    
+    double jday = astro::Date(19,04,2020,11,00,00).getJDay();
+    urbe.orbit(astro::Date(19,05,2020,11,00,00).getJDay(), astro::Date(19,05,2020,12,00,00).getJDay(), dt, states, CRS::ECI);
+
     for(std::size_t i=0; i<states.size(); ++i){
       fprintf(stdout, "%s ", astro::Date(states[i].jDay).toGregorianString());
       states[i].println(stdout);
@@ -295,10 +337,136 @@ int main(int argc, char *argv[]) {
   }
     
 #endif
+
+#ifdef TESTRADEC
+
+////////////////////////////////
+////    INPUT  ////////////////
+///////////////////////////////
+
+//OSSERVATORIO (URBE)
+double latitude  = 41.9558333333333; //deg
+double longitude = 12.5055555555556; //deg
+double altitude  = 76.0;             // m
+
+//tempo di propagazione (secondi) 
+double dt_minuti = 3;
+//step di propagazione (secondi)
+double step = 60.0;
+//Data inizio propagazione
+int day = 19;
+int month = 05;
+int year = 2020;
+int hour = 11;
+int min = 00;
+int sec = 00;
+
+// TLE 
+char TLE_line1[] = "1 00694U 63047A   20141.86162056  .00000196  00000-0  10739-4 0  9991";
+char TLE_line2[] = "2 00694  30.3607  42.7351 0585922 307.1727  47.6741 14.02595553833226";
+
+////////////////////////////////
+////    START  ////////////////
+///////////////////////////////
+
+//conversione data inizio propagazione in data giuliana
+double jday_start = astro::Date(day,month,year,hour,min,sec).getJDay();
+
+//conversione step di propagazione in data giuliana
+double dt2jd = astro::Date::convert(dt_minuti*60,astro::Date::FROM_SECOND_TO_JD);
+
+// intervalli di propagazione
+double jday_end   = jday_start + dt2jd;
+
+//inizializzazione variabile data giuliana per il ciclo while
+double jday = jday_start;
+
+//lat e lon sono in gradi. La conversione in rad la fa dentro Observatory
+astro::Observatory urbe_ecef(latitude, longitude, altitude);
+astro::Observatory urbe_eci(latitude, longitude, altitude);
+std::vector<astro::ObservatoryState> obs_ecef_states;
+std::vector<astro::ObservatoryState> obs_eci_states;
+
+//propagazione posizione osservatorio in eci
+urbe_ecef.orbit(jday_start, jday_end, step, obs_ecef_states, CRS::ECEF);
+urbe_eci.orbit(jday_start, jday_end, step, obs_eci_states, CRS::ECI);
+
+// propagazione stato satellite in eci
+std::vector<astro::SatelliteState> sat_states;
+astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(19,05,2020,11,00,00), astro::Date(19,05,2020,11,03,00), step, sat_states, CRS::ECI);
+
+//contatore di ausilio
+int j = 0;
+
+//ciclo sul tempo
+while(jday_end-jday > 0.0 )
+{
+  //inizializzazione variabili
+  double r_sat_eci[3], v_sat_eci[3], r_obs_ecef[3], r_obs_eci[3];
+  double ra,dec;
+  vector<double> coord;
+
+  //poszione satellite e osservatorio in ECI e ECEFw
+  for(int i = 0; i < 3; i++)
+  {
+    r_sat_eci[i]  = sat_states[j].position[i];
+    v_sat_eci[i]  = sat_states[j].velocity[i];
+    r_obs_ecef[i] = obs_ecef_states[j].position[i];
+    r_obs_eci[i]  = obs_eci_states[j].position[i];
+  }
+
+
+  //conversione da r [km],v[km/s] a ra,dec topocentriche [rad]
+  coord = rv2radec(r_sat_eci, v_sat_eci, r_obs_ecef, jday);
+  ra  = coord[0];
+  dec = coord[1];
+  //printf("RA  = %f, DEC\n",ra);
+  //printf("DEC = %f\n",dec);
+
+  //conversione ra,dec [deg,deg] topocentriche in azimut ed elevazione [deg,deg]
+  vector<double> AzEl = RaDec2AzEl(ra,dec,latitude,longitude,jday);
+  double Az = AzEl[0];
+  double El = AzEl[1];
+  //printf("Az  = %f\n",Az);
+  //printf("El  = %f\n",El);
+
+  //condizioni di visibilità
+  int jday_int = jday;
+  double jday_frac = jday - jday_int;
+  double El_min = 10; //deg
+  bool ill_sat = astro::utils::light(r_sat_eci,(double)jday_int,jday_frac,'e');
+  bool ill_obs = astro::utils::light(r_obs_eci,(double)jday_int,jday_frac,'e');
+  bool el = El > El_min;
   
-  return 0;
-  
+  /*
+  if(ill_sat == false){cout << "satellite non illuminato" << endl;}
+  else{cout << "satellite illuminato" << endl;}
+  if(ill_obs == false){cout << "stazione in ombra" << endl;}
+  else{cout << "stazione illuminata" << endl;}
+  if(el == false){cout << "satellite troppo basso" << endl;}
+  else{cout << "satellite in linea di vista" << endl;}
+  */
+
+  if(ill_sat == true && ill_obs == false && el == true)
+  {cout << "Il satellite è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
+  else
+  {cout << "Il satellite NON è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
+
+
+  //aggiornamento tempo di propagazione e contatore
+  jday += step/(24.0*3600.0);
+  j++;
 }
 
 
 
+
+#endif
+
+
+
+
+  
+  return 0;
+  
+}

@@ -1,0 +1,21 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "g++ build active file",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-I./include",  "-L/usr/local/lib/", "-lcoordFK5", "-lastTime", "-lastMath", "-lastIOD", "-lSGP4",
+                "-lastUtils", "-last2Body", "-lEopSpw", "-lcurl",
+                "-o",
+                "${fileDirname}/bin/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
