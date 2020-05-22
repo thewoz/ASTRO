@@ -46,7 +46,6 @@ namespace astro {
     
     std::string name;
     
-    //astro::Date releaseDate;
     double releaseDate;
 
     elsetrec satrec;
@@ -112,9 +111,7 @@ namespace astro {
       
       SGP4Funcs::twoline2rv(TLE_line2, TLE_line3, 'c', '*', 'i', wgs84, startmfe, stopmfe, deltamin, satrec);
       
-      //releaseDate = astro::Date(satrec.jdsatepoch, satrec.jdsatepochF);
       releaseDate = satrec.jdsatepoch + satrec.jdsatepochF;
-      //printf("TLE release time:       %s\n",  TLErelease.toString());
       
     }
     

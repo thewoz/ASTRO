@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		3A0282782376F68100DC9767 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A19AB042218648900A2FB55 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3A58277A2477EB34006E1AF4 /* converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = converter.h; path = include/converter.h; sourceTree = "<group>"; };
 		3A76576D2335240C0059C1B6 /* eci2jnow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci2jnow.hpp; sourceTree = "<group>"; };
 		3AAB7CFD223D347300CC1BA3 /* eopc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eopc.hpp; sourceTree = "<group>"; };
 		3AAB7D00223D347300CC1BA3 /* ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ecef.hpp; sourceTree = "<group>"; };
@@ -127,6 +128,7 @@
 				3A19AB042218648900A2FB55 /* main.cpp */,
 				3ABF73D91FE55D390052CFAC /* Products */,
 				3A0282782376F68100DC9767 /* README.md */,
+				3A58277A2477EB34006E1AF4 /* converter.h */,
 			);
 			sourceTree = "<group>";
 		};

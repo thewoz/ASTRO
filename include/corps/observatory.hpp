@@ -110,11 +110,11 @@ namespace astro {
     //****************************************************************************/
     // orbit
     //****************************************************************************/
-    void orbit(double jDayStart, double jDayEnd, double integrationTimeSec, std::vector<ObservatoryState> & states, int crs = CRS::ECEF) {
+    void orbit(double jDayStart, double jDayStop, double integrationTimeSec, std::vector<ObservatoryState> & states, int crs = CRS::ECEF) {
       
       double integrationTimeJD = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_JD);
       
-      std::size_t samples = ((jDayEnd - jDayStart) / integrationTimeJD) + 1;
+      std::size_t samples = round((jDayStop - jDayStart) / integrationTimeJD);
 
       states.resize(samples);
       

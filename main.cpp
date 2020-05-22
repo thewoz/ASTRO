@@ -31,7 +31,7 @@
 //#define TESTSTATION
 //#define TESTATTITUDE
 //#define TESTCONVERT
-#define TESTRADEC
+//#define TESTRADEC
 
 #include <cstdio>
 #include <cstdlib>
@@ -50,8 +50,8 @@ using namespace std;
 //****************************************************************************/
 // main
 //****************************************************************************/
-int main(int argc, char *argv[]) {
-
+int main(int argc, char *argv[]) {  
+  
 //****************************************************************************/
 // Test Convert
 //****************************************************************************/
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
   
   std::vector<astro::SatelliteState> states;
 
-  astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(19,05,2020,11,00,00), astro::Date(19,05,2020,12,00,00), 60, states, CRS::ECI);
+  astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(19,05,2020,11,00,00).getJDay(), astro::Date(19,05,2020,12,00,00).getJDay(), 60, states, CRS::ECI);
 
   for(std::size_t i=0; i<states.size(); ++i){
     states[i].println(outputSatellite);
@@ -391,7 +391,7 @@ while(jday_end-jday > 0.0 )
 {
   //inizializzazione variabili
   double r_sat_eci[3], v_sat_eci[3],r_sat_ecef[3],v_sat_ecef[3], r_obs_ecef[3], r_obs_eci[3];
-  double ra,dec, Az, El, rho, drho, dtrtasc, dtdecl, ra_rad, dec_rad, Az2, El2;;
+  double ra,dec, Az, El, ra_rad, dec_rad, Az2, El2;;
 
   //poszione satellite e osservatorio in ECI e ECEFw
   for(int i = 0; i < 3; i++)

@@ -104,13 +104,13 @@ namespace astro {
     /*****************************************************************************/
     // orbit
     /*****************************************************************************/
-    static void orbit(double jDayStart, double jDayStop, double integrationTime, std::vector<astro::SunState> & states, int crs = CRS::ECI) {
+    static void orbit(double jDayStart, double jDayStop, double integrationTimeSec, std::vector<astro::SunState> & states, int crs = CRS::ECI) {
       
       // converto il tempo di integrazione da secondi in jDay
-      double integrationTimeJD = astro::Date::convert(integrationTime, astro::Date::FROM_SECOND_TO_JD);
+      double integrationTimeJD = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_JD);
       
       // mi calcolo il numero di samples che dovro' fare
-      std::size_t samples = ((jDayStop - jDayStart) / integrationTimeJD) + 1;
+      std::size_t samples = round((jDayStop - jDayStart) / integrationTimeJD);
       
       // alloco lo spazio
       states.resize(samples);

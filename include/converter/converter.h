@@ -91,8 +91,6 @@ namespace astro
     */
 
     double lat_rad = astro::radians(lat);
-    double lon_rad = astro::radians(lon);
-    double ra_rad  = astro::radians(ra);
     double dec_rad = astro::radians(dec);
 
     double T_UT1 = (JD-2451545)/36525.0;                                                      
