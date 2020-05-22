@@ -148,6 +148,7 @@ int main(int argc, char *argv[]) {
   //Wy = astro::Radians(1.0);
   //Wz = astro::Radians(1.0);
   
+  //autovalori matrice di inerzia
   double Jx = 1;
   double Jy = 1;
   double Jz = 1;
@@ -349,7 +350,7 @@ double latitude  = 41.9558333333333; //deg
 double longitude = 12.5055555555556; //deg
 double altitude  = 76.0;             // m
 
-//tempo di propagazione (secondi) 
+//tempo di propagazione (minuti) 
 double dt_minuti = 3;
 //step di propagazione (secondi)
 double step = 60.0;
@@ -372,7 +373,7 @@ char TLE_line2[] = "2 00694  30.3607  42.7351 0585922 307.1727  47.6741 14.02595
 //conversione data inizio propagazione in data giuliana
 double jday_start = astro::Date(day,month,year,hour,min,sec).getJDay();
 
-//conversione step di propagazione in data giuliana
+//conversione tempo di propagazione in data giuliana
 double dt2jd = astro::Date::convert(dt_minuti*60,astro::Date::FROM_SECOND_TO_JD);
 
 // intervalli di propagazione
@@ -382,18 +383,28 @@ double jday_end   = jday_start + dt2jd;
 double jday = jday_start;
 
 //lat e lon sono in gradi. La conversione in rad la fa dentro Observatory
-astro::Observatory urbe_ecef(latitude, longitude, altitude);
-astro::Observatory urbe_eci(latitude, longitude, altitude);
+astro::Observatory obs_ecef(latitude, longitude, altitude);
+astro::Observatory obs_eci(latitude, longitude, altitude);
 std::vector<astro::ObservatoryState> obs_ecef_states;
 std::vector<astro::ObservatoryState> obs_eci_states;
 
+//conversione latitudine geocentrica a latitudine geodetica
+double eesqrd = 0.006694385000;
+double latgd = atan(tan(astro::Radians(latitude))/(1.0 - eesqrd));
+
+
+
 //propagazione posizione osservatorio in eci
-urbe_ecef.orbit(jday_start, jday_end, step, obs_ecef_states, CRS::ECEF);
-urbe_eci.orbit(jday_start, jday_end, step, obs_eci_states, CRS::ECI);
+obs_ecef.orbit(jday_start, jday_end, step, obs_ecef_states, CRS::ECEF);
+obs_eci.orbit(jday_start, jday_end, step, obs_eci_states, CRS::ECI);
 
 // propagazione stato satellite in eci
-std::vector<astro::SatelliteState> sat_states;
-astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(19,05,2020,11,00,00), astro::Date(19,05,2020,11,03,00), step, sat_states, CRS::ECI);
+std::vector<astro::SatelliteState> sat_eci_states;
+std::vector<astro::SatelliteState> sat_ecef_states;
+std::vector<astro::SatelliteState> sat_teme_states;
+astro::Satellite(TLE_line1, TLE_line2).orbit(jday_start,jday_end, step, sat_eci_states, CRS::ECI);
+astro::Satellite(TLE_line1, TLE_line2).orbit(jday_start,jday_end, step, sat_ecef_states, CRS::ECEF);
+astro::Satellite(TLE_line1, TLE_line2).orbit(jday_start,jday_end, step, sat_teme_states, CRS::TEME);
 
 //contatore di ausilio
 int j = 0;
@@ -402,33 +413,56 @@ int j = 0;
 while(jday_end-jday > 0.0 )
 {
   //inizializzazione variabili
-  double r_sat_eci[3], v_sat_eci[3], r_obs_ecef[3], r_obs_eci[3];
-  double ra,dec;
-  vector<double> coord;
+  double r_sat_eci[3], v_sat_eci[3],r_sat_ecef[3],v_sat_ecef[3], r_obs_ecef[3], r_obs_eci[3];
+  double ra,dec, Az, El, rho, drho, dtrtasc, dtdecl;
 
   //poszione satellite e osservatorio in ECI e ECEFw
   for(int i = 0; i < 3; i++)
   {
-    r_sat_eci[i]  = sat_states[j].position[i];
-    v_sat_eci[i]  = sat_states[j].velocity[i];
+    r_sat_eci[i]  = sat_eci_states[j].position[i];
+    v_sat_eci[i]  = sat_eci_states[j].velocity[i];
+    r_sat_ecef[i]  = sat_ecef_states[j].position[i];
+    v_sat_ecef[i]  = sat_ecef_states[j].velocity[i];
     r_obs_ecef[i] = obs_ecef_states[j].position[i];
     r_obs_eci[i]  = obs_eci_states[j].position[i];
   }
 
-
   //conversione da r [km],v[km/s] a ra,dec topocentriche [rad]
-  coord = rv2radec(r_sat_eci, v_sat_eci, r_obs_ecef, jday);
-  ra  = coord[0];
-  dec = coord[1];
-  //printf("RA  = %f, DEC\n",ra);
-  //printf("DEC = %f\n",dec);
+  rv_tradec(r_sat_eci,v_sat_eci,r_obs_eci,eTo,rho, ra, dec, drho, dtrtasc,dtdecl); //vallado
+  printf("RA  = %f\n",ra);
+  printf("DEC = %f\n",dec);
 
   //conversione ra,dec [deg,deg] topocentriche in azimut ed elevazione [deg,deg]
-  vector<double> AzEl = RaDec2AzEl(ra,dec,latitude,longitude,jday);
-  double Az = AzEl[0];
-  double El = AzEl[1];
-  //printf("Az  = %f\n",Az);
-  //printf("El  = %f\n",El);
+
+  //PROVA CODICE NOSTRO (CORRETTO)
+  RaDec2AzEl(ra,dec,latitude,longitude,jday, Az, El);
+  printf("Az  = %f\n",Az);
+  printf("El  = %f\n",El);
+
+  //PROVA VALLADO rv_razel (SBAGLIATO, bisognerebbe vedere perchè ma sti cazzi)
+  double rho2,az_vall,el_vall,drho2,daz,del;
+  rv_razel(r_sat_ecef,v_sat_ecef,r_obs_ecef,latgd,longitude,eTo, rho2,az_vall,el_vall,drho2,daz,del); 
+  az_vall = astro::Degrees(az_vall);
+  el_vall = astro::Degrees(el_vall);
+  printf("Az_vall  = %f\n",az_vall);
+  printf("El_vall  = %f\n",el_vall);
+
+  //PROVA VALLADO radec_azel (CORRETTO, piccole differenze con il nostro codice)
+  double ra_rad, dec_rad, az2_vall, el2_vall;
+  ra_rad = astro::Radians(ra);
+  dec_rad = astro::Radians(dec);
+  radec_azel(ra_rad,dec_rad,latgd,jday,longitude,eTo,az2_vall,el2_vall);
+  az2_vall = astro::Degrees(az2_vall);
+  el2_vall = astro::Degrees(el2_vall);
+  printf("Az2_vall  = %f\n",az2_vall);
+  printf("El2_vall  = %f\n",el2_vall);
+
+
+
+
+
+
+
 
   //condizioni di visibilità
   int jday_int = jday;
