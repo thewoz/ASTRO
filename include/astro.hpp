@@ -26,9 +26,45 @@
 #ifndef _H_ASTRO_H
 #define _H_ASTRO_H
 
-#include "converter.h"
-#include "propagator.h"
-#include "corps.h"
-#include "utils.h"
+// Vallado
+#include <vallado/astUtils.h>
+#include <vallado/astTime.h>
+#include <vallado/EopSpw.h>
+#include <vallado/coordFK5.h>
+#include <vallado/SGP4.h>
+#include <vallado/astTime.h>
+#include <vallado/astMath.h>
+#include <vallado/ast2Body.h>
+
+// Utils
+#include "./utils/define.h"
+#include "./utils/angle.hpp"
+#include "./utils/utils.hpp"
+#include "./utils/date.hpp"
+#include "./utils/tle.hpp"
+#include "./utils/rk4.hpp"
+#include "./utils/quaternion.hpp"
+#include "./utils/attitude.hpp"
+#include "./utils/curl.hpp"
+
+// Converter
+#include "./converter/iau80.hpp"
+#include "./converter/eopc.hpp"
+#include "./converter/ecef.hpp"
+#include "./converter/teme.hpp"
+#include "./converter/eci.hpp"
+#include "./converter/lla2ecef.hpp"
+#include "./converter/eci2jnow.hpp"
+#include "./converter/converter.h"
+
+// Propagator
+#include "./propagator/sgp4.hpp"
+
+// Corps
+#include "./corps/observatory.hpp"
+#include "./corps/satellite.hpp"
+#include "./corps/sun.hpp"
+
+
 
 #endif /* _H_ASTRO_H */

@@ -74,8 +74,8 @@ namespace astro {
     double esq = e*e;                  // Powed Eccentricity
     
     // Covert deg to radius
-    lat = Radians(lat);
-    lon = Radians(lon);
+    lat = astro::radians(lat);
+    lon = astro::radians(lon);
 
     // intermediate calculation
     // (prime vertical radius of curvature)
