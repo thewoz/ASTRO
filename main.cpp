@@ -318,116 +318,145 @@ int main(int argc, char *argv[]) {
 //****************************************************************************/
 #ifdef TESTRADEC
 
+////////////////////////////////
+////    INPUT  ////////////////
+///////////////////////////////
 
-  //OSSERVATORIO (URBE)
-  double latitude  = 41.9558333333333; //deg
-  double longitude = 12.5055555555556; //deg
-  double altitude  = 76.0;             // m
+//OSSERVATORIO (URBE)
+double latitude  = 41.9558333333333; //deg
+double longitude = 12.5055555555556; //deg
+double altitude  = 76.0;             // m
 
-  //tempo di propagazione (secondi)
-  double dt_minuti = 3;
-  //step di propagazione (secondi)
-  double step = 60.0;
-  //Data inizio propagazione
-  int day = 19;
-  int month = 05;
-  int year = 2020;
-  int hour = 11;
-  int min = 00;
-  int sec = 00;
+//tempo di propagazione (minuti) 
+double dt_minuti = 3;
+//step di propagazione (secondi)
+double step = 60.0;
+//Data inizio propagazione
+int day = 19;
+int month = 05;
+int year = 2020;
+int hour = 11;
+int min = 00;
+int sec = 00;
 
-  // TLE
-  char TLE_line1[] = "1 00694U 63047A   20141.86162056  .00000196  00000-0  10739-4 0  9991";
-  char TLE_line2[] = "2 00694  30.3607  42.7351 0585922 307.1727  47.6741 14.02595553833226";
+// TLE 
+char TLE_line1[] = "1 00694U 63047A   20141.86162056  .00000196  00000-0  10739-4 0  9991";
+char TLE_line2[] = "2 00694  30.3607  42.7351 0585922 307.1727  47.6741 14.02595553833226";
 
-  ////////////////////////////////
-  ////    START  ////////////////
-  ///////////////////////////////
+////////////////////////////////
+////    START  ////////////////
+///////////////////////////////
 
-  //conversione data inizio propagazione in data giuliana
-  double jday_start = astro::Date(day,month,year,hour,min,sec).getJDay();
+//conversione data inizio propagazione in data giuliana
+double jday_start = astro::Date(day,month,year,hour,min,sec).getJDay();
 
-  //conversione step di propagazione in data giuliana
-  double dt2jd = astro::Date::convert(dt_minuti*60,astro::Date::FROM_SECOND_TO_JD);
+//conversione tempo di propagazione in data giuliana
+double dt2jd = astro::Date::convert(dt_minuti*60,astro::Date::FROM_SECOND_TO_JD);
 
-  // intervalli di propagazione
-  double jday_end   = jday_start + dt2jd;
+// intervalli di propagazione
+double jday_end   = jday_start + dt2jd;
 
-  //inizializzazione variabile data giuliana per il ciclo while
-  double jday = jday_start;
+//inizializzazione variabile data giuliana per il ciclo while
+double jday = jday_start;
 
-  //lat e lon sono in gradi. La conversione in rad la fa dentro Observatory
-  astro::Observatory urbe_ecef(latitude, longitude, altitude);
-  astro::Observatory urbe_eci(latitude, longitude, altitude);
-  std::vector<astro::ObservatoryState> obs_ecef_states;
-  std::vector<astro::ObservatoryState> obs_eci_states;
+//lat e lon sono in gradi. La conversione in rad la fa dentro Observatory
+astro::Observatory obs_ecef(latitude, longitude, altitude);
+astro::Observatory obs_eci(latitude, longitude, altitude);
+std::vector<astro::ObservatoryState> obs_ecef_states;
+std::vector<astro::ObservatoryState> obs_eci_states;
 
-  //propagazione posizione osservatorio in eci
-  urbe_ecef.orbit(jday_start, jday_end, step, obs_ecef_states, CRS::ECEF);
-  urbe_eci.orbit(jday_start, jday_end, step, obs_eci_states, CRS::ECI);
+//conversione latitudine geocentrica a latitudine geodetica
+double eesqrd = 0.006694385000;
+double latgd = atan(tan(astro::radians(latitude))/(1.0 - eesqrd));
 
-  // propagazione stato satellite in eci
-  std::vector<astro::SatelliteState> sat_states;
-  astro::Satellite(TLE_line1, TLE_line2).orbit(astro::Date(19,05,2020,11,00,00), astro::Date(19,05,2020,11,03,00), step, sat_states, CRS::ECI);
 
-  //contatore di ausilio
-  int j = 0;
 
-  //ciclo sul tempo
-  while(jday_end-jday > 0.0 )
+//propagazione posizione osservatorio in eci
+obs_ecef.orbit(jday_start, jday_end, step, obs_ecef_states, CRS::ECEF);
+obs_eci.orbit(jday_start, jday_end, step, obs_eci_states, CRS::ECI);
+
+// propagazione stato satellite in eci
+std::vector<astro::SatelliteState> sat_eci_states;
+std::vector<astro::SatelliteState> sat_ecef_states;
+std::vector<astro::SatelliteState> sat_teme_states;
+astro::Satellite(TLE_line1, TLE_line2).orbit(jday_start,jday_end, step, sat_eci_states, CRS::ECI);
+astro::Satellite(TLE_line1, TLE_line2).orbit(jday_start,jday_end, step, sat_ecef_states, CRS::ECEF);
+astro::Satellite(TLE_line1, TLE_line2).orbit(jday_start,jday_end, step, sat_teme_states, CRS::TEME);
+
+//contatore di ausilio
+int j = 0;
+
+//ciclo sul tempo
+while(jday_end-jday > 0.0 )
+{
+  //inizializzazione variabili
+  double r_sat_eci[3], v_sat_eci[3],r_sat_ecef[3],v_sat_ecef[3], r_obs_ecef[3], r_obs_eci[3];
+  double ra,dec, Az, El, rho, drho, dtrtasc, dtdecl;
+
+  //poszione satellite e osservatorio in ECI e ECEFw
+  for(int i = 0; i < 3; i++)
   {
-    //inizializzazione variabili
-    double r_sat_eci[3], v_sat_eci[3], r_obs_ecef[3], r_obs_eci[3];
-
-    //poszione satellite e osservatorio in ECI e ECEF
-    for(int i = 0; i < 3; i++)
-    {
-      r_sat_eci[i]  = sat_states[j].position[i];
-      v_sat_eci[i]  = sat_states[j].velocity[i];
-      r_obs_ecef[i] = obs_ecef_states[j].position[i];
-      r_obs_eci[i]  = obs_eci_states[j].position[i];
-    }
-
-
-    double ra,dec;
-    //conversione da r [km],v[km/s] a ra,dec topocentriche [rad]
-    astro::rv2radec(r_sat_eci, v_sat_eci, r_obs_ecef, jday, ra, dec);
-    //printf("RA  = %f, DEC\n",ra);
-    //printf("DEC = %f\n",dec);
-
-    double Az,El;
-    //conversione ra,dec [deg,deg] topocentriche in azimut ed elevazione [deg,deg]
-    astro::RaDec2AzEl(ra,dec,latitude,longitude,jday,Az,El);
-    //printf("Az  = %f\n",Az);
-    //printf("El  = %f\n",El);
-
-    //condizioni di visibilità
-    int jday_int = jday;
-    double jday_frac = jday - jday_int;
-    double El_min = 10; //deg
-    bool ill_sat = astUtils::light(r_sat_eci,(double)jday_int,jday_frac,'e');
-    bool ill_obs = astUtils::light(r_obs_eci,(double)jday_int,jday_frac,'e');
-    bool el = El > El_min;
-    
-    /*
-    if(ill_sat == false){cout << "satellite non illuminato" << endl;}
-    else{cout << "satellite illuminato" << endl;}
-    if(ill_obs == false){cout << "stazione in ombra" << endl;}
-    else{cout << "stazione illuminata" << endl;}
-    if(el == false){cout << "satellite troppo basso" << endl;}
-    else{cout << "satellite in linea di vista" << endl;}
-    */
-
-    if(ill_sat == true && ill_obs == false && el == true)
-    {cout << "Il satellite è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
-    else
-    {cout << "Il satellite NON è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
-
-    //aggiornamento tempo di propagazione e contatore
-    jday += step/(24.0*3600.0);
-    j++;
-    
+    r_sat_eci[i]  = sat_eci_states[j].position[i];
+    v_sat_eci[i]  = sat_eci_states[j].velocity[i];
+    r_sat_ecef[i]  = sat_ecef_states[j].position[i];
+    v_sat_ecef[i]  = sat_ecef_states[j].velocity[i];
+    r_obs_ecef[i] = obs_ecef_states[j].position[i];
+    r_obs_eci[i]  = obs_eci_states[j].position[i];
   }
+
+  //conversione da r [km],v[km/s] a ra,dec topocentriche [rad]
+  astro::rv_tradec(r_sat_eci,v_sat_eci,r_obs_eci,eTo,rho, ra, dec, drho, dtrtasc,dtdecl); //vallado
+  printf("RA  = %f\n",ra);
+  printf("DEC = %f\n",dec);
+
+  //conversione ra,dec [deg,deg] topocentriche in azimut ed elevazione [deg,deg]
+
+  //PROVA CODICE NOSTRO (CORRETTO)
+  astro::RaDec2AzEl(ra,dec,latitude,longitude,jday, Az, El);
+  printf("Az  = %f\n",Az);
+  printf("El  = %f\n",El);
+
+  //PROVA VALLADO radec_azel (CORRETTO, piccole differenze con il nostro codice)
+  double ra_rad, dec_rad, az2_vall, el2_vall;
+  ra_rad = astro::radians(ra);
+  dec_rad = astro::radians(dec);
+  astro::radec_azel(ra_rad,dec_rad,latgd,jday,longitude,eTo,az2_vall,el2_vall);
+  az2_vall = astro::degrees(az2_vall);
+  el2_vall = astro::degrees(el2_vall);
+  printf("Az2_vall  = %f\n",az2_vall);
+  printf("El2_vall  = %f\n",el2_vall);
+
+
+
+  //condizioni di visibilità
+  int jday_int = jday;
+  double jday_frac = jday - jday_int;
+  double El_min = 10; //deg
+  bool ill_sat = astUtils::light(r_sat_eci,(double)jday_int,jday_frac,'e');
+  bool ill_obs = astUtils::light(r_obs_eci,(double)jday_int,jday_frac,'e');
+  bool el = El > El_min;
+  
+  /*
+  if(ill_sat == false){cout << "satellite non illuminato" << endl;}
+  else{cout << "satellite illuminato" << endl;}
+  if(ill_obs == false){cout << "stazione in ombra" << endl;}
+  else{cout << "stazione illuminata" << endl;}
+  if(el == false){cout << "satellite troppo basso" << endl;}
+  else{cout << "satellite in linea di vista" << endl;}
+  */
+
+  if(ill_sat == true && ill_obs == false && el == true)
+  {cout << "Il satellite è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
+  else
+  {cout << "Il satellite NON è in visibilità: " << "RA = " << ra << "°, " << "DEC = " << dec << "°, " << "Az = " << Az << "°, "  << "El = " << El << "°, " << endl;}
+
+
+  //aggiornamento tempo di propagazione e contatore
+  jday += step/(24.0*3600.0);
+  j++;
+}
+
+    
 
     
 #endif
