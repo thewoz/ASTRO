@@ -101,7 +101,9 @@ namespace astro {
     //****************************************************************************/
     // orbit
     //****************************************************************************/
-    void orbit(astro::Date startDate, astro::Date stopDate, double integrationTimeSec, std::vector<astro::SatelliteState> & states, int crs = CRS::TEME) {
+    void orbit(double jd_start, double jd_end, double integrationTimeSec, std::vector<astro::SatelliteState> & states, int crs = CRS::TEME) 
+    //void orbit(astro::Date startDate, astro::Date stopDate, double integrationTimeSec, std::vector<astro::SatelliteState> & states, int crs = CRS::TEME) 
+    {
       
       if(!isInit){
         fprintf(stderr, "satellite must init before\n");
@@ -109,14 +111,19 @@ namespace astro {
       }
       
       // tempo di propagazione (in minuti)
-      double propagationTimeMin = astro::Date::difference(stopDate, startDate, astro::Date::MINUTES);
+      //double propagationTimeMin = astro::Date::difference(stopDate,startDate,astro::Date::MINUTES);
       
-      // converto il tempo di integrazione (in minuti)
-      double integrationTimeMin = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_MINUTE);
+      // converto il passo di integrazione (in minuti)
+      //double integrationTimeMin = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_MINUTE);
       
       // tempo d'inzio della propagazione dal rilascio (in minuti)
-      double startTimeMin = astro::Date::difference(startDate, tle.releaseDate, astro::Date::MINUTES);
+      //double startTimeMin = astro::Date::difference(startDate, tle.releaseDate, astro::Date::MINUTES);
       
+
+      double propagationTimeMin = round((jd_end - jd_start)*(24.0*60.0));
+      double integrationTimeMin = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_MINUTE);
+      double startTimeMin = (jd_start - tle.releaseDate)*(24.0*60.0);
+
       // numero di campionamenti da fare
       // FIXME: sto piu uno non mi torna
       int samples = (propagationTimeMin / integrationTimeMin);
@@ -125,8 +132,9 @@ namespace astro {
       states.resize(samples);
       
       // converto il tempo di inizio in (jDay)
-      double startTimeJD = startDate.getJDay();
-      
+      //double startTimeJD = startDate.getJDay();
+      double startTimeJD = jd_start;
+
       // converto il tempo di integrazione (jDay)
       double integrationTimeJD = astro::Date::convert(integrationTimeSec, astro::Date::FROM_SECOND_TO_JD);
       

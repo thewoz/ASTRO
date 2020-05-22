@@ -391,7 +391,7 @@ while(jday_end-jday > 0.0 )
 {
   //inizializzazione variabili
   double r_sat_eci[3], v_sat_eci[3],r_sat_ecef[3],v_sat_ecef[3], r_obs_ecef[3], r_obs_eci[3];
-  double ra,dec, Az, El, rho, drho, dtrtasc, dtdecl;
+  double ra,dec, Az, El, rho, drho, dtrtasc, dtdecl, ra_rad, dec_rad, Az2, El2;;
 
   //poszione satellite e osservatorio in ECI e ECEFw
   for(int i = 0; i < 3; i++)
@@ -405,26 +405,21 @@ while(jday_end-jday > 0.0 )
   }
 
   //conversione da r [km],v[km/s] a ra,dec topocentriche [rad]
-  astro::rv_tradec(r_sat_eci,v_sat_eci,r_obs_eci,eTo,rho, ra, dec, drho, dtrtasc,dtdecl); //vallado
+  astro::rv_tradec(r_sat_eci, v_sat_eci, r_obs_eci, eTo, ra, dec); //vallado
   printf("RA  = %f\n",ra);
   printf("DEC = %f\n",dec);
 
-  //conversione ra,dec [deg,deg] topocentriche in azimut ed elevazione [deg,deg]
-
   //PROVA CODICE NOSTRO (CORRETTO)
-  astro::RaDec2AzEl(ra,dec,latitude,longitude,jday, Az, El);
+  astro::tRaDec2AzEl(ra,dec,latitude,longitude,jday, Az, El);
   printf("Az  = %f\n",Az);
   printf("El  = %f\n",El);
 
   //PROVA VALLADO radec_azel (CORRETTO, piccole differenze con il nostro codice)
-  double ra_rad, dec_rad, az2_vall, el2_vall;
   ra_rad = astro::radians(ra);
   dec_rad = astro::radians(dec);
-  astro::radec_azel(ra_rad,dec_rad,latgd,jday,longitude,eTo,az2_vall,el2_vall);
-  az2_vall = astro::degrees(az2_vall);
-  el2_vall = astro::degrees(el2_vall);
-  printf("Az2_vall  = %f\n",az2_vall);
-  printf("El2_vall  = %f\n",el2_vall);
+  astro::tradec_azel(ra_rad, dec_rad, latgd, jday, longitude, Az2, El2);
+  printf("Az2_vall  = %f\n",Az2);
+  printf("El2_vall  = %f\n",El2);
 
 
 

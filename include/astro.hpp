@@ -35,6 +35,7 @@
 #include <vallado/astTime.h>
 #include <vallado/astMath.h>
 #include <vallado/ast2Body.h>
+#include <vallado/astIOD.h>
 
 // Utils
 #include "./utils/define.h"
