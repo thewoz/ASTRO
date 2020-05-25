@@ -34,67 +34,46 @@
 //****************************************************************************/
 // namespace astro
 //****************************************************************************/
-namespace astro 
-{
+namespace astro {  
   
-  void tRaDec2AzEl(double ra, double dec, double lat, double lon, double JD, double &Az, double &El)
-  {
-    /*
-    % Modifica Fabio: input tempo in jd
-    % Presa da MATLAB
-    % Programed by Darin C. Koblick 01/23/2010
-    %--------------------------------------------------------------------------
-    % External Function Call Sequence:
-    % [Az El] = RaDec2AzEl(0,0,0,-104,'1992/08/20 12:14:00')
-    %
-    % Worked Example: pg. 262 Vallado
-    %[Az El] = RaDec2AzEl(294.9891115,-20.8235624,39.007,-104.883,'1994/05/14 13:11:20.59856')
-    %[210.7514  23.9036] = RaDec2AzEl(294.9891115,-20.8235624,39.007,-104.883,'1994/05/14 13:11:20.59856')
-    %
-    % Worked Example: http://www.stargazing.net/kepler/altaz.html
-    % [Az El] = RaDec2AzEl(344.95,42.71667,52.5,-1.91667,'1997/03/14 19:00:00')
-    % [311.92258 22.40100] = RaDec2AzEl(344.95,42.71667,52.5,-1.91667,'1997/03/14 19:00:00')
-    %
-    % [Beta,el] = RaDec2AzEl(alpha_t,delta_t,phi,lamda,'yyyy/mm/dd hh:mm:ss')
-    %
-    % Function Description:
-    %--------------------------------------------------------------------------
-    % RaDec2AzEl will take the Right Ascension and Declination in the topocentric 
-    % reference frame, site latitude and longitude as well as a time in GMT
-    % and output the Azimuth and Elevation in the local horizon
-    % reference frame.
-    %
-    % Inputs:                                                       Format:
-    %--------------------------------------------------------------------------
-    % Topocentric Right Ascension (Degrees)                         [N x 1]
-    % Topocentric Declination Angle (Degrees)                       [N x 1]
-    % Lat (Site Latitude in degrees -90:90 -> S(-) N(+))            [N x 1]
-    % Lon (Site Longitude in degrees -180:180 W(-) E(+))            [N x 1]
-    % UTC (Coordinated Universal Time YYYY/MM/DD hh:mm:ss)          [N x 1]
-    %
-    % Outputs:                                                      Format:
-    %--------------------------------------------------------------------------
-    % Local Azimuth Angle   (degrees)                               [N x 1]
-    % Local Elevation Angle (degrees)                               [N x 1]
-    %
-    %
-    % External Source References:
-    % Fundamentals of Astrodynamics and Applications 
-    % D. Vallado, Second Edition
-    % Example 3-5. Finding Local Siderial Time (pg. 192) 
-    % Algorithm 28: AzElToRaDec (pg. 259)
-    % -------------------------------------------------------------------------
-
-    %Example 3-5
-    %[yyyy mm dd HH MM SS] = datevec(datenum(time,'yyyy/mm/dd HH:MM:SS'));
-    %JD = juliandate(yyyy,mm,dd,HH,MM,SS);
-    */
+//   % Programed by Darin C. Koblick 01/23/2010
+//   %-------------------------------------------------------------------------
+//   % Function Description:
+//   %--------------------------------------------------------------------------
+//   % RaDec2AzEl will take the Right Ascension and Declination in the topocentric
+//   % reference frame, site latitude and longitude as well as a time in GMT
+//   % and output the Azimuth and Elevation in the local horizon
+//   % reference frame.
+//   %
+//   % Inputs:                                                       Format:
+//   %--------------------------------------------------------------------------
+//   % Topocentric Right Ascension (Degrees)                         [N x 1]
+//   % Topocentric Declination Angle (Degrees)                       [N x 1]
+//   % Lat (Site Latitude in degrees -90:90 -> S(-) N(+))            [N x 1]
+//   % Lon (Site Longitude in degrees -180:180 W(-) E(+))            [N x 1]
+//   % Jday (Modifica Fabio)
+//   %
+//   % Outputs:                                                      Format:
+//   %--------------------------------------------------------------------------
+//   % Local Azimuth Angle   (degrees)                               [N x 1]
+//   % Local Elevation Angle (degrees)                               [N x 1]
+//   %
+//   %
+//   % External Source References:
+//   % Fundamentals of Astrodynamics and Applications
+//   % D. Vallado, Second Edition
+//   % Example 3-5. Finding Local Siderial Time (pg. 192)
+//   % Algorithm 28: AzElToRaDec (pg. 259)
+//   %-------------------------------------------------------------------------
+  void tRaDec2AzEl(double ra, double dec, double lat, double lon, double JD, double & Az, double & El) {
+    
 
     double lat_rad = astro::radians(lat);
     double dec_rad = astro::radians(dec);
 
     double T_UT1 = (JD-2451545)/36525.0;                                                      
     double ThetaGMST = 67310.54841 + (876600.0*3600.0 + 8640184.812866)*T_UT1 + 0.093104*(pow(T_UT1,2)) -(6.2*pow(10.0,-6))*(pow(T_UT1,3)); //deg
+    
     // funzione modulo fatta da noi
     double a = ThetaGMST;
     double b = 86400.0*(ThetaGMST/abs(ThetaGMST));
@@ -106,6 +85,7 @@ namespace astro
     //Define Siderial Time LHA)
     double LHA = (ThetaLST-ra) - floor((ThetaLST-ra)/360.0)*360.0; //funzione modulo [deg]
     double LHA_rad = astro::radians(LHA);
+    
     //Elevation deg
     double El_rad = asin(sin(lat_rad)*sin(dec_rad)+cos(lat_rad)*cos(dec_rad)*cos(LHA_rad));
     El = astro::degrees(El_rad);
@@ -114,11 +94,11 @@ namespace astro
     double c_rad = atan2(-sin(LHA_rad)*cos(dec_rad)/cos(El_rad),(sin(dec_rad)-sin(El_rad)*sin(lat_rad))/(cos(El_rad)*cos(lat_rad)));
     double c     = astro::degrees(c_rad);
     Az = c - floor(c/360.0)*360.0; //deg
+    
   }
 
-  void tradec_azel(double& rtasc, double& decl, double& latgd, double &JD, double &lon,double& az, double& el)
-  { 
-    /*------------------------------------------------------------------------------
+  
+  /*------------------------------------------------------------------------------
    *
    *                           tradec_azel
    *
@@ -130,9 +110,9 @@ namespace astro
    *    rtasc       - topocentric right ascension                rad
    *    decl        - topocentric declination                    rad
    *    latgd       - geodetic latitude                          rad
-   *    JD          - julian date            
+   *    JD          - julian date
    *    lon         - site longitude                             deg
-   *    
+   *
    *
    *  outputs       :
    *    az          - azimuth                                    deg
@@ -140,10 +120,12 @@ namespace astro
    *
    *  use vallado function radec_azel
    -----------------------------------------------------------------------------*/
+  void tradec_azel(double & rtasc, double & decl, double & latgd, double & JD, double & lon,double & az, double & el) {
 
     //aggiunta questa parte oer calcolare lst, quindi lst è stato tolto com input e sono stati aggiunti jday e longitudine in gradi
     double T_UT1 = (JD-2451545)/36525.0;                                                      
     double ThetaGMST = 67310.54841 + (876600.0*3600.0 + 8640184.812866)*T_UT1 + 0.093104*(pow(T_UT1,2)) -(6.2*pow(10.0,-6))*(pow(T_UT1,3)); //deg
+    
     // funzione modulo fatta da noi
     double a = ThetaGMST;
     double b = 86400.0*(ThetaGMST/abs(ThetaGMST));
@@ -160,27 +142,28 @@ namespace astro
   } // procedure radec_azel
 
   
-  void rv_tradec(double rijk[3], double vijk[3], double rsijk[3],edirection direct, double& trtasc, double& tdecl)
-  {
-    /*------------------------------------------------------------------------------
-    *
-    *                           rv_tradec
-    *
-    *  this procedure converts topocentric right-ascension declination with
-    *  position and velocity vectors. uses velocity vector to find the
-    *  solution of singular cases.
-    *
-    *  inputs          description                    range / units
-    *    rijk        - ijk position vector            km
-    *    vijk        - ijk velocity vector            km/s
-    *    rsijk       - ijk site position vector       km
-    *
-    *  outputs       :
-    *    trtasc      - top right ascension            rad
-    *    tdecl       - top declination                rad
-    *
-    -----------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------------
+   *
+   *                           rv_tradec
+   *
+   *  this procedure converts topocentric right-ascension declination with
+   *  position and velocity vectors. uses velocity vector to find the
+   *  solution of singular cases.
+   *
+   *  inputs          description                    range / units
+   *    rijk        - ijk position vector            km
+   *    vijk        - ijk velocity vector            km/s
+   *    rsijk       - ijk site position vector       km
+   *
+   *  outputs       :
+   *    trtasc      - top right ascension            rad
+   *    tdecl       - top declination                rad
+   *
+   -----------------------------------------------------------------------------*/
+  void rv_tradec(double rijk[3], double vijk[3], double rsijk[3], edirection direct, double & trtasc, double & tdecl) {
+    
     double rho, drho, dtrtasc, dtdecl;
+    
     astIOD::rv_tradec(rijk,vijk,rsijk, eTo, rho, trtasc, tdecl, drho, dtrtasc, dtdecl);
 
     if(trtasc < 0.0) trtasc += 2.0 * M_PI; 
@@ -188,8 +171,7 @@ namespace astro
     trtasc = astro::degrees(trtasc);
     tdecl  = astro::degrees(tdecl);
       
-  }// rv_tradec
-  
+  }
 
 } /* namespace astro */
 
