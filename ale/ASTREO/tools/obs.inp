@@ -1,0 +1,5 @@
+urbe       12.5055555555556 41.9558333333333 76.0        
+colle      13.3750000000000 41.7652777777778 555.0
+
+###FORMAT
+#NAME(without spaces)  long(deg)  lat (deg)  alt (m)

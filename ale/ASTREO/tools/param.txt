@@ -1,0 +1,14 @@
+sentinel2A 40697
+urbe       12.5055555555556 41.9558333333333 76.0
+colle      13.3750000000000 41.7652777777778 555.0
+750.0
+16.64 14.04
+0
+
+###FORMAT
+# namesat  satnum
+# nameobs1  lon[deg]  lat[deg]  alt[m]
+# nameobs2  lon[deg]  lat[deg]  alt[m]
+# focal[mm]
+# sizex[mm]  sizey[mm]
+# rifra  [0/1 - off/on]
