@@ -38,34 +38,34 @@
 #include <vallado/astIOD.h>
 
 // Utils
-#include "./utils/define.h"
-#include "./utils/angle.hpp"
-#include "./utils/utils.hpp"
-#include "./utils/date.hpp"
-#include "./utils/tle.hpp"
-#include "./utils/rk4.hpp"
-#include "./utils/quaternion.hpp"
-#include "./utils/attitude.hpp"
-#include "./utils/curl.hpp"
+//#include "./utils/define.h"
+//#include "./utils/angle.hpp"
+//#include "./utils/utils.hpp"
+//#include "./utils/date.hpp"
+//#include "./utils/tle.hpp"
+//#include "./utils/rk4.hpp"
+//#include "./utils/quaternion.hpp"
+//#include "./utils/attitude.hpp"
+//#include "./utils/curl.hpp"
 
 // Converter
-#include "./converter/iau80.hpp"
-#include "./converter/eopc.hpp"
-#include "./converter/ecef.hpp"
-#include "./converter/teme.hpp"
-#include "./converter/eci.hpp"
-#include "./converter/lla2ecef.hpp"
-#include "./converter/eci2jnow.hpp"
-#include "./converter/converter.h"
+//#include "./converter/iau80.hpp"
+//#include "./converter/eopc.hpp"
+//#include "./converter/ecef.hpp"
+//#include "./converter/teme.hpp"
+//#include "./converter/eci.hpp"
+//#include "./converter/lla2ecef.hpp"
+//#include "./converter/eci2jnow.hpp"
+//#include "./converter/converter.h"
 #include "./converter/effect.hpp"
 
 // Propagator
-#include "./propagator/sgp4.hpp"
+//#include "./propagator/sgp4.hpp"
 
 // Corps
-#include "./corps/observatory.hpp"
-#include "./corps/satellite.hpp"
-#include "./corps/sun.hpp"
+//#include "./corps/observatory.hpp"
+//#include "./corps/satellite.hpp"
+//#include "./corps/sun.hpp"
 
 // Photo
 #include "./utils/photo.hpp"
