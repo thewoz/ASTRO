@@ -57,6 +57,8 @@
 #include "./converter/lla2ecef.hpp"
 #include "./converter/eci2jnow.hpp"
 #include "./converter/converter.h"
+#include "./converter/effect.hpp"
+#include "./utils/photo.hpp" // Questo non adrebbe qua
 
 // Propagator
 #include "./propagator/sgp4.hpp"
