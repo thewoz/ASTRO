@@ -257,36 +257,50 @@ void rotate2d(double angle, double x[2], double xr[2])
   
 }  
   
-/* ******************* Orientation ******************* *\
- *                                                     *
- * Compute the angle between the axis of the photo and *
- * the equatorial axis. Orientation angle is defined   *
- * as the clockwise East rotation from North.          *
- *                                                     *
- * *************************************************** */
-void orientation(double xc[3], double latobs, double lst, double trot[3][3], double& angle1, double& angle2)
+/* *********************** Orientation ******************** *\
+ *                                                          *
+ * Compute the image center in ra/dec JNOW and the angle of *
+ * orientation between the axis of the photo and the axis   *
+ * of the equatorial frame in JNOW.                         *
+ * Orientation angle is defined as the clockwise rotation   *
+ * from North towards East.                                 *
+ *                                                          * 
+ * ******************************************************** */
+void orientation(double f, double az0, double el0, double jd, double latobs, double lonobs,
+                 double& ra0, double& dec0, double& angle1, double& angle2)
 {
   
-  const double pi=2.0*asin(1.0);
-  const double rad2deg = 180.0 / pi;
-  double x[3], x0[3], rx[3];
+  const double rad2deg = 180.0 / M_PI;
+  double x[3], x0[3], rx[3], xc[3];
   double y[3], y0[3], ry[3];
-  double f, rr, delta, az0, el0, ra0, dec0, dra, ddec;
+  double rr, delta, ra1, dec1, dra, ddec;
+  double deltara, deltadec, t0, t1, lst, gst;
   double rax, decx, ray, decy, azx, elx, azy, ely;
-  
-  // center of image
-  astro::azel_xyz(f, az0, el0, eFrom, xc);
-  
-  // ra/dec center
-  astIOD::radec_azel(ra0, dec0, lst, latobs, eFrom, az0, el0);  
+  double rax1, decx1, ray1, decy1;
+  double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
+  double tex, tey, tez, rot[3][3], trot[3][3];
 
-  // axis in ra/dec
-  delta=0.00001;
-  dra=delta*pi/180.; ddec=delta*pi/180.;  
+  astro::azel_xyz(f, az0, el0, eTo, xc);
+  tex=0.0; tey=-el0; tez=-az0;
+  astro::matrot(tex, tey, tez, rot, trot);
+  
+  // time
+  t0 = (jd - 2451545.)/36525.;
+  t1 = (2451545. - jd)/36525.;
+  astTime::lstime(lonobs, jd, lst, gst);
+  
+  // ra/dec center JNOW
+  astIOD::radec_azel(ra0, dec0, lst, latobs, eFrom, az0, el0);
+  astUtils::rebox(ra0);
+  
+  // ra axis
+  delta=0.001;
+  dra=delta/rad2deg; ddec=delta/rad2deg;
   rax=ra0+dra;
   decx=dec0;
   astIOD::radec_azel(rax, decx, lst, latobs, eTo, azx, elx);
   astUtils::rebox(azx);
+  // dec axis
   ray=ra0;
   decy=dec0+ddec;
   astIOD::radec_azel(ray, decy, lst, latobs, eTo, azy, ely);
@@ -301,8 +315,8 @@ void orientation(double xc[3], double latobs, double lst, double trot[3][3], dou
   astro::azel_xyz(rr, azy, ely, eTo, ry);
   astro::project(xc, ry, y);
   // back rotation
-  astro::rotate3d(trot, x, x0);
-  astro::rotate3d(trot, y, y0);
+  rotate3d(trot, x, x0);
+  rotate3d(trot, y, y0);
   
   // compute angle
   angle1=-atan2(x0[2],x0[1]);
@@ -313,19 +327,20 @@ void orientation(double xc[3], double latobs, double lst, double trot[3][3], dou
 }
 
 
-/* ******************* Orientation ******************* *\
- *                                                     *
- * Compute the angle between the axis of the photo and *
- * the equatorial axis. Orientation angle is defined   *
- * as the clockwise East rotation from North.          *
- *                                                     *
- * *************************************************** */
+/* ******************* Orientation_J2K ******************* *\
+ *                                                         *
+ * Compute the image center in ra/dec J2K and the angle of *
+ * orientation between the axis of the photo and the axis  *
+ * of the equatorial frame in J2K.                         *
+ * Orientation angle is defined as the clockwise rotation  *
+ * from North towards East.                                *
+ *                                                         *
+ * ******************************************************* */
 void orientation_j2k(double f, double az0, double el0, double jd, double latobs, double lonobs,
 		     double& ra0, double& dec0, double& angle1, double& angle2)
 {
   
-  const double pi=2.0*asin(1.0);
-  const double rad2deg = 180.0 / pi;
+  const double rad2deg = 180.0 / M_PI;
   double x[3], x0[3], rx[3], xc[3];
   double y[3], y0[3], ry[3];
   double rr, delta, ra1, dec1, dra, ddec;
@@ -359,7 +374,7 @@ void orientation_j2k(double f, double az0, double el0, double jd, double latobs,
   
   // ra axis
   delta=0.025;
-  dra=delta*pi/180.; ddec=delta*pi/180.;
+  dra=delta/rad2deg; ddec=delta/rad2deg;
   rax=ra0+dra;
   decx=dec0;
   astro::precession(rax, decx, t0, rax1, decx1);
@@ -419,8 +434,7 @@ void orientation_radec(double xc[3], double latobs, double lst, double trot[3][3
                  double& angle1, double& angle2)
 {
 
-  const double pi=2.0*asin(1.0);
-  const double rad2deg = 180.0 / pi;
+  const double rad2deg = 180.0 / M_PI;
   double x[3], x0[3], rx[3];
   double y[3], y0[3], ry[3];
   double f, az0, el0, ra0, dec0, dra, ddec;
@@ -431,7 +445,7 @@ void orientation_radec(double xc[3], double latobs, double lst, double trot[3][3
   astro::radec_xyz(f, ra0, dec0, eFrom, xc);
   
   // axis in ra/dec  
-  dra=0.001*pi/180.; ddec=0.001*pi/180.;  
+  dra=0.001/rad2deg; ddec=0.001/rad2deg;
   rax=ra0+dra;
   decx=dec0;
   ray=ra0;
@@ -462,8 +476,7 @@ void orientation_radec(double xc[3], double latobs, double lst, double trot[3][3
  * Theoretical prediction of the orientation angle     *
  *                                                     *
 \* *************************************************** */
-void orientation_theo(double az, double el, double latobs, double tex,
-		      double& gamma)
+void orientation_theo(double az, double el, double latobs, double tex, double& gamma)
 {
   double x, y;
   
