@@ -192,8 +192,8 @@ void nutation_radec(double Ra, double Dec, double t, double& deltaRa, double& de
 {  
   const double rad2deg = 180.0 / M_PI;
   double cosRa, sinRa, tanDec;
-  double SunMeanLon, SunMeanAnomaly, SunTrueLon;
-  double MoonMeanLon, MoonMeanAnomaly, MoonAscendingNodeLon;
+  double SunMeanLon; //, SunMeanAnomaly;//, SunTrueLon;
+  double MoonMeanLon, MoonAscendingNodeLon; //MoonMeanAnomaly;
   double MeanObliquityEcliptic, nutationLon, nutationObliquity, eclipticObliquity;
   double cosEclipticObliquity, sinEclipticObliquity;
   

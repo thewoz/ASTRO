@@ -48,7 +48,7 @@ void matrot(double tex, double tey, double tez, double rot[3][3], double trot[3]
   double rx[3][3],ry[3][3],rz[3][3];
   double rxt[3][3],ryt[3][3],rzt[3][3];
   double text, teyt, tezt;
-  int i,j,k,l;
+  //int i,j,k,l;
   
   text=-tex;
   teyt=-tey;
@@ -273,11 +273,11 @@ void orientation(double f, double az0, double el0, double jd, double latobs, dou
   const double rad2deg = 180.0 / M_PI;
   double x[3], x0[3], rx[3], xc[3];
   double y[3], y0[3], ry[3];
-  double rr, delta, ra1, dec1, dra, ddec;
-  double deltara, deltadec, t0, t1, lst, gst;
+  double rr, delta, dra, ddec; // ra1, dec1,
+  double t0, t1, lst, gst; //deltara, deltadec,
   double rax, decx, ray, decy, azx, elx, azy, ely;
-  double rax1, decx1, ray1, decy1;
-  double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
+  //double rax1, decx1, ray1, decy1;
+  //double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
   double tex, tey, tez, rot[3][3], trot[3][3];
 
   astro::azel_xyz(f, az0, el0, eTo, xc);
@@ -437,9 +437,9 @@ void orientation_radec(double xc[3], double latobs, double lst, double trot[3][3
   const double rad2deg = 180.0 / M_PI;
   double x[3], x0[3], rx[3];
   double y[3], y0[3], ry[3];
-  double f, az0, el0, ra0, dec0, dra, ddec;
+  double f, ra0, dec0, dra, ddec; //az0, el0
   double rax, decx, ray, decy;
-  double azx, elx, azy, ely, rr;
+  double rr;//azx, elx, azy, ely;
   
   // center of image
   astro::radec_xyz(f, ra0, dec0, eFrom, xc);
@@ -497,7 +497,7 @@ void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
 {
   
   double t[3], rot[3][3];
-  int i,j,k,l;
+  int i,k,l; //j
   
   // compute rotation matrix R
   rot[0][0]=sin(lon);          rot[0][1]=-cos(lon);         rot[0][2]=0.0;
