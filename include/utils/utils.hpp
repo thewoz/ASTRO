@@ -156,26 +156,57 @@ namespace astro::utils {
    * elevation=90deg to be consistent with previsat             *
    *                                                            *
    \* ********************************************************** */
-  void refraction(double el, double * appel) {
+  void refraction(double el, double& appel) {
     
-    const double rad2deg = 180.0 / M_PI;       //rad2deg
+    const double rad2deg = 180.0 / M_PI; //rad2deg
     double eltmp;
+    
+    if(el>0.0) {
+        eltmp = el*rad2deg;
+        eltmp = (eltmp+10.3/(eltmp+5.11));
+	appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
+        if(appel<0.0) appel = el;
+      }
+    
+  }
 
-    (*appel) = el;
+/* ********************* Back-refraction ********************* *\
+ *                                                             *
+ * this function obtains the true elevation from the apparent  *
+ * elevation, inverting the previous formula by means of       *
+ * a bisection method.                                         *
+ * input: appel (rad)   ->   output: el (rad)                  *  
+ *                                                             *
+ \* *********************************************************** */
+  void back_refraction(double appel, double& el)
+  {
     
-    if(el<0) {
+    const double rad2deg = 180.0 / M_PI;
+    double el1, el2, elm, del, appel1, f;
+    double eltmp;
     
-      eltmp = el*rad2deg;
-      
-      eltmp = (eltmp+10.3/(eltmp+5.11));
-      
-      (*appel) = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
-      
-      if((*appel)<0.0) (*appel) = el;
-      
+    if (appel>0.0){
+      el1=0.0; el2=M_PI/2.;
+      del=el2-el1;
+      while (del > 1.e-8){
+	elm=(el2+el1)/2.;
+	refraction(elm, appel1);
+	f = appel1 - appel;
+	if (f < 0.0){
+	  el1=elm;
+	}
+	else
+	  {
+	    el2=elm;
+	  }
+	del=el2-el1;
+      }
+      el = elm;
     }
     
   }
+
+  
   
 } /* namespace astro */
 

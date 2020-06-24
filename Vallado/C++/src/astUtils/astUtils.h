@@ -127,7 +127,7 @@ namespace astUtils {
    * elevation=90deg to be consistent with previsat             *
    *                                                            *
    \* ********************************************************** */
-  void refraction(double el, double * appel);
+  void refraction(double el, double& appel);
   
   
   /* ******************** Function Rebox ********************** *\

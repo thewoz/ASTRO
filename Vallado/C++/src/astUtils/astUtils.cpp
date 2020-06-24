@@ -209,23 +209,16 @@ namespace astUtils {
      * elevation=90deg to be consistent with previsat             *
      *                                                            *
      \* ********************************************************** */
-    void refraction(double el, double * appel) {
+    void refraction(double el, double& appel) {
       
-      const double rad2deg = 180.0 / M_PI;       //rad2deg
+      const double rad2deg = 180.0 / M_PI; // rad2deg
       double eltmp;
-
-      (*appel) = el;
       
-      if(el<0) {
-      
-        eltmp = el*rad2deg;
-        
-        eltmp = (eltmp+10.3/(eltmp+5.11));
-        
-        (*appel) = el+ 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
-        
-        if((*appel)<0.0) (*appel) = el;
-        
+      if(el>0.0) {      
+        eltmp = el*rad2deg;        
+        eltmp = (eltmp+10.3/(eltmp+5.11));       
+        appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;        
+        if(appel<0.0) appel = el;        
       }
       
     }
