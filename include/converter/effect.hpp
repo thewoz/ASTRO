@@ -226,6 +226,49 @@ void nutation_radec(double Ra, double Dec, double t, double& deltaRa, double& de
   
 }
 
+/* ******************* Function J2K_JNOW ******************* *\
+ * Transformations between radec J2K and radec JNOW,         *
+ * including aberration, precession and nutation.            *
+\* ********************************************************* */
+void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, double& rajnow, double& decjnow)
+{
+  
+  double t, t0, t1;
+  double ra1, dec1, deltara, deltadec, dra_prec, ddec_prec;
+  double dra_nut, ddec_nut, dra_abe, ddec_abe;
+  
+  if (direct == eTo)
+    {    
+      t = (jd - 2451545.)/36525.;
+      astro::precession(raj2k, decj2k, t, ra1, dec1);
+      astUtils::rebox(ra1);
+      dra_prec = ra1-raj2k; ddec_prec = dec1-decj2k;
+      astro::nutation_radec(raj2k, decj2k, t, deltara, deltadec);
+      dra_nut = deltara; ddec_nut = deltadec;
+      astro::aberration(raj2k, decj2k, t, deltara, deltadec);
+      dra_abe = deltara; ddec_abe = deltadec;
+      rajnow = raj2k + dra_prec + dra_nut + dra_abe;
+      decjnow = decj2k + ddec_prec + ddec_nut + ddec_abe;
+    }
+  
+  if (direct == eFrom)
+    {
+      t0 = (jd - 2451545.)/36525.;
+      t1 = (2451545. - jd)/36525.;
+      astro::precession2(rajnow, decjnow, t0, t1, raj2k, decj2k);
+      astUtils::rebox(raj2k);
+      dra_prec = rajnow-raj2k; ddec_prec = decjnow-decj2k;
+      astro::nutation_radec(raj2k, decj2k, t0, deltara, deltadec);
+      dra_nut = deltara; ddec_nut = deltadec;
+      astro::aberration(raj2k, decj2k, t0, deltara, deltadec);
+      dra_abe = deltara; ddec_abe = deltadec;
+      raj2k = rajnow - dra_prec - dra_nut - dra_abe;
+      decj2k = decjnow - ddec_prec - ddec_nut - ddec_abe;
+    }
+  
+}
+
+  
 } /* namespace astro */
 
 #endif /* _H_ASTRO_EFFECT_H

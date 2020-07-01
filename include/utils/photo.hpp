@@ -113,7 +113,10 @@ void matrot(double tex, double tey, double tez, double rot[3][3], double trot[3]
  * ************************************************** */
 void azel_xyz(double& f, double& az, double& el, edirection direct, double x[3])
 {
-
+  
+  const double rad2deg = 180.0 / M_PI;
+  double rr;
+  
   if (direct == eTo)
     {
       x[0] = f*cos(el)*cos(az);
@@ -130,7 +133,7 @@ void azel_xyz(double& f, double& az, double& el, edirection direct, double x[3])
         }
       else
         {
-          az = atan2(-x[1],x[0]);;
+          az = atan2(-x[1],x[0]);
           astUtils::rebox(az);
         }
       if (f==0.0)
@@ -140,7 +143,7 @@ void azel_xyz(double& f, double& az, double& el, edirection direct, double x[3])
       else
         {
           el = asin(x[2]/f);
-          astUtils::rebox(el);
+          //astUtils::rebox(el);
         }
     }
   
@@ -188,7 +191,7 @@ void radec_xyz(double& f, double& ra, double& dec, edirection direct, double x[3
 }
 
     
-  /* *********************** Projection ************************* *	\
+  /* *********************** Projection ************************* *\
    *                                                              *
    * Project a unit vector r on the sensor, by knowing the vector *
    * of the center and computing the distance from it,            *
@@ -266,27 +269,24 @@ void rotate2d(double angle, double x[2], double xr[2])
  * from North towards East.                                 *
  *                                                          * 
  * ******************************************************** */
-void orientation(double f, double az0, double el0, double jd, double latobs, double lonobs,
+void orientation(double f, double az0, double el0, 
+		 double jd, double latobs, double lonobs,
                  double& ra0, double& dec0, double& angle1, double& angle2)
 {
   
   const double rad2deg = 180.0 / M_PI;
   double x[3], x0[3], rx[3], xc[3];
   double y[3], y0[3], ry[3];
-  double rr, delta, dra, ddec; // ra1, dec1,
-  double t0, t1, lst, gst; //deltara, deltadec,
+  double rr, delta, dra, ddec;
+  double lst, gst;
   double rax, decx, ray, decy, azx, elx, azy, ely;
-  //double rax1, decx1, ray1, decy1;
-  //double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
   double tex, tey, tez, rot[3][3], trot[3][3];
-
+  
   astro::azel_xyz(f, az0, el0, eTo, xc);
   tex=0.0; tey=-el0; tez=-az0;
   astro::matrot(tex, tey, tez, rot, trot);
   
   // time
-  t0 = (jd - 2451545.)/36525.;
-  t1 = (2451545. - jd)/36525.;
   astTime::lstime(lonobs, jd, lst, gst);
   
   // ra/dec center JNOW
@@ -294,12 +294,13 @@ void orientation(double f, double az0, double el0, double jd, double latobs, dou
   astUtils::rebox(ra0);
   
   // ra axis
-  delta=0.001;
+  delta=0.001; // 0.001
   dra=delta/rad2deg; ddec=delta/rad2deg;
   rax=ra0+dra;
   decx=dec0;
   astIOD::radec_azel(rax, decx, lst, latobs, eTo, azx, elx);
   astUtils::rebox(azx);
+  
   // dec axis
   ray=ra0;
   decy=dec0+ddec;
@@ -309,7 +310,7 @@ void orientation(double f, double az0, double el0, double jd, double latobs, dou
   // projection of ra axis
   rr=1.0;
   astro::azel_xyz(rr, azx, elx, eTo, rx);
-  project(xc, rx, x);
+  astro::project(xc, rx, x);
   // projection of dec axis
   rr=1.0;
   astro::azel_xyz(rr, azy, ely, eTo, ry);
@@ -336,7 +337,8 @@ void orientation(double f, double az0, double el0, double jd, double latobs, dou
  * from North towards East.                                *
  *                                                         *
  * ******************************************************* */
-void orientation_j2k(double f, double az0, double el0, double jd, double latobs, double lonobs,
+void orientation_j2k(double f, double az0, double el0,
+		     double jd, double latobs, double lonobs,
 		     double& ra0, double& dec0, double& angle1, double& angle2)
 {
   
@@ -362,44 +364,21 @@ void orientation_j2k(double f, double az0, double el0, double jd, double latobs,
   // ra/dec center
   astIOD::radec_azel(ra1, dec1, lst, latobs, eFrom, az0, el0);
   astUtils::rebox(ra1);
-  astro::precession2(ra1, dec1, t0, t1, ra0, dec0);
-  astUtils::rebox(ra0);
-  dra_prec = ra1-ra0; ddec_prec = dec1-dec0;
-  astro::nutation_radec(ra0, dec0, t0, deltara, deltadec);
-  dra_nut = deltara; ddec_nut = deltadec;
-  astro::aberration(ra0, dec0, t0, deltara, deltadec);
-  dra_abe = deltara; ddec_abe = deltadec;
-  ra0 = ra1 - dra_prec - dra_nut - dra_abe;
-  dec0 = dec1 - ddec_prec - ddec_nut - ddec_abe;
+  astro::j2k_jnow(ra0, dec0, jd, eFrom, ra1, dec1);
   
   // ra axis
   delta=0.025;
   dra=delta/rad2deg; ddec=delta/rad2deg;
   rax=ra0+dra;
   decx=dec0;
-  astro::precession(rax, decx, t0, rax1, decx1);
-  astUtils::rebox(rax1);
-  dra_prec = rax1-rax; ddec_prec = decx1-decx;
-  astro::nutation_radec(rax, decx, t0, deltara, deltadec);
-  dra_nut = deltara; ddec_nut = deltadec;
-  astro::aberration(rax, decx, t0, deltara, deltadec);
-  dra_abe = deltara; ddec_abe = deltadec;
-  rax1 = rax + dra_prec + dra_nut + dra_abe;
-  decx1 = decx + ddec_prec + ddec_nut + ddec_abe;
+  astro::j2k_jnow(rax, decx, jd, eTo, rax1, decx1);
   astIOD::radec_azel(rax1, decx1, lst, latobs, eTo, azx, elx);
   astUtils::rebox(azx);
+  
   // dec axis
   ray=ra0;
   decy=dec0+ddec;
-  astro::precession(ray, decy, t0, ray1, decy1);
-  astUtils::rebox(ray1);
-  dra_prec = ray1-ray; ddec_prec = decy1-decy;
-  astro::nutation_radec(ray, decy, t0, deltara, deltadec);
-  dra_nut = deltara; ddec_nut = deltadec;
-  astro::aberration(ray, decy, t0, deltara, deltadec);
-  dra_abe = deltara; ddec_abe = deltadec;
-  ray1 = ray + dra_prec + dra_nut + dra_abe;
-  decy1 = decy + ddec_prec + ddec_nut + ddec_abe;
+  astro::j2k_jnow(ray, decy, jd, eTo, ray1, decy1);
   astIOD::radec_azel(ray1, decy1, lst, latobs, eTo, azy, ely);
   astUtils::rebox(azy);
   
@@ -430,20 +409,21 @@ void orientation_j2k(double f, double az0, double el0, double jd, double latobs,
  * as the clockwise East rotation from North.          *
  *                                                     *
  * *************************************************** */
-void orientation_radec(double xc[3], double latobs, double lst, double trot[3][3],
-                 double& angle1, double& angle2)
+void orientation_radec(double f, double ra0, double dec0, double& angle1, double& angle2)
 {
 
   const double rad2deg = 180.0 / M_PI;
+  double xc[3];
   double x[3], x0[3], rx[3];
   double y[3], y0[3], ry[3];
-  double f, ra0, dec0, dra, ddec; //az0, el0
-  double rax, decx, ray, decy;
-  double rr;//azx, elx, azy, ely;
-  
+  double rr, dra, ddec, rax, decx, ray, decy;
+  double tex, tey, tez, rot[3][3], trot[3][3];
+
   // center of image
-  astro::radec_xyz(f, ra0, dec0, eFrom, xc);
-  
+  astro::radec_xyz(f, ra0, dec0, eTo, xc);
+  tex=0.0; tey=-dec0; tez=ra0;
+  astro::matrot(tex, tey, tez, rot, trot);
+    
   // axis in ra/dec  
   dra=0.001/rad2deg; ddec=0.001/rad2deg;
   rax=ra0+dra;
@@ -492,12 +472,11 @@ void orientation_theo(double az, double el, double latobs, double tex, double& g
  * Projective matrix in ECEF                          *
  *                                                    *
 \* ************************************************** */
-
 void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
 {
   
   double t[3], rot[3][3];
-  int i,k,l; //j
+  int i,k,l;
   
   // compute rotation matrix R
   rot[0][0]=sin(lon);          rot[0][1]=-cos(lon);         rot[0][2]=0.0;
@@ -525,6 +504,58 @@ void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
 }
 
 
+/* ******************** AUTOCENTER  ******************** *\
+ *                                                       *
+ * this function extract the center of image from the    *
+ * barycenter of the satellite track                     *
+ *                                                       *
+\* ***************************************************** */
+void autocenter(char satnum[128], char nameobs[128], int rifra, double& az0, double& el0, double& appel0)
+{
+  
+  // variables                                                                   
+  double az, appel, el, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
+  int    year, mon, day, hr, min;
+  double sec;
+  FILE   *infile;
+  char   filename[128];
+  int    iframe;
+  
+  sprintf(filename,"viewsite.%s.%s",satnum,nameobs);
+  if ((infile=fopen(filename,"r"))==NULL){
+    printf(" ERROR: file %s does not exist \n",filename);
+    exit(9);
+  }
+  
+  iframe=0;
+  az0=0.0; el0=0.0; appel0=0.0;
+  while (feof(infile)==0){
+    do
+      {
+        iframe=iframe+1;
+        fscanf(infile," %i %i %i %i %i %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf ",
+               &year, &mon, &day, &hr, &min, &sec,
+               &az, &appel, &el, &appra, &appdec, &rajnw, &decjnw, &raj2k, &decj2k, &alt, &range);
+        if (iframe==1){
+          az0=az;
+          el0=el;
+          appel0=appel;
+        }	
+      } while ((feof(infile) == 0));
+  }// end of infile
+  fclose(infile);
+  
+  if (fabs(az0-az)>180.) az0=az0+360.;
+  
+  // middle point
+  az0=0.5*(az0+az);
+  el0=0.5*(el0+el);
+  appel0=0.5*(appel0+appel);
+  if (rifra==0) appel0=el0;
+  
+}
+
+  
 } /* namespace astro */
 
 #endif /* _H_ASTRO_PHOTO_H_ */
