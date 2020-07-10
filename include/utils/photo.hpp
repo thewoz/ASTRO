@@ -114,8 +114,8 @@ void matrot(double tex, double tey, double tez, double rot[3][3], double trot[3]
 void azel_xyz(double& f, double& az, double& el, edirection direct, double x[3])
 {
   
-  const double rad2deg = 180.0 / M_PI;
-  double rr;
+  //const double rad2deg = 180.0 / M_PI;
+  //double rr;
   
   if (direct == eTo)
     {
@@ -346,10 +346,10 @@ void orientation_j2k(double f, double az0, double el0,
   double x[3], x0[3], rx[3], xc[3];
   double y[3], y0[3], ry[3];
   double rr, delta, ra1, dec1, dra, ddec;
-  double deltara, deltadec, t0, t1, lst, gst;
+  double t0, t1, lst, gst; //deltara, deltadec,
   double rax, decx, ray, decy, azx, elx, azy, ely;
   double rax1, decx1, ray1, decy1;
-  double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
+  //double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
   double tex, tey, tez, rot[3][3], trot[3][3];
 
   astro::azel_xyz(f, az0, el0, eTo, xc);
@@ -472,8 +472,7 @@ void orientation_theo(double az, double el, double latobs, double tex, double& g
  * Projective matrix in ECEF                          *
  *                                                    *
 \* ************************************************** */
-void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
-{
+void matRT(double lon, double lat, double r_earth[3], double mat[3][4]) {
   
   double t[3], rot[3][3];
   int i,k,l;
@@ -484,9 +483,8 @@ void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
   rot[2][0]=cos(lat)*cos(lon); rot[2][1]=cos(lat)*sin(lon); rot[2][2]=sin(lat);
   
   // compute traslation vector T
-  for(i=0; i<3; i++){
-    t[i]=0.0;    
-  }
+  for(i=0; i<3; i++){ t[i]=0.0; }
+  
   for(l=0; l<3; l++){
     for(k=0; k<3; k++){
       t[l] = t[l] + rot[l][k]*(-r_earth[k]);      
@@ -499,6 +497,7 @@ void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
       mat[l][k] = rot[l][k];
     }
   }
+  
   mat[0][3]=t[0]; mat[1][3]=t[1]; mat[2][3]=t[2];
   
 }
