@@ -367,7 +367,7 @@ void orientation_j2k(double f, double az0, double el0,
   astro::j2k_jnow(ra0, dec0, jd, eFrom, ra1, dec1);
   
   // ra axis
-  delta=0.025;
+  delta=0.001;
   dra=delta/rad2deg; ddec=delta/rad2deg;
   rax=ra0+dra;
   decx=dec0;
@@ -553,6 +553,53 @@ void autocenter(char satnum[128], char nameobs[128], int rifra, double& az0, dou
   appel0=0.5*(appel0+appel);
   if (rifra==0) appel0=el0;
   
+}
+
+/* ******************** AUTOCENTER  ******************** *\                                         
+ *                                                       *   
+ * this function extract the center of image from the    *
+ * barycenter of the satellite track                     *                                             
+ *                                                       * 
+\* ***************************************************** */
+void autocenter_radec(char satnum[128], char nameobs[128], double& ra0, double& dec0)
+{
+  
+  double az, appel, el, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
+  int    year, mon, day, hr, min;
+  double sec;
+  FILE   *infile;
+  char   filename[128];
+  int    iframe;
+
+  sprintf(filename,"viewsite.%s.%s",satnum,nameobs);
+  if ((infile=fopen(filename,"r"))==NULL){
+    printf(" ERROR: file %s does not exist \n",filename);
+    exit(9);
+  }
+
+  iframe=0;
+  ra0=0.0; dec0=0.0;
+  while (feof(infile)==0){
+    do
+      {
+        iframe=iframe+1;
+        fscanf(infile," %i %i %i %i %i %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf ",
+               &year, &mon, &day, &hr, &min, &sec,
+               &az, &appel, &el, &appra, &appdec, &rajnw, &decjnw, &raj2k, &decj2k, &alt, &range);
+        if (iframe==1){
+          ra0=raj2k;
+          dec0=decj2k;
+        }
+      } while ((feof(infile) == 0));
+  }// end of file
+  fclose(infile);
+  
+  if (fabs(ra0-raj2k)>180.) ra0=ra0+360.;
+  
+  // middle point
+  ra0=0.5*(ra0+raj2k);
+  dec0=0.5*(dec0+decj2k);
+
 }
 
   

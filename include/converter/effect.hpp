@@ -245,10 +245,10 @@ void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, doubl
       dra_prec = ra1-raj2k; ddec_prec = dec1-decj2k;
       astro::nutation_radec(raj2k, decj2k, t, deltara, deltadec);
       dra_nut = deltara; ddec_nut = deltadec;
-      astro::aberration(raj2k, decj2k, t, deltara, deltadec);
-      dra_abe = deltara; ddec_abe = deltadec;
-      rajnow = raj2k + dra_prec + dra_nut + dra_abe;
-      decjnow = decj2k + ddec_prec + ddec_nut + ddec_abe;
+      //astro::aberration(raj2k, decj2k, t, deltara, deltadec);
+      //dra_abe = deltara; ddec_abe = deltadec;
+      rajnow = raj2k + dra_prec + dra_nut;// + dra_abe;
+      decjnow = decj2k + ddec_prec + ddec_nut;// + ddec_abe;
     }
   
   if (direct == eFrom)
@@ -260,10 +260,10 @@ void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, doubl
       dra_prec = rajnow-raj2k; ddec_prec = decjnow-decj2k;
       astro::nutation_radec(raj2k, decj2k, t0, deltara, deltadec);
       dra_nut = deltara; ddec_nut = deltadec;
-      astro::aberration(raj2k, decj2k, t0, deltara, deltadec);
-      dra_abe = deltara; ddec_abe = deltadec;
-      raj2k = rajnow - dra_prec - dra_nut - dra_abe;
-      decj2k = decjnow - ddec_prec - ddec_nut - ddec_abe;
+      //astro::aberration(raj2k, decj2k, t0, deltara, deltadec);
+      //dra_abe = deltara; ddec_abe = deltadec;
+      raj2k = rajnow - dra_prec - dra_nut;// - dra_abe;
+      decj2k = decjnow - ddec_prec - ddec_nut;// - ddec_abe;
     }
   
 }

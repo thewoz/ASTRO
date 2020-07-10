@@ -100,11 +100,16 @@ namespace astro {
                 double jDay,
                 double recef[3], double vecef[3], double aecef[3]){
         
+    double rteme[3], vteme[3], ateme[3];
     double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
     
     astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
 
-    coordFK5::itrf_j2k(recef, vecef, aecef, edirection::eFrom, reci, veci, aeci, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
+    //coordFK5::itrf_j2k(recef, vecef, aecef, edirection::eFrom, reci, veci, aeci, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
+
+    coordFK5::teme_eci(rteme, vteme, ateme, edirection::eFrom, reci, veci, aeci, astro::iau80::get(), ttt, ddpsi, ddeps);
+    
+    coordFK5::teme_ecef(rteme, vteme, ateme, edirection::eTo, recef, vecef, aecef, ttt, jdut1+jdut1Frac, lod, xp, yp, 2);
     
   }
   
@@ -114,14 +119,19 @@ namespace astro {
   void eci2ecef(double reci[3], double veci[3],
                 double jDay,
                 double recef[3], double vecef[3]){
-    
+
+    double rteme[3], vteme[3], ateme[3];
     double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
     
     astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
     
     double dummy[3];
     
-    coordFK5::itrf_j2k(recef, vecef, dummy, edirection::eFrom, reci, veci, dummy, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
+    //coordFK5::itrf_j2k(recef, vecef, dummy, edirection::eFrom, reci, veci, dummy, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
+
+    coordFK5::teme_eci(rteme, vteme, dummy, edirection::eFrom, reci, veci, dummy, astro::iau80::get(), ttt, ddpsi, ddeps);
+
+    coordFK5::teme_ecef(rteme, vteme, dummy, edirection::eTo, recef, vecef, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp, 2);
     
   }
   
@@ -131,14 +141,20 @@ namespace astro {
   void eci2ecef(double reci[3],
                 double jDay,
                 double recef[3]){
-    
+
+    double rteme[3], vteme[3], ateme[3];
     double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
     
     astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
     
     double dummy[3];
     
-    coordFK5::itrf_j2k(recef, dummy, dummy, edirection::eFrom, reci, dummy, dummy, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
+    //coordFK5::itrf_j2k(recef, dummy, dummy, edirection::eFrom, reci, dummy, dummy, astro::iau80::get(), ttt, jdut1+jdut1Frac, lod, xp, yp);
+    
+    coordFK5::teme_eci(rteme, dummy, dummy, edirection::eFrom, reci, dummy, dummy, astro::iau80::get(), ttt, ddpsi, ddeps);
+    
+    coordFK5::teme_ecef(rteme, dummy, dummy, edirection::eTo, recef, dummy, dummy, ttt, jdut1+jdut1Frac, lod, xp, yp, 2);
+
     
   }
   
