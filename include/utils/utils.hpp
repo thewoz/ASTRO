@@ -181,14 +181,14 @@ namespace astro::utils {
   void back_refraction(double appel, double& el) {
     
     //const double rad2deg = 180.0 / M_PI;
-    double el1, el2, elm=0, del, appel1, f;
+    double el1, el2, elm=0.0, del, appel1, f;
     //double eltmp;
     
     if(appel>0.0){
       el1=0.0; el2=M_PI/2.;
       del=el2-el1;
       
-      while (del > 1.e-8){
+      while (del > 1.e-12){
         elm=(el2+el1)/2.;
         refraction(elm, appel1);
         f = appel1 - appel;
@@ -196,14 +196,12 @@ namespace astro::utils {
           el1=elm;
         }
         else
-        {
+	  {
           el2=elm;
         }
         del=el2-el1;
-      }
-      
-      el = elm;
-      
+      }      
+      el = elm;      
     }
     
   }

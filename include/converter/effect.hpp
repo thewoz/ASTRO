@@ -268,6 +268,47 @@ void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, doubl
   
 }
 
+// convert az/el (ECEF/JNOW) in ra/dec (ECI/J2K) and viceversa
+void j2k_azel(double& ff, double& ra0, double& dec0, double latobs, double lonobs, double altobs,
+              double jd, edirection edirect, double& gg, double& az0, double& el0)
+{
+  
+  double rsat_ecef[3], vsat_ecef[3];
+  double rsat_eci[3], vsat_eci[3];
+  double robs_ecef[3], vobs_ecef[3];
+  double robs_eci[3], vobs_eci[3];
+  double drange, daz0, del0, dra0, ddec0;
+  
+  // site in ecef/eci
+  astIOD::site(latobs, lonobs, altobs, robs_ecef, vobs_ecef);
+  astro::ecef2eci(robs_ecef, jd, robs_eci);
+
+  for(int k=0;k<3;k++){
+    vsat_ecef[k]=vsat_eci[k]=0.0;
+  }
+  
+  drange=0.0;
+  daz0=0.0; del0=0.0;
+  dra0=0.0; ddec0=0.0;
+  
+  if (edirect == eFrom)
+    {
+      astIOD::rv_razel(rsat_ecef, vsat_ecef, robs_ecef, latobs, lonobs, eFrom, gg, az0, el0, drange, daz0, del0);
+      astro::ecef2eci(rsat_ecef, jd, rsat_eci);
+      astIOD::rv_tradec(rsat_eci, vsat_eci, robs_eci, eTo, ff, ra0, dec0, drange, dra0, ddec0);
+      astUtils::rebox(ra0);
+    }
+  
+  if (edirect == eTo)
+    {
+      astIOD::rv_tradec(rsat_eci, vsat_eci, robs_eci, eFrom, ff, ra0, dec0, drange, dra0, ddec0);
+      astro::eci2ecef(rsat_eci, jd, rsat_ecef);
+      astIOD::rv_razel(rsat_ecef, vsat_ecef, robs_ecef, latobs, lonobs, eTo, gg, az0, el0, drange, daz0, del0);
+      astUtils::rebox(az0);
+    }
+  
+}  
+
   
 } /* namespace astro */
 
