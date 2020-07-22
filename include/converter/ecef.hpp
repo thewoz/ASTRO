@@ -124,7 +124,7 @@ namespace astro {
                 double jDay,
                 double reci[3], double veci[3]){
     
-    double rteme[3], vteme[3], ateme[3];
+    double rteme[3], vteme[3];//, ateme[3];
     double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
         
     astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);
@@ -147,7 +147,7 @@ namespace astro {
                 double jDay,
                 double reci[3]){
 
-    double rteme[3], vteme[3], ateme[3];
+    double rteme[3];//, vteme[3], ateme[3];
     double xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt;
       
     astro::eopc::getParameters(jDay, 'l', 'f', xp, yp, lod, ddpsi, ddeps, jdut1, jdut1Frac, ttt);

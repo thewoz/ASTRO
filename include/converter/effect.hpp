@@ -235,7 +235,7 @@ void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, doubl
   
   double t, t0, t1;
   double ra1, dec1, deltara, deltadec, dra_prec, ddec_prec;
-  double dra_nut, ddec_nut, dra_abe, ddec_abe;
+  double dra_nut, ddec_nut;//, dra_abe, ddec_abe;
   
   if (direct == eTo)
     {    

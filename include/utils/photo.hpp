@@ -114,8 +114,8 @@ void matrot(double tex, double tey, double tez, double rot[3][3], double trot[3]
 void azel_xyz(double& f, double& az, double& el, edirection direct, double x[3])
 {
   
-  const double rad2deg = 180.0 / M_PI;
-  double rr;
+  //const double rad2deg = 180.0 / M_PI;
+  //double rr;
   
   if (direct == eTo)
     {
@@ -346,10 +346,11 @@ void orientation_j2k(double f, double az0, double el0,
   double x[3], x0[3], rx[3], xc[3];
   double y[3], y0[3], ry[3];
   double rr, delta, ra1, dec1, dra, ddec;
-  double deltara, deltadec, t0, t1, lst, gst;
+  //double deltara, deltadec,
+  double t0, t1, lst, gst;
   double rax, decx, ray, decy, azx, elx, azy, ely;
   double rax1, decx1, ray1, decy1;
-  double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
+  //double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
   double tex, tey, tez, rot[3][3], trot[3][3];
 
   astro::azel_xyz(f, az0, el0, eTo, xc);
