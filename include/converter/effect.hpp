@@ -276,7 +276,7 @@ void j2k_azel(double& ff, double& ra0, double& dec0, double latobs, double lonob
   double rsat_ecef[3], vsat_ecef[3];
   double rsat_eci[3], vsat_eci[3];
   double robs_ecef[3], vobs_ecef[3];
-  double robs_eci[3], vobs_eci[3];
+  double robs_eci[3];//, vobs_eci[3];
   double drange, daz0, del0, dra0, ddec0;
   
   // site in ecef/eci

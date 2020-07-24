@@ -345,16 +345,10 @@ void orientation_azel_j2k(double f, double az0, double el0,
   const double rad2deg = 180.0 / M_PI;
   double x[3], x0[3], rx[3], xc[3];
   double y[3], y0[3], ry[3];
-<<<<<<< HEAD
-  double rr, ff, delta, ra1, dec1, dra, ddec;
-  double deltara, deltadec, t0, t1, lst, gst;
-=======
-  double rr, delta, ra1, dec1, dra, ddec;
-  //double deltara, deltadec,
-  double t0, t1, lst, gst;
->>>>>>> 7e10970f844e1373a3b8c3fdb94fccf22bbd5928
+  double rr, ff, delta, dra, ddec; // ra1, dec1,
+  double t0, t1, lst, gst; //deltara, deltadec,
   double rax, decx, ray, decy, azx, elx, azy, ely;
-  double rax1, decx1, ray1, decy1;
+  //double rax1, decx1, ray1, decy1;
   //double dra_abe, ddec_abe, dra_prec, ddec_prec, dra_nut, ddec_nut;
   double tex, tey, tez, rot[3][3], trot[3][3];
 
