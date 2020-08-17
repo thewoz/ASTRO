@@ -720,7 +720,7 @@ void outsat(int iframe, double xy[2], double rasat, double decsat, double rasat_
   
   if ((xy[0] > 0.0) && (xy[0] < sizex/pxsize)){
     if ((xy[1] > 0.0) && (xy[1] < sizey/pxsize)){
-      fprintf(photofile," %03i %16.8f %16.8f %16.8f %16.8f %16.8f %16.8f %16.8f %16.8f %16.8f %16.8f %16.8f %16.8f %i %02i %02i %02i %02i %04.2f \n",
+      fprintf(photofile," %03i %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %i %02i %02i %02i %02i %04.2f \n",
 	      iframe, xy[0], xy[1], rasat*rad2deg, decsat*rad2deg, rasat_eci*rad2deg, decsat_eci*rad2deg,
 	      rsat_ecef[0], rsat_ecef[1], rsat_ecef[2], rsat_eci[0], rsat_eci[1], rsat_eci[2],
 	      year, mon, day, hr, min, sec);
@@ -742,7 +742,7 @@ void outstar(int iframe, int istar, double xy[2], double rastar, double decstar,
   // FRAME ID_STAR X Y RA DEC MAG RA0 DEC0 ANGLE DATE
   if ((xy[0] > 0.0) && (xy[0] < sizex/pxsize)){
     if ((xy[1] > 0.0) && (xy[1] < sizey/pxsize)){
-      fprintf(photofile," %03i %i %12.8f %12.8f %12.8f %12.8f %12.8f %12.8f %12.8f %12.8f  %i %02i %02i %02i %02i %04.2f \n",
+      fprintf(photofile," %03i %i %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %i %02i %02i %02i %02i %04.2f \n",
 	      iframe, istar, xy[0], xy[1], rastar*rad2deg, decstar*rad2deg, magstar, rac*rad2deg, decc*rad2deg, angle*rad2deg,
 	      year, mon, day, hr, min, sec);
     }
