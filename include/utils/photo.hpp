@@ -577,7 +577,7 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
 {
   
   // variables                                                             
-  double az, appel, el, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
+  double az=0, appel=0, el=0, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
   int    year, mon, day, hr, min;
   double sec;
   FILE   *infile;
@@ -630,7 +630,7 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
 void autocenter_radec(char satnum[128], char nameobs[128], double& ra0, double& dec0)
 {
   
-  double az, appel, el, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
+  double az, appel, el, appra, appdec, rajnw, decjnw, raj2k=0, decj2k=0, alt, range;
   int    year, mon, day, hr, min;
   double sec;
   FILE   *infile;
@@ -673,7 +673,7 @@ void positioning(double te1, double te2, double xc[3], double trot[3][3], double
 		 double xy[2], double xyr[2], double sizex, double sizey, double pxsize)
 {
   
-  double rr, az, el, ra, dec;
+  double rr;//, az, el, ra, dec;
   double rp[3], xp[3], xp0[3], xq[2], xq0[2];
   
   rr=1.0;
