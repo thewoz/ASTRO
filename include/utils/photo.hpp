@@ -576,8 +576,14 @@ void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
 void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& el0, double& appel0)
 {
   
+<<<<<<< Updated upstream
   // variables                                                             
   double az=0, appel=0, el=0, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
+=======
+  // variables
+  const double rad2deg = 180.0 / M_PI;
+  double az, appel, el, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
+>>>>>>> Stashed changes
   int    year, mon, day, hr, min;
   double sec;
   FILE   *infile;
@@ -591,7 +597,7 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
   }
   
   iframe=0;
-  az0=0.0; el0=0.0; appel0=0.0;
+  az0=0.0; el0=0.0; appel0=0.0;  
   while (feof(infile)==0){
     do
       {
@@ -599,7 +605,7 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
         fscanf(infile," %i %i %i %i %i %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf ",
                &year, &mon, &day, &hr, &min, &sec,
                &az, &appel, &el, &appra, &appdec, &rajnw, &decjnw, &raj2k, &decj2k, &alt, &range);
-        if (iframe==1){
+        if (iframe==1){	  
           az0=az;
           el0=el;
           appel0=appel;
@@ -608,17 +614,19 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
   }// end of infile
   fclose(infile);
   
-  if (fabs(az0-az)>180.) az0=az0+360.;
-  
-  // middle point
+  if (fabs(az0-az)>180.) az0=az0+360.;  
   az0=0.5*(az0+az);
   el0=0.5*(el0+el);
-  appel0=0.5*(appel0+appel);
-  
+  double elc, appelc;
+  elc=el0/rad2deg;
+  astro::utils::refraction(elc, appelc);
+  appel0=appelc*rad2deg;
+  //appel0=0.5*(appel0+appel);  
+
 #ifdef NORIFRA
   appel0=el0;
 #endif
-  
+    
 }
 
 /* ******************** AUTOCENTER  ******************** *\                                         
@@ -660,69 +668,95 @@ void autocenter_radec(char satnum[128], char nameobs[128], double& ra0, double& 
   }// end of file
   fclose(infile);
   
-  if (fabs(ra0-raj2k)>180.) ra0=ra0+360.;
-  
+  if (fabs(ra0-raj2k)>180.) ra0=ra0+360.;  
   // middle point
   ra0=0.5*(ra0+raj2k);
   dec0=0.5*(dec0+decj2k);
-
+  
 }
 
 // positioning radec/azel
-void positioning(double te1, double te2, double xc[3], double trot[3][3], double angle,
-		 double xy[2], double xyr[2], double sizex, double sizey, double pxsize)
+void positioning(double& te1, double& te2, edirection direct, double xy[2],
+		 double xc[3], double rot[3][3], double trot[3][3],
+		 double focal, double sizex, double sizey, double pxscale)
 {
   
   double rr;//, az, el, ra, dec;
   double rp[3], xp[3], xp0[3], xq[2], xq0[2];
   
   rr=1.0;
-  
+
+  // from angles to pixels
+  if (direct == eTo){
+    
 #ifdef RADEC
-  ra=te1; dec=te2;
-  astro::radec_xyz(rr, ra, dec, eTo, rp);
+    ra=te1; dec=te2;
+    astro::radec_xyz(rr, ra, dec, eTo, rp);
 #endif
-  
+    
 #ifdef AZEL
-  az=te1; el=te2;
-  astro::azel_xyz(rr, az, el, eTo, rp);
+    az=te1; el=te2;
+    astro::azel_xyz(rr, az, el, eTo, rp);
 #endif
+    
+    // project and back-rotate
+    astro::project(xc, rp, xp);
+    astro::rotate3d(trot, xp, xp0);
+    
+    // invert axis
+    xq0[0]=-xp0[1];
+    xq0[1]=-xp0[2];
+    
+    // positions in pixel
+    xy[0]=(xq0[0]+0.5*sizex)/pxscale;
+    xy[1]=(xq0[1]+0.5*sizey)/pxscale;
+    
+  }
+
   
-  // project and back-rotate
-  astro::project(xc, rp, xp);
-  astro::rotate3d(trot, xp, xp0);
+  // from pixels to angles
+  if (direct == eFrom){
+    
+    xq0[0]=xy[0]*pxscale-0.5*sizex;
+    xq0[1]=xy[1]*pxscale-0.5*sizey;
+    
+    // from 2D to 3D
+    xp0[0]=focal;
+    xp0[1]=-xq0[0];
+    xp0[2]=-xq0[1];
   
-  // invert axis
-  xq0[0]=-xp0[1];
-  xq0[1]=-xp0[2];
-  
-  // positions in pixel
-  xy[0]=(xq0[0]+0.5*sizex)/pxsize;
-  xy[1]=(xq0[1]+0.5*sizey)/pxsize;
-  
-  // rotate using orientation angle
-  astro::rotate2d(angle, xq0, xq);
-  
-  // rotated positions in pixel
-  xyr[0]=(xq[0]+0.5*sizex)/pxsize;
-  xyr[1]=(xq[1]+0.5*sizey)/pxsize;  
+    // rotate    
+    astro::rotate3d(rot, xp0, xp); 
+    
+    // get angles
+#ifdef AZEL
+    astro::azel_xyz(rr, az, el, eFrom, xp);
+    te1=az; te2=el;
+#endif
+    
+#ifdef RADEC
+    astro::radec_xyz(rr, ra, dec, eFrom, xp);
+    te1=ra; te2=dec;    
+#endif    
+    
+  }
   
 }
 
 
 // write photosat output 
-void outsat(int iframe, double xy[2], double rasat, double decsat, double rasat_eci, double decsat_eci,
-	    double rsat_ecef[3], double rsat_eci[3], int year, int mon, int day, int hr, int min, double sec,
-	    double sizex, double sizey, double pxsize, FILE* photofile)
+void outsat(int iframe, double xy[2], double rasat, double decsat, double rsat_ecef[3],  double rsat_eci[3],
+	    int year, int mon, int day, int hr, int min, double sec,
+	    double sizex, double sizey, double pxscale, FILE* photofile)
 {
 
   const double rad2deg = 180.0 / M_PI;
   
-  if ((xy[0] > 0.0) && (xy[0] < sizex/pxsize)){
-    if ((xy[1] > 0.0) && (xy[1] < sizey/pxsize)){
-      fprintf(photofile," %03i %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %i %02i %02i %02i %02i %04.2f \n",
-	      iframe, xy[0], xy[1], rasat*rad2deg, decsat*rad2deg, rasat_eci*rad2deg, decsat_eci*rad2deg,
-	      rsat_ecef[0], rsat_ecef[1], rsat_ecef[2], rsat_eci[0], rsat_eci[1], rsat_eci[2],
+  if ((xy[0] > 0.0) && (xy[0] < sizex/pxscale)){
+    if ((xy[1] > 0.0) && (xy[1] < sizey/pxscale)){
+      fprintf(photofile," %03i %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %i %02i %02i %02i %02i %04.2f \n",
+	      iframe, xy[0], xy[1], rasat*rad2deg, decsat*rad2deg, 
+	      rsat_ecef[0], rsat_ecef[1], rsat_ecef[2], rsat_eci[0], rsat_eci[1], rsat_eci[2], 
 	      year, mon, day, hr, min, sec);
     }
   }
@@ -734,14 +768,14 @@ void outsat(int iframe, double xy[2], double rasat, double decsat, double rasat_
 void outstar(int iframe, int istar, double xy[2], double rastar, double decstar,
 	     double magstar, double rac, double decc, double angle,
 	     int year, int mon, int day, int hr, int min, double sec,
-	     double sizex, double sizey, double pxsize, FILE* photofile)
+	     double sizex, double sizey, double pxscale, FILE* photofile)
 {
 
   const double rad2deg = 180.0 / M_PI;
     
   // FRAME ID_STAR X Y RA DEC MAG RA0 DEC0 ANGLE DATE
-  if ((xy[0] > 0.0) && (xy[0] < sizex/pxsize)){
-    if ((xy[1] > 0.0) && (xy[1] < sizey/pxsize)){
+  if ((xy[0] > 0.0) && (xy[0] < sizex/pxscale)){
+    if ((xy[1] > 0.0) && (xy[1] < sizey/pxscale)){
       fprintf(photofile," %03i %i %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %i %02i %02i %02i %02i %04.2f \n",
 	      iframe, istar, xy[0], xy[1], rastar*rad2deg, decstar*rad2deg, magstar, rac*rad2deg, decc*rad2deg, angle*rad2deg,
 	      year, mon, day, hr, min, sec);
