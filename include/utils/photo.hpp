@@ -576,14 +576,9 @@ void matRT(double lon, double lat, double r_earth[3], double mat[3][4])
 void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& el0, double& appel0)
 {
   
-<<<<<<< Updated upstream
-  // variables                                                             
-  double az=0, appel=0, el=0, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
-=======
   // variables
-  const double rad2deg = 180.0 / M_PI;
-  double az, appel, el, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
->>>>>>> Stashed changes
+  double az=0, appel=0, el=0, appra, appdec, rajnw, decjnw, raj2k, decj2k, alt, range;
+
   int    year, mon, day, hr, min;
   double sec;
   FILE   *infile;
@@ -618,9 +613,9 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
   az0=0.5*(az0+az);
   el0=0.5*(el0+el);
   double elc, appelc;
-  elc=el0/rad2deg;
+  elc=el0/utils::rad2deg;
   astro::utils::refraction(elc, appelc);
-  appel0=appelc*rad2deg;
+  appel0=appelc*utils::rad2deg;
   //appel0=0.5*(appel0+appel);  
 
 #ifdef NORIFRA
@@ -682,7 +677,7 @@ void positioning(double& te1, double& te2, edirection direct, double xy[2],
 {
   
   double rr;//, az, el, ra, dec;
-  double rp[3], xp[3], xp0[3], xq[2], xq0[2];
+  double rp[3], xp[3], xp0[3], xq0[2]; //xq[2],
   
   rr=1.0;
 
