@@ -678,6 +678,7 @@ void positioning(double& te1, double& te2, edirection direct, double xy[2],
   
   double rr;//, az, el, ra, dec;
   double rp[3], xp[3], xp0[3], xq0[2]; //xq[2],
+  double az, el, ra, dec;
   
   rr=1.0;
 

@@ -166,8 +166,12 @@ namespace astro::utils {
         eltmp = (eltmp+10.3/(eltmp+5.11));
 	appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
         if(appel<0.0) appel = el;
+    }
+    else
+      {
+	appel = el;
       }
-    
+        
   }
 
 /* ********************* Back-refraction ********************* *\

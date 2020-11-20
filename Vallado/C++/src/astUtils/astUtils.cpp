@@ -214,13 +214,17 @@ namespace astUtils {
       const double rad2deg = 180.0 / M_PI; // rad2deg
       double eltmp;
       
-      if(el>0.0) {      
-        eltmp = el*rad2deg;        
-        eltmp = (eltmp+10.3/(eltmp+5.11));       
-        appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;        
-        if(appel<0.0) appel = el;        
+      if(el>0.0) {
+	eltmp = el*rad2deg;
+        eltmp = (eltmp+10.3/(eltmp+5.11));
+        appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
+        if(appel<0.0) appel = el;
       }
-      
+      else
+	{
+	  appel = el;
+	}
+            
     }
 
     /* ******************** Function Rebox ********************** *\
