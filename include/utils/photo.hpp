@@ -739,48 +739,6 @@ void positioning(double& te1, double& te2, edirection direct, double xy[2],
   
 }
 
-
-// write photosat output 
-void outsat(int iframe, double xy[2], double rasat, double decsat, double rsat_ecef[3],  double rsat_eci[3],
-	    int year, int mon, int day, int hr, int min, double sec,
-	    double sizex, double sizey, double pxscale, FILE* photofile)
-{
-
-  const double rad2deg = 180.0 / M_PI;
-  
-  if ((xy[0] > 0.0) && (xy[0] < sizex/pxscale)){
-    if ((xy[1] > 0.0) && (xy[1] < sizey/pxscale)){
-      fprintf(photofile," %03i %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %i %02i %02i %02i %02i %04.2f \n",
-	      iframe, xy[0], xy[1], rasat*rad2deg, decsat*rad2deg, 
-	      rsat_ecef[0], rsat_ecef[1], rsat_ecef[2], rsat_eci[0], rsat_eci[1], rsat_eci[2], 
-	      year, mon, day, hr, min, sec);
-    }
-  }
-  
-
-}
-
-// write stars in ouput file
-void outstar(int iframe, int istar, double xy[2], double rastar, double decstar,
-	     double magstar, double rac, double decc, double angle,
-	     int year, int mon, int day, int hr, int min, double sec,
-	     double sizex, double sizey, double pxscale, FILE* photofile)
-{
-
-  const double rad2deg = 180.0 / M_PI;
-    
-  // FRAME ID_STAR X Y RA DEC MAG RA0 DEC0 ANGLE DATE
-  if ((xy[0] > 0.0) && (xy[0] < sizex/pxscale)){
-    if ((xy[1] > 0.0) && (xy[1] < sizey/pxscale)){
-      fprintf(photofile," %03i %i %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %16.12f %i %02i %02i %02i %02i %04.2f \n",
-	      iframe, istar, xy[0], xy[1], rastar*rad2deg, decstar*rad2deg, magstar, rac*rad2deg, decc*rad2deg, angle*rad2deg,
-	      year, mon, day, hr, min, sec);
-    }
-  }
-  
-}
-
-
 } /* namespace astro */
 
 #endif /* _H_ASTRO_PHOTO_H_ */
