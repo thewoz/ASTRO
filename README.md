@@ -1,5 +1,11 @@
 # ASTRO
 
+ASTRO is a simple astromonical library base on the Vallado library.
+
+The library is written in C++ and is base on only headers files.
+
+It allows you to use the Vallado library in a more convenient way.
+
 
 ## File list
 
