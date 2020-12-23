@@ -22,7 +22,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- */
+*/
 
 //#define TESTEOPC
 //#define TESTDATE
@@ -31,7 +31,7 @@
 //#define TESTSTATION
 //#define TESTATTITUDE
 //#define TESTCONVERT
-//#define TESTRADEC
+#define TESTRADEC
 
 #include <cstdio>
 #include <cstdlib>
@@ -41,6 +41,8 @@
 
 #include <string>
 #include <iostream>
+#include <iostream>
+#include <fstream>
 
 #include "astro/astro.hpp"
 
@@ -322,30 +324,41 @@ int main(int argc, char *argv[]) {
 ////    INPUT  ////////////////
 ///////////////////////////////
 
+double Rt = 6378.137;
+
 //OSSERVATORIO (URBE)
+/*
 double latitude  = 41.9558333333333; //deg
 double longitude = 12.5055555555556; //deg
 double altitude  = 76.0;             // m
+*/
+
+//OSSERVATORIO (COLLEPARDO)
+double latitude  = 41.765242; //deg
+double longitude = 13.375038; //deg
+double altitude  = 555.0;     // m
+
 
 //tempo di propagazione (minuti) 
-double dt_minuti = 3;
+double dt_minuti = 3;//0.066666667*1000/60;
 //step di propagazione (secondi)
-double step = 60.0;
+double step = 1;//0.066666667;
 //Data inizio propagazione
-int day = 19;
-int month = 05;
+int day = 26;
+int month = 9;
 int year = 2020;
-int hour = 11;
-int min = 00;
-int sec = 00;
+int hour = 19;
+int min = 0;
+int sec = 0;
 
 // TLE 
-char TLE_line1[] = "1 00694U 63047A   20141.86162056  .00000196  00000-0  10739-4 0  9991";
-char TLE_line2[] = "2 00694  30.3607  42.7351 0585922 307.1727  47.6741 14.02595553833226";
+char TLE_line1[] = "1 13068U 82013B   20269.92133849 -.00000280 +00000-0 -19928-4 0  9995";
+char TLE_line2[] = "2 13068 081.2009 295.6177 0020273 327.1233 032.8728 15.07472599103500";
 
-////////////////////////////////
-////    START  ////////////////
-///////////////////////////////
+
+/////////////////////////////////
+////    START    ////////////////
+/////////////////////////////////
 
 //conversione data inizio propagazione in data giuliana
 double jday_start = astro::Date(day,month,year,hour,min,sec).getJDay();
@@ -369,8 +382,6 @@ std::vector<astro::ObservatoryState> obs_eci_states;
 double eesqrd = 0.006694385000;
 double latgd = atan(tan(astro::radians(latitude))/(1.0 - eesqrd));
 
-
-
 //propagazione posizione osservatorio in eci
 obs_ecef.orbit(jday_start, jday_end, step, obs_ecef_states, CRS::ECEF);
 obs_eci.orbit(jday_start, jday_end, step, obs_eci_states, CRS::ECI);
@@ -386,6 +397,9 @@ astro::Satellite(TLE_line1, TLE_line2).orbit(jday_start,jday_end, step, sat_teme
 //contatore di ausilio
 int j = 0;
 
+// Scrittura file di testo con RA e DEC
+ofstream myfile;
+myfile.open ("./RADEC.txt");
 //ciclo sul tempo
 while(jday_end-jday > 0.0 )
 {
@@ -393,7 +407,7 @@ while(jday_end-jday > 0.0 )
   double r_sat_eci[3], v_sat_eci[3],r_sat_ecef[3],v_sat_ecef[3], r_obs_ecef[3], r_obs_eci[3];
   double ra,dec, Az, El, ra_rad, dec_rad, Az2, El2;;
 
-  //poszione satellite e osservatorio in ECI e ECEFw
+  //posizione satellite e osservatorio in ECI e ECEF
   for(int i = 0; i < 3; i++)
   {
     r_sat_eci[i]  = sat_eci_states[j].position[i];
@@ -409,6 +423,11 @@ while(jday_end-jday > 0.0 )
   printf("RA  = %f\n",ra);
   printf("DEC = %f\n",dec);
 
+  char stringa[50];
+  sprintf(stringa,"%f %f\n", ra, dec);
+  myfile << stringa;
+  myfile.flush();
+
   //PROVA CODICE NOSTRO (CORRETTO)
   astro::tRaDec2AzEl(ra,dec,latitude,longitude,jday, Az, El);
   printf("Az  = %f\n",Az);
@@ -422,13 +441,23 @@ while(jday_end-jday > 0.0 )
   printf("El2_vall  = %f\n",El2);
 
 
-
   //condizioni di visibilità
   int jday_int = jday;
   double jday_frac = jday - jday_int;
   double El_min = 10; //deg
-  bool ill_sat = astUtils::light(r_sat_eci,(double)jday_int,jday_frac,'e');
-  bool ill_obs = astUtils::light(r_obs_eci,(double)jday_int,jday_frac,'e');
+
+  // Posizione satellite e osservatorio in raggi terrestri
+  double r_sat[3];
+  r_sat[0] = r_sat_eci[0]/Rt;
+  r_sat[1] = r_sat_eci[1]/Rt;
+  r_sat[2] = r_sat_eci[2]/Rt;
+  double r_obs[3];
+  r_obs[0] = r_obs_eci[0]/Rt;
+  r_obs[1] = r_obs_eci[1]/Rt;
+  r_obs[2] = r_obs_eci[2]/Rt;
+  
+  bool ill_sat = astUtils::light(r_sat,(double)jday_int,jday_frac,'e');
+  bool ill_obs = astUtils::light(r_obs,(double)jday_int,jday_frac,'e');
   bool el = El > El_min;
   
   /*
@@ -451,11 +480,11 @@ while(jday_end-jday > 0.0 )
   j++;
 }
 
-    
+myfile.close();
 
     
 #endif
 
-  return 0;
+return 0;
   
 }

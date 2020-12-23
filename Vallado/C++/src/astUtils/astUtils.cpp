@@ -48,7 +48,7 @@ namespace astUtils {
       
     double eesqrd = 0.006694385000;     // eccentricity of earth sqrd
     double re      = 6378.137;           // km
-      
+    
     double tr1[3], tr2[3];
       
     // -------------------------  implementation   -----------------
@@ -60,7 +60,7 @@ namespace astUtils {
     double magr1 = astMath::mag(tr1);
     double magr2 = astMath::mag(tr2);
     
-    double temp = 1.0;;
+    double temp = 1.0;
       
     // --------------------- scale z component ---------------------
     if(whichkind == 'e')
@@ -75,7 +75,7 @@ namespace astUtils {
     double adotb = astMath::dot(tr1,tr2);
       
     // ---------------------- find tmin ----------------------------
-    double distsqrd = 0.0;
+    //double distsqrd = 0.0;
       
     double tmin = 0.0;
       
@@ -90,7 +90,7 @@ namespace astUtils {
         
     } else {
       
-      distsqrd = ((1.0 -tmin)*asqrd + adotb*tmin)/(re*re);
+      double distsqrd = ((1.0-tmin)*asqrd + adotb*tmin);///(re * re);
       
       if(distsqrd > 1.0)
         return true;
@@ -101,142 +101,143 @@ namespace astUtils {
       
       return false;
     
-    }
-        
-        
-    /* ------------------------------------------------------------------------------
-    %
-    %                           function light
-    %
-    %  this function determines if a spacecraft is sunlit or in the dark at a
-    %    particular time.  an oblate earth and cylindrical shadow is assumed.
-    %
-    %  author        : david vallado                  719-573-2600   27 may 2002
-    %
-    %  revisions
-    %                -
-    %
-    %  inputs          description                    range / units
-    %    r           - position vector of sat         er
-    %    jd          - julian date at desired time    days from 4713 bc
-    %    whichkind   - spherical or ellipsoidal earth 's', 'e'*default
-    %
-    %  outputs       :
-    %    vis         - visibility flag                true, false
-    %
-    %  locals        :
-    %    rtasc       - suns right ascension           rad
-    %    decl        - suns declination               rad
-    %    rsun        - sun vector                     au
-    %    auer        - conversion from au to er
-    %
-    %  coupling      :
-    %    sun         - position vector of sun
-    %    lncom1      - multiple a vector by a constant
-    %    sight       - does line-of-sight exist beteen vectors
-    %
-    %  references    :
-    %    vallado       2001, 291-295, alg 35, ex 5-6
-    %
-    % [lit] = light ( r, jd, whichkind );
-    % ------------------------------------------------------------------------------*/
-    bool light(double r[3], double jdtdb, double jdtdbF, char whichkind) {
-      
-      double auer = 149597870.0 / 6378.1363;
-      
-      double rsun[3];
-      double rtasc, decl;
-      
-      // -------------------------  implementation   -------------------------
-      ast2Body::sun(jdtdb, jdtdbF, rsun, rtasc, decl);
-      
-      rsun[0] *= auer;
-      rsun[1] *= auer;
-      rsun[2] *= auer;
-      
-      // ------------ is the satellite in the shadow? ----------------
-      return sight(rsun, r, whichkind);
-      
-    }
-  
-  
-    /*****************************************************************************/
-    // Obliquity of ecliptic
-    //
-    // Obliquety of ecliptic eps (in radians)
-    // at time t (in Julian Centuries from J2000.0)
-    // Taken from the KDE AStroLib
-    /*****************************************************************************/
-    double eps(double t) {
+  }
 
-      double tp;
-      
-      tp = 23.43929111 - (46.815+(0.00059-0.001813*t)*t)*t/3600.0;
-      tp = 1.74532925199e-2 * tp;
-      
-      return tp;
-      
-    }
-  
 
-    /*****************************************************************************/
-    //  Ecliptic to Equatorial
-    //
-    // Convert position vector r1 from ecliptic into equatorial coordinates
-    // at t (in Julian Centuries from J2000.0)
-    /*****************************************************************************/
-    void eclequ(double t, double * rIn, double * rOut) {
-      
-      std::vector< std::vector<double> > m;
-      
-      astMath::rot1mat(-eps(t), m); // m = xrot (-eps(t));
-      
-      astMath::matvecmult(m, rIn, rOut); // r2 = mxvct(m, r1);
-      
-    }
+  /* ------------------------------------------------------------------------------
+  %
+  %                           function light
+  %
+  %  this function determines if a spacecraft is sunlit or in the dark at a
+  %    particular time.  an oblate earth and cylindrical shadow is assumed.
+  %
+  %  author        : david vallado                  719-573-2600   27 may 2002
+  %
+  %  revisions
+  %                -
+  %
+  %  inputs          description                    range / units
+  %    r           - position vector of sat         er
+  %    jd          - julian date at desired time    days from 4713 bc
+  %    whichkind   - spherical or ellipsoidal earth 's', 'e'*default
+  %
+  %  outputs       :
+  %    vis         - visibility flag                true, false
+  %
+  %  locals        :
+  %    rtasc       - suns right ascension           rad
+  %    decl        - suns declination               rad
+  %    rsun        - sun vector                     au
+  %    auer        - conversion from au to er
+  %
+  %  coupling      :
+  %    sun         - position vector of sun
+  %    lncom1      - multiple a vector by a constant
+  %    sight       - does line-of-sight exist beteen vectors
+  %
+  %  references    :
+  %    vallado       2001, 291-295, alg 35, ex 5-6
+  %
+  % [lit] = light ( r, jd, whichkind );
+  % ------------------------------------------------------------------------------*/
+  bool light(double r[3], double jdtdb, double jdtdbF, char whichkind) {
+    
+    double auer = 149597870.0 / 6378.1363;
 
-    /* ****************** Function refraction ******************* *\
-     *                                                            *
-     * this function compute the correction to true elevation     *
-     * due to light refraction                                    *
-     * it should be used only for positive elevation              *
-     * input:                                                     *
-     *       el rad                                               *
-     * output:                                                    *
-     *     appel rad                                              *
-     * we use formula 16.4 of Astronomical Algorithms p.106       *
-     * we do not add the correction to recover no refraction for  *
-     * elevation=90deg to be consistent with previsat             *
-     *                                                            *
-     \* ********************************************************** */
-    void refraction(double el, double& appel) {
-      
-      const double rad2deg = 180.0 / M_PI; // rad2deg
-      double eltmp;
-      
-      if(el>0.0) {      
-        eltmp = el*rad2deg;        
-        eltmp = (eltmp+10.3/(eltmp+5.11));       
-        appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;        
-        if(appel<0.0) appel = el;        
-      }
-      
-    }
+    double rsun[3];
+    double rtasc, decl;
+    
+    // -------------------------  implementation   -------------------------
+    ast2Body::sun(jdtdb, jdtdbF, rsun, rtasc, decl);
+    
+    rsun[0] *= auer;
+    rsun[1] *= auer;
+    rsun[2] *= auer;
+    
+    // ------------ is the satellite in the shadow? ----------------
+    return sight(rsun, r, whichkind);
+    
+  }
 
-    /* ******************** Function Rebox ********************** *\
-     *                                                            *
-     * this function take an angle and makes it in [0:2*pi]       *
-     *                                                            *
-     \* ********************************************************** */
-    void rebox(double & angle) {
-      
-      while(angle > 2.0*M_PI)
-       angle-=2.*M_PI;
-      
-      while(angle < 0)
-        angle+=2.*M_PI;
-      
+
+  /*****************************************************************************/
+  // Obliquity of ecliptic
+  //
+  // Obliquety of ecliptic eps (in radians)
+  // at time t (in Julian Centuries from J2000.0)
+  // Taken from the KDE AStroLib
+  /*****************************************************************************/
+  double eps(double t) {
+
+    double tp;
+    
+    tp = 23.43929111 - (46.815+(0.00059-0.001813*t)*t)*t/3600.0;
+    tp = 1.74532925199e-2 * tp;
+    
+    return tp;
+    
+  }
+
+
+  /*****************************************************************************/
+  //  Ecliptic to Equatorial
+  //
+  // Convert position vector r1 from ecliptic into equatorial coordinates
+  // at t (in Julian Centuries from J2000.0)
+  /*****************************************************************************/
+  void eclequ(double t, double * rIn, double * rOut) {
+    
+    std::vector< std::vector<double> > m;
+    
+    astMath::rot1mat(-eps(t), m); // m = xrot (-eps(t));
+    
+    astMath::matvecmult(m, rIn, rOut); // r2 = mxvct(m, r1);
+    
+  }
+
+  /* ****************** Function refraction ******************* *\
+    *                                                            *
+    * this function compute the correction to true elevation     *
+    * due to light refraction                                    *
+    * it should be used only for positive elevation              *
+    * input:                                                     *
+    *       el rad                                               *
+    * output:                                                    *
+    *     appel rad                                              *
+    * we use formula 16.4 of Astronomical Algorithms p.106       *
+    * we do not add the correction to recover no refraction for  *
+    * elevation=90deg to be consistent with previsat             *
+    *                                                            *
+    \* ********************************************************** */
+  void refraction(double el, double& appel) {
+    
+    const double rad2deg = 180.0 / M_PI; // rad2deg
+    double eltmp;
+    
+    if(el>0.0) {      
+      eltmp = el*rad2deg;        
+      eltmp = (eltmp+10.3/(eltmp+5.11));       
+      appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;        
+      if(appel<0.0) appel = el;        
     }
+    
+  }
+
+  /* ******************** Function Rebox ********************** *\
+    *                                                            *
+    * this function take an angle and makes it in [0:2*pi]       *
+    *                                                            *
+    \* ********************************************************** */
+  void rebox(double & angle) {
+    
+    while(angle > 2.0*M_PI)
+      angle-=2.*M_PI;
+    
+    while(angle < 0)
+      angle+=2.*M_PI;
+    
+  }
+
 
 }   // namespace
 

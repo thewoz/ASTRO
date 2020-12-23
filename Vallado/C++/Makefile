@@ -66,7 +66,7 @@ ast2Body: setup astTime astMath
 
 # process astUtils
 astUtils: setup astMath ast2Body
-	g++ -march=native -Os -Wno-unused-result -c -I./src/astMath -I./src/astTime -I./src/ast2Body ./src/astUtils/astUtils.cpp -o ./build/astUtils.o
+	g++ -march=native -g -Wno-unused-result -c -I./src/astMath -I./src/astTime -I./src/ast2Body ./src/astUtils/astUtils.cpp -o ./build/astUtils.o
 	@ar rcs ./build/lib/libastUtils.a ./build/astUtils.o
 	@rm ./build/astUtils.o
 	@cp ./src/astUtils/astUtils.h ./build/include

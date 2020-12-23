@@ -5,7 +5,14 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "~/Desktop/ASTRO/include",
-                "~/Desktop/ASTRO/Vallado/C++/src",
+                "~/Desktop/ASTRO/Vallado/C++/src/ast2Body",
+                "~/Desktop/ASTRO/Vallado/C++/src/astIOD",
+                "~/Desktop/ASTRO/Vallado/C++/src/astMath",
+                "~/Desktop/ASTRO/Vallado/C++/src/astTime",
+                "~/Desktop/ASTRO/Vallado/C++/src/astUtils",
+                "~/Desktop/ASTRO/Vallado/C++/src/coordFK5",
+                "~/Desktop/ASTRO/Vallado/C++/src/EopSpw",
+                "~/Desktop/ASTRO/Vallado/C++/src/SGP4",
                 "/usr/include/glm",
                 "~Desktop/MPL/include"
             ],
