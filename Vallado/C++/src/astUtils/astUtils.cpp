@@ -157,37 +157,7 @@ namespace astUtils {
     return sight(rsun, r, whichkind);
     
   }
-    /* ****************** Function refraction ******************* *\
-     *                                                            *
-     * this function compute the correction to true elevation     *
-     * due to light refraction                                    *
-     * it should be used only for positive elevation              *
-     * input:                                                     *
-     *       el rad                                               *
-     * output:                                                    *
-     *     appel rad                                              *
-     * we use formula 16.4 of Astronomical Algorithms p.106       *
-     * we do not add the correction to recover no refraction for  *
-     * elevation=90deg to be consistent with previsat             *
-     *                                                            *
-     \* ********************************************************** */
-    void refraction(double el, double& appel) {
-      
-      const double rad2deg = 180.0 / M_PI; // rad2deg
-      double eltmp;
-      
-      if(el>0.0) {
-	eltmp = el*rad2deg;
-        eltmp = (eltmp+10.3/(eltmp+5.11));
-        appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;
-        if(appel<0.0) appel = el;
-      }
-      else
-	{
-	  appel = el;
-	}
-            
-    }
+   
 
 
   /*****************************************************************************/
@@ -249,9 +219,13 @@ namespace astUtils {
       eltmp = (eltmp+10.3/(eltmp+5.11));       
       appel = el + 1.02/(60.*tan(eltmp/rad2deg))/rad2deg;        
       if(appel<0.0) appel = el;        
+    } else
+    {
+      appel = el;
     }
     
   }
+  
 
   /* ******************** Function Rebox ********************** *\
     *                                                            *
