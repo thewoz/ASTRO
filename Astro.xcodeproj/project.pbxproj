@@ -25,28 +25,31 @@
 /* Begin PBXFileReference section */
 		3A0282782376F68100DC9767 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A19AB042218648900A2FB55 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		3A58277A2477EB34006E1AF4 /* converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = converter.h; path = include/converter.h; sourceTree = "<group>"; };
-		3A76576D2335240C0059C1B6 /* eci2jnow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci2jnow.hpp; sourceTree = "<group>"; };
-		3AAB7CFD223D347300CC1BA3 /* eopc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eopc.hpp; sourceTree = "<group>"; };
-		3AAB7D00223D347300CC1BA3 /* ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ecef.hpp; sourceTree = "<group>"; };
-		3AAB7D02223D347300CC1BA3 /* eci.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci.hpp; sourceTree = "<group>"; };
-		3AAB7D03223D347300CC1BA3 /* teme.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = teme.hpp; sourceTree = "<group>"; };
-		3AAB7D04223D347300CC1BA3 /* iau80.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iau80.hpp; sourceTree = "<group>"; };
-		3AAB7D07223D347300CC1BA3 /* sgp4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sgp4.hpp; sourceTree = "<group>"; };
-		3AAB7D08223D347300CC1BA3 /* converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = converter.h; sourceTree = "<group>"; };
-		3AAB7D0B223D347300CC1BA3 /* attitude.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = attitude.hpp; sourceTree = "<group>"; };
-		3AAB7D0C223D347300CC1BA3 /* rk4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rk4.hpp; sourceTree = "<group>"; };
-		3AAB7D0E223D347300CC1BA3 /* angle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = angle.hpp; sourceTree = "<group>"; };
-		3AAB7D0F223D347300CC1BA3 /* define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = define.h; sourceTree = "<group>"; };
-		3AAB7D10223D347300CC1BA3 /* curl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = curl.hpp; sourceTree = "<group>"; };
-		3AAB7D11223D347300CC1BA3 /* quaternion.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quaternion.hpp; sourceTree = "<group>"; };
-		3AAB7D12223D347300CC1BA3 /* tle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tle.hpp; sourceTree = "<group>"; };
-		3AAB7D13223D347300CC1BA3 /* date.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = date.hpp; sourceTree = "<group>"; };
-		3AAB7D15223D347300CC1BA3 /* utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utils.hpp; sourceTree = "<group>"; };
-		3AAB7D17223D347300CC1BA3 /* astro.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = astro.hpp; sourceTree = "<group>"; };
-		3AAB7D19223D347300CC1BA3 /* satellite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = satellite.hpp; sourceTree = "<group>"; };
-		3AAB7D1A223D347300CC1BA3 /* observatory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = observatory.hpp; sourceTree = "<group>"; };
-		3AAB7D1B223D347300CC1BA3 /* sun.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sun.hpp; sourceTree = "<group>"; };
+		3A52090124CAEFBC00A90A72 /* satellite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = satellite.hpp; sourceTree = "<group>"; };
+		3A52090224CAEFBC00A90A72 /* observatory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = observatory.hpp; sourceTree = "<group>"; };
+		3A52090324CAEFBC00A90A72 /* sun.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sun.hpp; sourceTree = "<group>"; };
+		3A52090424CAEFBC00A90A72 /* astro.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = astro.hpp; sourceTree = "<group>"; };
+		3A52090624CAEFBC00A90A72 /* lla2ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lla2ecef.hpp; sourceTree = "<group>"; };
+		3A52090724CAEFBC00A90A72 /* eopc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eopc.hpp; sourceTree = "<group>"; };
+		3A52090824CAEFBC00A90A72 /* effect.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = effect.hpp; sourceTree = "<group>"; };
+		3A52090924CAEFBC00A90A72 /* converter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = converter.h; sourceTree = "<group>"; };
+		3A52090A24CAEFBC00A90A72 /* ecef.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ecef.hpp; sourceTree = "<group>"; };
+		3A52090B24CAEFBC00A90A72 /* eci.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci.hpp; sourceTree = "<group>"; };
+		3A52090C24CAEFBC00A90A72 /* teme.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = teme.hpp; sourceTree = "<group>"; };
+		3A52090D24CAEFBC00A90A72 /* iau80.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iau80.hpp; sourceTree = "<group>"; };
+		3A52090E24CAEFBC00A90A72 /* eci2jnow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = eci2jnow.hpp; sourceTree = "<group>"; };
+		3A52091024CAEFBC00A90A72 /* tycho2_catalog.dat */ = {isa = PBXFileReference; lastKnownFileType = text; path = tycho2_catalog.dat; sourceTree = "<group>"; };
+		3A52091224CAEFBC00A90A72 /* sgp4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sgp4.hpp; sourceTree = "<group>"; };
+		3A52091424CAEFBC00A90A72 /* attitude.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = attitude.hpp; sourceTree = "<group>"; };
+		3A52091524CAEFBC00A90A72 /* rk4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rk4.hpp; sourceTree = "<group>"; };
+		3A52091624CAEFBC00A90A72 /* angle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = angle.hpp; sourceTree = "<group>"; };
+		3A52091724CAEFBC00A90A72 /* define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = define.h; sourceTree = "<group>"; };
+		3A52091824CAEFBC00A90A72 /* curl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = curl.hpp; sourceTree = "<group>"; };
+		3A52091924CAEFBC00A90A72 /* quaternion.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = quaternion.hpp; sourceTree = "<group>"; };
+		3A52091A24CAEFBC00A90A72 /* tle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tle.hpp; sourceTree = "<group>"; };
+		3A52091B24CAEFBC00A90A72 /* date.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = date.hpp; sourceTree = "<group>"; };
+		3A52091C24CAEFBC00A90A72 /* photo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = photo.hpp; sourceTree = "<group>"; };
+		3A52091D24CAEFBC00A90A72 /* utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utils.hpp; sourceTree = "<group>"; };
 		3ABF73D81FE55D390052CFAC /* Astro */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Astro; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -61,64 +64,76 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3AAB7CF8223D347300CC1BA3 /* include */ = {
+		3A52090024CAEFBC00A90A72 /* corps */ = {
 			isa = PBXGroup;
 			children = (
-				3AAB7CFB223D347300CC1BA3 /* converter */,
-				3AAB7D06223D347300CC1BA3 /* propagator */,
-				3AAB7D0A223D347300CC1BA3 /* utils */,
-				3AAB7D17223D347300CC1BA3 /* astro.hpp */,
-				3AAB7D18223D347300CC1BA3 /* corps */,
+				3A52090124CAEFBC00A90A72 /* satellite.hpp */,
+				3A52090224CAEFBC00A90A72 /* observatory.hpp */,
+				3A52090324CAEFBC00A90A72 /* sun.hpp */,
 			);
-			path = include;
+			path = corps;
 			sourceTree = "<group>";
 		};
-		3AAB7CFB223D347300CC1BA3 /* converter */ = {
+		3A52090524CAEFBC00A90A72 /* converter */ = {
 			isa = PBXGroup;
 			children = (
-				3AAB7CFD223D347300CC1BA3 /* eopc.hpp */,
-				3AAB7D04223D347300CC1BA3 /* iau80.hpp */,
-				3AAB7D00223D347300CC1BA3 /* ecef.hpp */,
-				3AAB7D02223D347300CC1BA3 /* eci.hpp */,
-				3AAB7D03223D347300CC1BA3 /* teme.hpp */,
-				3A76576D2335240C0059C1B6 /* eci2jnow.hpp */,
-				3AAB7D08223D347300CC1BA3 /* converter.h */,
+				3A52090624CAEFBC00A90A72 /* lla2ecef.hpp */,
+				3A52090724CAEFBC00A90A72 /* eopc.hpp */,
+				3A52090824CAEFBC00A90A72 /* effect.hpp */,
+				3A52090924CAEFBC00A90A72 /* converter.h */,
+				3A52090A24CAEFBC00A90A72 /* ecef.hpp */,
+				3A52090B24CAEFBC00A90A72 /* eci.hpp */,
+				3A52090C24CAEFBC00A90A72 /* teme.hpp */,
+				3A52090D24CAEFBC00A90A72 /* iau80.hpp */,
+				3A52090E24CAEFBC00A90A72 /* eci2jnow.hpp */,
 			);
 			path = converter;
 			sourceTree = "<group>";
 		};
-		3AAB7D06223D347300CC1BA3 /* propagator */ = {
+		3A52090F24CAEFBC00A90A72 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				3AAB7D07223D347300CC1BA3 /* sgp4.hpp */,
+				3A52091024CAEFBC00A90A72 /* tycho2_catalog.dat */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		3A52091124CAEFBC00A90A72 /* propagator */ = {
+			isa = PBXGroup;
+			children = (
+				3A52091224CAEFBC00A90A72 /* sgp4.hpp */,
 			);
 			path = propagator;
 			sourceTree = "<group>";
 		};
-		3AAB7D0A223D347300CC1BA3 /* utils */ = {
+		3A52091324CAEFBC00A90A72 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				3AAB7D0B223D347300CC1BA3 /* attitude.hpp */,
-				3AAB7D0C223D347300CC1BA3 /* rk4.hpp */,
-				3AAB7D0E223D347300CC1BA3 /* angle.hpp */,
-				3AAB7D0F223D347300CC1BA3 /* define.h */,
-				3AAB7D10223D347300CC1BA3 /* curl.hpp */,
-				3AAB7D11223D347300CC1BA3 /* quaternion.hpp */,
-				3AAB7D12223D347300CC1BA3 /* tle.hpp */,
-				3AAB7D13223D347300CC1BA3 /* date.hpp */,
-				3AAB7D15223D347300CC1BA3 /* utils.hpp */,
+				3A52091424CAEFBC00A90A72 /* attitude.hpp */,
+				3A52091524CAEFBC00A90A72 /* rk4.hpp */,
+				3A52091624CAEFBC00A90A72 /* angle.hpp */,
+				3A52091724CAEFBC00A90A72 /* define.h */,
+				3A52091824CAEFBC00A90A72 /* curl.hpp */,
+				3A52091924CAEFBC00A90A72 /* quaternion.hpp */,
+				3A52091A24CAEFBC00A90A72 /* tle.hpp */,
+				3A52091B24CAEFBC00A90A72 /* date.hpp */,
+				3A52091C24CAEFBC00A90A72 /* photo.hpp */,
+				3A52091D24CAEFBC00A90A72 /* utils.hpp */,
 			);
 			path = utils;
 			sourceTree = "<group>";
 		};
-		3AAB7D18223D347300CC1BA3 /* corps */ = {
+		3AAB7CF8223D347300CC1BA3 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				3AAB7D19223D347300CC1BA3 /* satellite.hpp */,
-				3AAB7D1A223D347300CC1BA3 /* observatory.hpp */,
-				3AAB7D1B223D347300CC1BA3 /* sun.hpp */,
+				3A52090424CAEFBC00A90A72 /* astro.hpp */,
+				3A52090524CAEFBC00A90A72 /* converter */,
+				3A52090024CAEFBC00A90A72 /* corps */,
+				3A52090F24CAEFBC00A90A72 /* data */,
+				3A52091124CAEFBC00A90A72 /* propagator */,
+				3A52091324CAEFBC00A90A72 /* utils */,
 			);
-			path = corps;
+			path = include;
 			sourceTree = "<group>";
 		};
 		3ABF73CF1FE55D390052CFAC = {
@@ -128,7 +143,6 @@
 				3A19AB042218648900A2FB55 /* main.cpp */,
 				3ABF73D91FE55D390052CFAC /* Products */,
 				3A0282782376F68100DC9767 /* README.md */,
-				3A58277A2477EB34006E1AF4 /* converter.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,7 +180,7 @@
 		3ABF73D01FE55D390052CFAC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1110;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Leonardo Parisi";
 				TargetAttributes = {
 					3ABF73D71FE55D390052CFAC = {
@@ -230,6 +244,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -255,9 +270,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/include/opencv4,
+				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -301,6 +319,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -320,10 +339,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/usr/local/include/opencv4,
+				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lopencv_core",
 					"-lcoordFK5",
@@ -352,7 +375,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -370,7 +393,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

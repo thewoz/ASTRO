@@ -1,26 +1,20 @@
 /*
- * MIT License
+ * GNU GENERAL PUBLIC LICENSE
  *
- * Copyright © 2017 S5Lab
+ * Copyright (C) 2017
  * Created by Leonardo Parisi (leonardo.parisi[at]gmail.com)
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 #ifndef _H_ASTRO_EFFECT_H
@@ -235,7 +229,7 @@ void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, doubl
   
   double t, t0, t1;
   double ra1, dec1, deltara, deltadec, dra_prec, ddec_prec;
-  double dra_nut, ddec_nut, dra_abe, ddec_abe;
+  double dra_nut, ddec_nut;//, dra_abe, ddec_abe;
   
   if (direct == eTo)
     {    
@@ -245,10 +239,10 @@ void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, doubl
       dra_prec = ra1-raj2k; ddec_prec = dec1-decj2k;
       astro::nutation_radec(raj2k, decj2k, t, deltara, deltadec);
       dra_nut = deltara; ddec_nut = deltadec;
-      astro::aberration(raj2k, decj2k, t, deltara, deltadec);
-      dra_abe = deltara; ddec_abe = deltadec;
-      rajnow = raj2k + dra_prec + dra_nut + dra_abe;
-      decjnow = decj2k + ddec_prec + ddec_nut + ddec_abe;
+      //astro::aberration(raj2k, decj2k, t, deltara, deltadec);
+      //dra_abe = deltara; ddec_abe = deltadec;
+      rajnow = raj2k + dra_prec + dra_nut;// + dra_abe;
+      decjnow = decj2k + ddec_prec + ddec_nut;// + ddec_abe;
     }
   
   if (direct == eFrom)
@@ -260,13 +254,54 @@ void j2k_jnow(double& raj2k, double& decj2k, double jd, edirection direct, doubl
       dra_prec = rajnow-raj2k; ddec_prec = decjnow-decj2k;
       astro::nutation_radec(raj2k, decj2k, t0, deltara, deltadec);
       dra_nut = deltara; ddec_nut = deltadec;
-      astro::aberration(raj2k, decj2k, t0, deltara, deltadec);
-      dra_abe = deltara; ddec_abe = deltadec;
-      raj2k = rajnow - dra_prec - dra_nut - dra_abe;
-      decj2k = decjnow - ddec_prec - ddec_nut - ddec_abe;
+      //astro::aberration(raj2k, decj2k, t0, deltara, deltadec);
+      //dra_abe = deltara; ddec_abe = deltadec;
+      raj2k = rajnow - dra_prec - dra_nut;// - dra_abe;
+      decj2k = decjnow - ddec_prec - ddec_nut;// - ddec_abe;
     }
   
 }
+
+// convert az/el (ECEF/JNOW) in ra/dec (ECI/J2K) and viceversa
+void j2k_azel(double& ff, double& ra0, double& dec0, double latobs, double lonobs, double altobs,
+              double jd, edirection edirect, double& gg, double& az0, double& el0)
+{
+  
+  double rsat_ecef[3], vsat_ecef[3];
+  double rsat_eci[3], vsat_eci[3];
+  double robs_ecef[3], vobs_ecef[3];
+  double robs_eci[3];//, vobs_eci[3];
+  double drange, daz0, del0, dra0, ddec0;
+  
+  // site in ecef/eci
+  astIOD::site(latobs, lonobs, altobs, robs_ecef, vobs_ecef);
+  astro::ecef2eci(robs_ecef, jd, robs_eci);
+
+  for(int k=0;k<3;k++){
+    vsat_ecef[k]=vsat_eci[k]=0.0;
+  }
+  
+  drange=0.0;
+  daz0=0.0; del0=0.0;
+  dra0=0.0; ddec0=0.0;
+  
+  if (edirect == eFrom)
+    {
+      astIOD::rv_razel(rsat_ecef, vsat_ecef, robs_ecef, latobs, lonobs, eFrom, gg, az0, el0, drange, daz0, del0);
+      astro::ecef2eci(rsat_ecef, jd, rsat_eci);
+      astIOD::rv_tradec(rsat_eci, vsat_eci, robs_eci, eTo, ff, ra0, dec0, drange, dra0, ddec0);
+      astUtils::rebox(ra0);
+    }
+  
+  if (edirect == eTo)
+    {
+      astIOD::rv_tradec(rsat_eci, vsat_eci, robs_eci, eFrom, ff, ra0, dec0, drange, dra0, ddec0);
+      astro::eci2ecef(rsat_eci, jd, rsat_ecef);
+      astIOD::rv_razel(rsat_ecef, vsat_ecef, robs_ecef, latobs, lonobs, eTo, gg, az0, el0, drange, daz0, del0);
+      astUtils::rebox(az0);
+    }
+  
+}  
 
   
 } /* namespace astro */
