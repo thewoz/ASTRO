@@ -135,11 +135,12 @@ namespace astro {
       // chiamo la funzione di vallado
       ast2Body::sun(jDay, 0.0, tmpCoord, rtasc, decl);
       
-      state.position[0] *= 149597870.7;
-      state.position[1] *= 149597870.7;
-      state.position[2] *= 149597870.7;
+      // convert from AU to km
+      tmpCoord[0] *= 149597870.7;
+      tmpCoord[1] *= 149597870.7;
+      tmpCoord[2] *= 149597870.7;
       
-      if(crs != CRS::TEME) {
+      if(crs != CRS::ECI) {
 
         if(crs == CRS::ECEF)
           astro::eci2ecef(tmpCoord, jDay, state.position);
