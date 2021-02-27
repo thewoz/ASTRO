@@ -44,11 +44,11 @@ namespace curl {
     if(curl) {
       
       // apro il file di output
-      FILE * output = fopen(outputFile, "wb");
-      
+      FILE * input = std::tmpfile(); //fopen(outputFile, "wb");
+            
       // controllo se ci sono errori
-      if(output == NULL) {
-        if(verbose) fprintf(stderr, "%s curl fails to open the output file: '%s': %s\n", (pedantic) ? "error" : "warning", outputFile, strerror(errno));
+      if(input == NULL) {
+        if(verbose) fprintf(stderr, "%s curl fails to open the output tmp file: %s\n", (pedantic) ? "error" : "warning", strerror(errno));
         curl_easy_cleanup(curl);
         if(pedantic) abort(); else return 1;
       }
@@ -56,7 +56,7 @@ namespace curl {
       // definico le operazioni che deve fare
       curl_easy_setopt(curl, CURLOPT_URL, url);
       curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
-      curl_easy_setopt(curl, CURLOPT_WRITEDATA, output);
+      curl_easy_setopt(curl, CURLOPT_WRITEDATA, input);
       
       // eseguo i comandi
       CURLcode res = curl_easy_perform(curl);
@@ -64,14 +64,36 @@ namespace curl {
       // pulisco curl
       curl_easy_cleanup(curl);
       
-      // chiudo il file
-      fclose(output);
-      
       // controlo gli errori
       if(res != CURLE_OK) {
+        
         if(verbose) fprintf(stderr, "%s curl was no able get the files '%s': %s\n", (pedantic) ? "error" : "warning", url, curl_easy_strerror(res));
         if(pedantic) abort(); else return 1;
+        
+      } else {
+        
+        std::rewind(input);
+
+        FILE * output = fopen(outputFile, "wb");
+        
+        // controllo se ci sono errori
+        if(output == NULL) {
+        
+        }
+        
+        char buf[BUFSIZ];
+        
+        size_t size;
+        
+        while((size = fread(buf, 1, BUFSIZ, input))) {
+          fwrite(buf, 1, size, output);
+        }
+        
+        fclose(output);
+
       }
+      
+      fclose(input);
       
       return 0;
       
