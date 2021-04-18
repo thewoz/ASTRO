@@ -41,6 +41,7 @@
 #include "./utils/quaternion.hpp"
 #include "./utils/attitude.hpp"
 #include "./utils/curl.hpp"
+#include "./utils/poe.hpp"
 
 // Converter
 #include "./converter/iau80.hpp"

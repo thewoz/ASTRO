@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		3A0282782376F68100DC9767 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3A19AB042218648900A2FB55 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3A2BC0A4262C8A2000653C75 /* poe.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = poe.hpp; sourceTree = "<group>"; };
 		3A52090124CAEFBC00A90A72 /* satellite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = satellite.hpp; sourceTree = "<group>"; };
 		3A52090224CAEFBC00A90A72 /* observatory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = observatory.hpp; sourceTree = "<group>"; };
 		3A52090324CAEFBC00A90A72 /* sun.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sun.hpp; sourceTree = "<group>"; };
@@ -117,6 +118,7 @@
 				3A52091924CAEFBC00A90A72 /* quaternion.hpp */,
 				3A52091A24CAEFBC00A90A72 /* tle.hpp */,
 				3A52091B24CAEFBC00A90A72 /* date.hpp */,
+				3A2BC0A4262C8A2000653C75 /* poe.hpp */,
 				3A52091C24CAEFBC00A90A72 /* photo.hpp */,
 				3A52091D24CAEFBC00A90A72 /* utils.hpp */,
 			);
