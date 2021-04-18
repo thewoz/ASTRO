@@ -130,7 +130,21 @@ namespace astro {
       _position(jDay, _coord, crs);
       
     }
+    
+#ifdef ASTRO_OPENCV
+    void position(double jDay, cv::Point3d & _coord, int crs = CRS::ECEF) {
+      
+      double tmp[3];
+      
+      _position(jDay, tmp, crs);
 
+      _coord.x = tmp[0];
+      _coord.y = tmp[1];
+      _coord.z = tmp[2];
+
+    }
+#endif
+    
   private:
     
     //****************************************************************************/
