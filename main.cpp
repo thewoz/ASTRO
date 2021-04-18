@@ -436,7 +436,7 @@ while(jday_end-jday > 0.0 )
   //PROVA VALLADO radec_azel (CORRETTO, piccole differenze con il nostro codice)
   ra_rad = astro::radians(ra);
   dec_rad = astro::radians(dec);
-  astro::tradec_azel(ra_rad, dec_rad, latgd, jday, longitude, Az2, El2);
+  astro::radec2azel(ra_rad, dec_rad, latgd, jday, longitude, Az2, El2);
   printf("Az2_vall  = %f\n",Az2);
   printf("El2_vall  = %f\n",El2);
 

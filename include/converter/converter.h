@@ -59,41 +59,41 @@ namespace astro {
   //   % Algorithm 28: AzElToRaDec (pg. 259)
   //   %-------------------------------------------------------------------------
   void tRaDec2AzEl(double ra, double dec, double lat, double lon, double JD, double & Az, double & El) {
-    
-    
+
+
     double lat_rad = astro::radians(lat);
     double dec_rad = astro::radians(dec);
-    
+
     double T_UT1 = (JD-2451545)/36525.0;
     double ThetaGMST = 67310.54841 + (876600.0*3600.0 + 8640184.812866)*T_UT1 + 0.093104*(pow(T_UT1,2)) -(6.2*pow(10.0,-6))*(pow(T_UT1,3)); //deg
-    
+
     // funzione modulo fatta da noi
     double a = ThetaGMST;
     double b = 86400.0*(ThetaGMST/abs(ThetaGMST));
-    
+
     double mod1 = (a - floor(a/b)*b)/240.0;
     ThetaGMST = mod1 - floor(mod1/360.0)*360.0;
     double ThetaLST = ThetaGMST + lon; //deg
-    
+
     //Define Siderial Time LHA)
     double LHA = (ThetaLST-ra) - floor((ThetaLST-ra)/360.0)*360.0; //funzione modulo [deg]
     double LHA_rad = astro::radians(LHA);
-    
+
     //Elevation deg
     double El_rad = asin(sin(lat_rad)*sin(dec_rad)+cos(lat_rad)*cos(dec_rad)*cos(LHA_rad));
     El = astro::degrees(El_rad);
-    
+
     //Azimuth deg
     double c_rad = atan2(-sin(LHA_rad)*cos(dec_rad)/cos(El_rad),(sin(dec_rad)-sin(El_rad)*sin(lat_rad))/(cos(El_rad)*cos(lat_rad)));
     double c     = astro::degrees(c_rad);
     Az = c - floor(c/360.0)*360.0; //deg
-    
+
   }
   
   
   /*------------------------------------------------------------------------------
    *
-   *                           tradec_azel
+   *                           radec_azel
    *
    * this function converts topocentric right ascension declination values with
    * azimuth, and elevation.
@@ -103,9 +103,8 @@ namespace astro {
    *    rtasc       - topocentric right ascension                rad
    *    decl        - topocentric declination                    rad
    *    latgd       - geodetic latitude                          rad
-   *    JD          - julian date
    *    lon         - site longitude                             deg
-   *
+   *    JD          - julian date
    *
    *  outputs       :
    *    az          - azimuth                                    deg
@@ -113,9 +112,12 @@ namespace astro {
    *
    *  use vallado function radec_azel
    -----------------------------------------------------------------------------*/
-  void tradec_azel(double & rtasc, double & decl, double & latgd, double & JD, double & lon,double & az, double & el) {
+  void radec2azel(double rtasc, double decl, double latgd, double lon, double JD, double & az, double & el) {
     
-    //aggiunta questa parte oer calcolare lst, quindi lst è stato tolto com input e sono stati aggiunti jday e longitudine in gradi
+    // sono stati aggiunti jday e longitudine in gradi
+    
+    // aggiunta questa parte per calcolare lst
+    // quindi lst è stato tolto com input
     double T_UT1 = (JD-2451545)/36525.0;
     double ThetaGMST = 67310.54841 + (876600.0*3600.0 + 8640184.812866)*T_UT1 + 0.093104*(pow(T_UT1,2)) -(6.2*pow(10.0,-6))*(pow(T_UT1,3)); //deg
     
