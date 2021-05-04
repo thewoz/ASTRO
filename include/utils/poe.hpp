@@ -150,11 +150,15 @@ namespace astro {
           double deltaT = data[i].time - data[i-1].time;
           
           // distanza in secondi tra il primo punto e il punto che voglio
-          double deltaInterpol = data[i].time - time;
+          double deltaInterpol = time - data[i-1].time;
           
-          position[0] = data[i].position[0] + (data[i].position[0] - data[i-1].position[0])*deltaInterpol/(double)deltaT;
-          position[1] = data[i].position[1] + (data[i].position[1] - data[i-1].position[1])*deltaInterpol/(double)deltaT;
-          position[2] = data[i].position[2] + (data[i].position[2] - data[i-1].position[2])*deltaInterpol/(double)deltaT;
+//          printf("%f %f %f %f %f %f %f %f\n", deltaT, deltaInterpol,
+//                 data[i-1].position[0], data[i-1].position[1], data[i-1].position[2],
+//                 data[i].position[0],   data[i].position[1],   data[i].position[2]);
+          
+          position[0] = data[i-1].position[0] + (data[i].position[0] - data[i-1].position[0])*deltaInterpol/(double)deltaT;
+          position[1] = data[i-1].position[1] + (data[i].position[1] - data[i-1].position[1])*deltaInterpol/(double)deltaT;
+          position[2] = data[i-1].position[2] + (data[i].position[2] - data[i-1].position[2])*deltaInterpol/(double)deltaT;
                  
           break;
 
