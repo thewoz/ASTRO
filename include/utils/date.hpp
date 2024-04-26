@@ -43,7 +43,7 @@ namespace astro {
     
     static char unitString[6][12];
 
-    mutable char printString[1024];
+    mutable char printString[PATH_MAX];
     
   public:
     
@@ -260,19 +260,19 @@ namespace astro {
     // toString functions
     //****************************************************************************/
     const char * toGregorianDateString(FILE * output = stdout) const {
-      sprintf(printString, "%02d/%02d/%d", day, month, year);
+      snprintf(printString, PATH_MAX, "%02d/%02d/%d", day, month, year);
       return printString;
     }
     const char * toGregorianString() const {
-      sprintf(printString, "%02d/%02d/%d at %02d:%02d:%05.2f", day, month, year, hour, minute, second);
+      snprintf(printString, PATH_MAX, "%02d/%02d/%d at %02d:%02d:%05.2f", day, month, year, hour, minute, second);
       return printString;
     }
     const char * toJulianString() const {
-      sprintf(printString, "%d %05.3f", (int)trunc(jDay), jDayFrac);
+      snprintf(printString, PATH_MAX, "%d %05.3f", (int)trunc(jDay), jDayFrac);
       return printString;
     }
     const char * toString() const {
-      sprintf(printString, "%02d/%02d/%d at %02d:%02d:%05.2f JD %.5f  [%f %f]", day, month, year, hour, minute, second, jDay+jDayFrac, jDay, jDayFrac);
+      snprintf(printString, PATH_MAX, "%02d/%02d/%d at %02d:%02d:%05.2f JD %.5f  [%f %f]", day, month, year, hour, minute, second, jDay+jDayFrac, jDay, jDayFrac);
       return printString;
     }
     

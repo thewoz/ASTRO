@@ -76,7 +76,7 @@ namespace astro {
       char str[PATH_MAX];
       
       if(path[0] == '~'){
-        sprintf(str, "%s%s", getenv("HOME"), &path[1]);
+        snprintf(str, PATH_MAX, "%s%s", getenv("HOME"), &path[1]);
       } else {
         strcpy(str, path);
       }

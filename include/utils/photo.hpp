@@ -576,10 +576,10 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
   int    year, mon, day, hr, min;
   double sec;
   FILE   *infile;
-  char   filename[128];
+  char   filename[PATH_MAX];
   int    iframe;
   
-  sprintf(filename,"viewsite.%s.%s",satnum,nameobs);
+  snprintf(filename, PATH_MAX, "viewsite.%s.%s", satnum, nameobs);
   if ((infile=fopen(filename,"r"))==NULL){
     printf(" ERROR: file %s does not exist \n",filename);
     exit(9);
@@ -591,7 +591,7 @@ void autocenter_azel(char satnum[128], char nameobs[128], double& az0, double& e
     do
       {
         iframe=iframe+1;
-        fscanf(infile," %i %i %i %i %i %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf ",
+        fscanf(infile, " %i %i %i %i %i %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf ",
                &year, &mon, &day, &hr, &min, &sec,
                &az, &appel, &el, &appra, &appdec, &rajnw, &decjnw, &raj2k, &decj2k, &alt, &range);
         if (iframe==1){	  
@@ -631,10 +631,10 @@ void autocenter_radec(char satnum[128], char nameobs[128], double& ra0, double& 
   int    year, mon, day, hr, min;
   double sec;
   FILE   *infile;
-  char   filename[128];
+  char   filename[PATH_MAX];
   int    iframe;
 
-  sprintf(filename,"viewsite.%s.%s",satnum,nameobs);
+  snprintf(filename, PATH_MAX, "viewsite.%s.%s", satnum, nameobs);
   if ((infile=fopen(filename,"r"))==NULL){
     printf(" ERROR: file %s does not exist \n",filename);
     exit(9);
